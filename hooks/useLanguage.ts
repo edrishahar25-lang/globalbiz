@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { DevSettings, I18nManager } from 'react-native';
+import { DevSettings, I18nManager, Platform } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import {
   isRtlLanguage,
@@ -17,6 +17,20 @@ export function useLanguage() {
     await persistLanguage(next);
     await i18n.changeLanguage(next);
     const shouldBeRtl = isRtlLanguage(next);
+
+    if (Platform.OS === 'web') {
+      // Web: set <html dir> + lang, then full reload so all CSS
+      // direction-dependent styles re-apply cleanly.
+      if (typeof document !== 'undefined') {
+        document.documentElement.dir = shouldBeRtl ? 'rtl' : 'ltr';
+        document.documentElement.lang = next;
+      }
+      if (typeof window !== 'undefined') {
+        window.location.reload();
+      }
+      return;
+    }
+
     if (shouldBeRtl !== I18nManager.isRTL) {
       I18nManager.allowRTL(true);
       I18nManager.forceRTL(shouldBeRtl);

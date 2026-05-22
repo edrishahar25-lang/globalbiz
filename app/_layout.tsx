@@ -42,12 +42,28 @@ export default function RootLayout() {
     (async () => {
       const lang = await loadStoredLanguage();
       const shouldBeRtl = isRtlLanguage(lang);
+
+      if (Platform.OS === 'web') {
+        // Web: direction is controlled by the `dir` attribute on <html>,
+        // not by I18nManager. forceRTL is a no-op and DevSettings.reload
+        // is missing in production builds, so a reload would hang.
+        // Just set the document direction and proceed.
+        if (typeof document !== 'undefined') {
+          document.documentElement.dir = shouldBeRtl ? 'rtl' : 'ltr';
+          document.documentElement.lang = lang;
+        }
+        initI18n(lang);
+        if (!cancelled) setI18nReady(true);
+        return;
+      }
+
+      // Native: I18nManager change requires a real reload to take effect.
       if (shouldBeRtl !== I18nManager.isRTL) {
         I18nManager.forceRTL(shouldBeRtl);
         try {
           DevSettings.reload();
         } catch {
-          // can't reload — proceed and hope for the best
+          // dev API missing — fall through and hope it picks up next launch
         }
         return;
       }
