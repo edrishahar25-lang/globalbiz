@@ -8,6 +8,40 @@ import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL?.trim();
 const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY?.trim();
 
+// ---------- JWT inspection (no signature verification — just decode) ----------
+type JwtPayload = {
+  role?: string;
+  ref?: string;
+  iss?: string;
+  iat?: number;
+  exp?: number;
+};
+
+function decodeJwtPayload(token: string): JwtPayload | null {
+  try {
+    const parts = token.split('.');
+    if (parts.length !== 3) return null;
+    const payload = parts[1]!;
+    const padded = payload + '='.repeat((4 - (payload.length % 4)) % 4);
+    const b64 = padded.replace(/-/g, '+').replace(/_/g, '/');
+    const json =
+      typeof atob === 'function'
+        ? atob(b64)
+        : typeof Buffer !== 'undefined'
+          ? Buffer.from(b64, 'base64').toString('utf-8')
+          : null;
+    if (!json) return null;
+    return JSON.parse(json) as JwtPayload;
+  } catch {
+    return null;
+  }
+}
+
+function extractRefFromUrl(url: string): string | null {
+  const m = url.match(/^https:\/\/([a-z0-9-]+)\.supabase\.co\/?$/);
+  return m ? (m[1] ?? null) : null;
+}
+
 // URL format check — catches typos and missing scheme
 const URL_RE = /^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/;
 const urlLooksValid = supabaseUrl ? URL_RE.test(supabaseUrl) : false;
@@ -22,17 +56,32 @@ export const isSupabaseConfigured: boolean = Boolean(
 // ============================================================
 // STARTUP DIAGNOSTICS — these print on every bundle load.
 // Look for these in the browser console immediately after refresh.
+// SECURITY: we print the first 15 chars of the key (always the JWT
+// header "eyJhbGciOiJI...") and the JWT *payload* (role/ref/iat/exp
+// — no signing material). We never print the full key.
 // ============================================================
+const keyPayload = supabaseAnonKey ? decodeJwtPayload(supabaseAnonKey) : null;
+const urlRef = supabaseUrl ? extractRefFromUrl(supabaseUrl) : null;
+const keyRef = keyPayload?.ref ?? null;
+const keyRole = keyPayload?.role ?? null;
+const keyExp = keyPayload?.exp ?? null;
+const keyIat = keyPayload?.iat ?? null;
+const refMatch: boolean | null = urlRef && keyRef ? urlRef === keyRef : null;
+
 const initSummary = {
   urlSet: Boolean(supabaseUrl),
   urlLength: supabaseUrl?.length ?? 0,
   urlPrefix: supabaseUrl ? supabaseUrl.slice(0, 40) : null,
-  urlHasTrailingSlash: supabaseUrl?.endsWith('/') ?? false,
+  urlRef,
   urlLooksValid,
   keySet: Boolean(supabaseAnonKey),
   keyLength: supabaseAnonKey?.length ?? 0,
-  keyStartsWithEyJ: supabaseAnonKey?.startsWith('eyJ') ?? false,
-  keyLast4: supabaseAnonKey?.slice(-4) ?? null,
+  keyPrefix: supabaseAnonKey ? supabaseAnonKey.slice(0, 15) : null,
+  keyRole, // ⚠ must be "anon" — never "service_role"
+  keyRef, // ⚠ must equal urlRef
+  refMatch, // true if key was issued for the same project as the URL
+  keyIssuedAt: keyIat ? new Date(keyIat * 1000).toISOString() : null,
+  keyExpiresAt: keyExp ? new Date(keyExp * 1000).toISOString() : null,
   keyLooksValid,
   configured: isSupabaseConfigured,
   runtime: typeof window === 'undefined' ? 'server/native' : 'browser',
@@ -58,6 +107,31 @@ if (supabaseAnonKey && !keyLooksValid) {
     supabaseAnonKey.length,
     'starts with',
     supabaseAnonKey.slice(0, 5),
+  );
+}
+if (supabaseAnonKey && !keyPayload) {
+  console.error(
+    '[supabase] Anon key could not be decoded as JWT — almost certainly TRUNCATED in the env var.',
+    'Length:',
+    supabaseAnonKey.length,
+    '(a real Supabase anon key is ~220-280 chars).',
+  );
+}
+if (keyRole && keyRole !== 'anon') {
+  console.error(
+    '[supabase] WRONG KEY TYPE — role is "' + keyRole + '" but must be "anon".',
+    keyRole === 'service_role'
+      ? 'You pasted the service_role key. NEVER ship that to the client. Use the "anon public" key from Settings → API.'
+      : 'Use the "anon public" key from Supabase Settings → API.',
+  );
+}
+if (refMatch === false) {
+  console.error(
+    '[supabase] PROJECT REF MISMATCH — your URL is for project "' +
+      urlRef +
+      '" but the anon key was issued for project "' +
+      keyRef +
+      '". The key is from a DIFFERENT Supabase project. Re-copy the anon key from the project whose URL you are using.',
   );
 }
 
