@@ -126,7 +126,9 @@
   "common": {
     "ok": "אישור",
     "close": "סגור",
-    "cancel": "ביטול"
+    "cancel": "ביטול",
+    "copied": "הועתק ✓",
+    "copyFailed": "ההעתקה נכשלה"
   },
   "demo": {
     "reminderSentTitle": "תזכורת נשלחה",

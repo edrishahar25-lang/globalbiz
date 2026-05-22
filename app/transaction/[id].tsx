@@ -1,4 +1,4 @@
-import { Alert, Platform, Pressable, ScrollView, Text, View } from 'react-native';
+import { Alert, Platform, Pressable, ScrollView, Share, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { useLocalSearchParams, useRouter } from 'expo-router';
@@ -157,12 +157,31 @@ export default function TransactionDetail() {
               icon={<Share2 color={colors.white} size={18} strokeWidth={2.2} />}
               variant="primary"
               size="md"
-              onPress={() => {
+              onPress={async () => {
                 tapHaptic();
-                Alert.alert(
-                  t('transaction.shareSuccessTitle'),
-                  t('transaction.shareSuccessBody'),
-                );
+                const lines: string[] = [
+                  tx.counterparty.name,
+                  `${isReceived ? t('transaction.received') : t('transaction.sent')}: ${sign}${formatCurrency(tx.amount, tx.currency)}`,
+                  formatFullDateTime(tx.date),
+                  tx.description,
+                ];
+                if (linkedInvoice?.number) {
+                  lines.push(`${t('transaction.invoiceLabel')}: ${linkedInvoice.number}`);
+                }
+                if (linkedInvoice?.allocationNumber) {
+                  lines.push(
+                    `${t('invoice.allocationNumberLabel')}: ${linkedInvoice.allocationNumber}`,
+                  );
+                }
+                try {
+                  await Share.share({ message: lines.join('\n') });
+                } catch (err) {
+                  console.warn('[transaction.shareReceipt] failed', err);
+                  Alert.alert(
+                    t('transaction.shareSuccessTitle'),
+                    t('transaction.shareSuccessBody'),
+                  );
+                }
               }}
             />
             <PrimaryButton

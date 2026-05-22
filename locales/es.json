@@ -126,7 +126,9 @@
   "common": {
     "ok": "OK",
     "close": "Cerrar",
-    "cancel": "Cancelar"
+    "cancel": "Cancelar",
+    "copied": "Copiado ✓",
+    "copyFailed": "Error al copiar"
   },
   "demo": {
     "reminderSentTitle": "Recordatorio enviado",

@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import {
+  Alert,
   I18nManager,
   Platform,
   Pressable,
@@ -64,6 +65,27 @@ export function PaymentRequestForm() {
   const tap = () => {
     if (Platform.OS !== 'web') {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
+    }
+  };
+
+  const handleCopy = async () => {
+    tap();
+    if (!paymentUrl) return;
+    if (Platform.OS === 'web' && typeof navigator !== 'undefined' && navigator.clipboard) {
+      try {
+        await navigator.clipboard.writeText(paymentUrl);
+        Alert.alert(t('common.copied'), paymentUrl);
+        return;
+      } catch (err) {
+        console.warn('[copy] navigator.clipboard.writeText failed', err);
+      }
+    }
+    // Native (or web without clipboard API): fall back to Share sheet
+    try {
+      await Share.share({ message: paymentUrl, url: paymentUrl });
+    } catch (err) {
+      console.warn('[copy] Share fallback failed', err);
+      Alert.alert(t('common.copyFailed'));
     }
   };
 
@@ -206,7 +228,8 @@ export function PaymentRequestForm() {
                 {paymentUrl}
               </Text>
               <Pressable
-                onPress={tap}
+                onPress={handleCopy}
+                hitSlop={8}
                 className="w-8 h-8 rounded-lg bg-glass items-center justify-center"
                 style={({ pressed }) => pressed && { opacity: 0.7 }}
               >

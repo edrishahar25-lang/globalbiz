@@ -126,7 +126,9 @@
   "common": {
     "ok": "OK",
     "close": "Close",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "copied": "Copied ✓",
+    "copyFailed": "Copy failed"
   },
   "demo": {
     "reminderSentTitle": "Reminder sent",

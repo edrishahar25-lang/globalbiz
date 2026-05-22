@@ -126,7 +126,9 @@
   "common": {
     "ok": "OK",
     "close": "Schließen",
-    "cancel": "Abbrechen"
+    "cancel": "Abbrechen",
+    "copied": "Kopiert ✓",
+    "copyFailed": "Kopieren fehlgeschlagen"
   },
   "demo": {
     "reminderSentTitle": "Erinnerung gesendet",
