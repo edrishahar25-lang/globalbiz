@@ -178,7 +178,18 @@
     "notConfiguredTitle": "Auth no configurado",
     "notConfiguredBody": "Faltan variables de entorno de Supabase. Ver SUPABASE_SETUP.md.",
     "signOutFailed": "Error al cerrar sesión",
-    "loadingApp": "Cargando GlobalBiz..."
+    "loadingApp": "Cargando GlobalBiz...",
+    "signupSuccessHasSession": "¡Cuenta creada! Llevándote a la app..."
+  },
+  "authErrors": {
+    "alreadyRegistered": "Este correo ya está registrado — intenta iniciar sesión",
+    "invalidCredentials": "Correo o contraseña incorrectos",
+    "emailNotConfirmed": "Correo aún no confirmado — revisa tu bandeja",
+    "passwordTooShort": "Contraseña demasiado corta — al menos 8 caracteres",
+    "rateLimit": "Demasiados intentos — vuelve a intentarlo en un minuto",
+    "networkError": "Error de red — verifica tu conexión",
+    "signupDisabled": "Registros desactivados actualmente",
+    "unknown": "Error desconocido — vuelve a intentarlo"
   },
   "demo": {
     "reminderSentTitle": "Recordatorio enviado",

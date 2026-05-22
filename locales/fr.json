@@ -178,7 +178,18 @@
     "notConfiguredTitle": "Auth non configuré",
     "notConfiguredBody": "Variables d'environnement Supabase manquantes. Voir SUPABASE_SETUP.md.",
     "signOutFailed": "Échec de la déconnexion",
-    "loadingApp": "Chargement de GlobalBiz..."
+    "loadingApp": "Chargement de GlobalBiz...",
+    "signupSuccessHasSession": "Compte créé ! Redirection vers l'app..."
+  },
+  "authErrors": {
+    "alreadyRegistered": "Cet e-mail est déjà inscrit — essayez de vous connecter",
+    "invalidCredentials": "E-mail ou mot de passe incorrect",
+    "emailNotConfirmed": "E-mail non confirmé — vérifiez votre boîte",
+    "passwordTooShort": "Mot de passe trop court — au moins 8 caractères",
+    "rateLimit": "Trop de tentatives — réessayez dans une minute",
+    "networkError": "Erreur réseau — vérifiez votre connexion",
+    "signupDisabled": "Inscriptions actuellement désactivées",
+    "unknown": "Erreur inconnue — réessayez"
   },
   "demo": {
     "reminderSentTitle": "Rappel envoyé",

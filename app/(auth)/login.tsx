@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import {
-  Alert,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -13,7 +12,9 @@ import { Link } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { GradientBackground, PrimaryButton } from '@/components/ui';
 import { AuthInput } from '@/components/auth/AuthInput';
+import { StatusBanner, type Status } from '@/components/auth/StatusBanner';
 import { useAuth } from '@/providers/AuthProvider';
+import { translateAuthError } from '@/lib/authErrors';
 
 export default function LoginScreen() {
   const { t } = useTranslation();
@@ -21,23 +22,42 @@ export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState<Status>(null);
 
   const handleSubmit = async () => {
+    console.log('[login] handleSubmit START', { email: email.trim(), configured });
+    setStatus(null);
+
     if (!configured) {
-      Alert.alert(t('auth.notConfiguredTitle'), t('auth.notConfiguredBody'));
+      console.warn('[login] Supabase not configured');
+      setStatus({ kind: 'error', message: t('auth.notConfiguredBody') });
       return;
     }
     if (!email.trim() || !password) {
-      Alert.alert(t('auth.fillAllFields'));
+      setStatus({ kind: 'error', message: t('auth.fillAllFields') });
       return;
     }
+
     setLoading(true);
-    const { error } = await signIn(email.trim(), password);
-    setLoading(false);
-    if (error) {
-      Alert.alert(t('auth.loginFailedTitle'), error);
+    setStatus({ kind: 'loading', message: t('auth.loggingIn') });
+
+    try {
+      const { error } = await signIn(email.trim(), password);
+      if (error) {
+        console.warn('[login] supabase returned error:', error);
+        setLoading(false);
+        setStatus({ kind: 'error', message: translateAuthError(error, t) });
+        return;
+      }
+      console.log('[login] success — root navigator will redirect to /');
+      // Leave loading=true; the protected route navigator will swap us out.
+      setStatus({ kind: 'success', message: t('auth.signupSuccessHasSession') });
+    } catch (err) {
+      console.error('[login] handleSubmit threw', err);
+      setLoading(false);
+      const msg = err instanceof Error ? err.message : String(err);
+      setStatus({ kind: 'error', message: translateAuthError(msg, t) });
     }
-    // On success, AuthProvider state change triggers root layout redirect.
   };
 
   return (
@@ -51,7 +71,7 @@ export default function LoginScreen() {
             contentContainerStyle={{ flexGrow: 1, padding: 24, justifyContent: 'center' }}
             keyboardShouldPersistTaps="handled"
           >
-            <View className="mb-10">
+            <View className="mb-8">
               <Text className="text-white font-heebo-black text-4xl mb-2">
                 {t('auth.welcomeBack')}
               </Text>
@@ -59,6 +79,8 @@ export default function LoginScreen() {
                 {t('auth.subtitleLogin')}
               </Text>
             </View>
+
+            <StatusBanner status={status} />
 
             <View className="gap-4">
               <AuthInput
@@ -83,7 +105,7 @@ export default function LoginScreen() {
               />
 
               <Link href="/(auth)/forgot-password" asChild>
-                <Pressable className="self-start" hitSlop={8}>
+                <Pressable className="self-start" hitSlop={8} disabled={loading}>
                   <Text className="text-violet-glow font-heebo-medium text-sm">
                     {t('auth.forgotPassword')}
                   </Text>
@@ -91,7 +113,7 @@ export default function LoginScreen() {
               </Link>
             </View>
 
-            <View className="mt-8 gap-3">
+            <View className="mt-8">
               <PrimaryButton
                 label={loading ? t('auth.loggingIn') : t('auth.loginCta')}
                 onPress={handleSubmit}
@@ -104,7 +126,7 @@ export default function LoginScreen() {
             <View className="flex-row items-center justify-center gap-1.5 mt-6">
               <Text className="text-white/55 font-heebo text-sm">{t('auth.noAccount')}</Text>
               <Link href="/(auth)/signup" asChild>
-                <Pressable hitSlop={8}>
+                <Pressable hitSlop={8} disabled={loading}>
                   <Text className="text-violet-glow font-heebo-bold text-sm">
                     {t('auth.signUpHere')}
                   </Text>

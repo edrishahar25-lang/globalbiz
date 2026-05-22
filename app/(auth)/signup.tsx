@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import {
-  Alert,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -13,9 +12,13 @@ import { Link, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { GradientBackground, PrimaryButton } from '@/components/ui';
 import { AuthInput } from '@/components/auth/AuthInput';
+import { StatusBanner, type Status } from '@/components/auth/StatusBanner';
 import { useAuth } from '@/providers/AuthProvider';
+import { translateAuthError } from '@/lib/authErrors';
+import { supabase } from '@/lib/supabase';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const REDIRECT_AFTER_EMAIL_CONFIRM_MS = 3000;
 
 export default function SignupScreen() {
   const { t, i18n } = useTranslation();
@@ -26,6 +29,7 @@ export default function SignupScreen() {
   const [fullName, setFullName] = useState('');
   const [businessName, setBusinessName] = useState('');
   const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState<Status>(null);
   const [errors, setErrors] = useState<{
     email?: string;
     password?: string;
@@ -42,27 +46,72 @@ export default function SignupScreen() {
   };
 
   const handleSubmit = async () => {
-    if (!configured) {
-      Alert.alert(t('auth.notConfiguredTitle'), t('auth.notConfiguredBody'));
-      return;
-    }
-    if (!validate()) return;
-    setLoading(true);
-    const { error } = await signUp({
+    console.log('[signup] handleSubmit START', {
       email: email.trim(),
-      password,
       fullName: fullName.trim(),
-      businessName: businessName.trim() || undefined,
-      preferredLanguage: i18n.language,
+      hasBusinessName: Boolean(businessName.trim()),
+      passwordLength: password.length,
+      configured,
     });
-    setLoading(false);
-    if (error) {
-      Alert.alert(t('auth.signupFailedTitle'), error);
+
+    setStatus(null);
+
+    if (!configured) {
+      console.warn('[signup] Supabase not configured — env vars missing on this deploy');
+      setStatus({ kind: 'error', message: t('auth.notConfiguredBody') });
       return;
     }
-    Alert.alert(t('auth.checkEmailTitle'), t('auth.checkEmailBody'), [
-      { text: t('common.ok'), onPress: () => router.replace('/(auth)/login') },
-    ]);
+
+    if (!validate()) {
+      console.warn('[signup] client-side validation failed');
+      return;
+    }
+
+    setLoading(true);
+    setStatus({ kind: 'loading', message: t('auth.creatingAccount') });
+
+    try {
+      console.log('[signup] calling supabase signUp...');
+      const { error } = await signUp({
+        email: email.trim(),
+        password,
+        fullName: fullName.trim(),
+        businessName: businessName.trim() || undefined,
+        preferredLanguage: i18n.language,
+      });
+
+      if (error) {
+        console.warn('[signup] supabase returned error:', error);
+        setLoading(false);
+        setStatus({ kind: 'error', message: translateAuthError(error, t) });
+        return;
+      }
+
+      console.log('[signup] signUp returned no error — checking session');
+      const { data: sessionData } = await supabase.auth.getSession();
+      const hasSession = Boolean(sessionData.session);
+      console.log('[signup] session check:', { hasSession });
+
+      setLoading(false);
+
+      if (hasSession) {
+        // Email confirmation is disabled — user has a session now.
+        // Root navigator (useSegments effect) will redirect to / automatically.
+        setStatus({ kind: 'success', message: t('auth.signupSuccessHasSession') });
+        return;
+      }
+
+      // Email confirmation required.
+      setStatus({ kind: 'success', message: t('auth.checkEmailBody') });
+      setTimeout(() => {
+        router.replace('/(auth)/login');
+      }, REDIRECT_AFTER_EMAIL_CONFIRM_MS);
+    } catch (err) {
+      console.error('[signup] handleSubmit threw', err);
+      setLoading(false);
+      const msg = err instanceof Error ? err.message : String(err);
+      setStatus({ kind: 'error', message: translateAuthError(msg, t) });
+    }
   };
 
   return (
@@ -77,7 +126,7 @@ export default function SignupScreen() {
             keyboardShouldPersistTaps="handled"
             showsVerticalScrollIndicator={false}
           >
-            <View className="mb-8 mt-2">
+            <View className="mb-6 mt-2">
               <Text className="text-white font-heebo-black text-4xl mb-2">
                 {t('auth.createAccount')}
               </Text>
@@ -85,6 +134,8 @@ export default function SignupScreen() {
                 {t('auth.subtitleSignup')}
               </Text>
             </View>
+
+            <StatusBanner status={status} />
 
             <View className="gap-4">
               <AuthInput
@@ -132,7 +183,7 @@ export default function SignupScreen() {
               />
             </View>
 
-            <View className="mt-8">
+            <View className="mt-7">
               <PrimaryButton
                 label={loading ? t('auth.creatingAccount') : t('auth.signupCta')}
                 onPress={handleSubmit}
@@ -145,7 +196,7 @@ export default function SignupScreen() {
             <View className="flex-row items-center justify-center gap-1.5 mt-6">
               <Text className="text-white/55 font-heebo text-sm">{t('auth.haveAccount')}</Text>
               <Link href="/(auth)/login" asChild>
-                <Pressable hitSlop={8}>
+                <Pressable hitSlop={8} disabled={loading}>
                   <Text className="text-violet-glow font-heebo-bold text-sm">
                     {t('auth.signInHere')}
                   </Text>

@@ -178,7 +178,18 @@
     "notConfiguredTitle": "Auth not configured",
     "notConfiguredBody": "Supabase env vars missing. See SUPABASE_SETUP.md.",
     "signOutFailed": "Sign out failed",
-    "loadingApp": "Loading GlobalBiz..."
+    "loadingApp": "Loading GlobalBiz...",
+    "signupSuccessHasSession": "Account created! Taking you to the app..."
+  },
+  "authErrors": {
+    "alreadyRegistered": "This email is already registered — try signing in instead",
+    "invalidCredentials": "Incorrect email or password",
+    "emailNotConfirmed": "Email not confirmed yet — check your inbox and click the link",
+    "passwordTooShort": "Password too short — at least 8 characters",
+    "rateLimit": "Too many attempts — try again in a minute",
+    "networkError": "Network error — check your connection and try again",
+    "signupDisabled": "Signups are currently disabled",
+    "unknown": "Unknown error — please try again"
   },
   "demo": {
     "reminderSentTitle": "Reminder sent",

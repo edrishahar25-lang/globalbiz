@@ -178,7 +178,18 @@
     "notConfiguredTitle": "Auth לא מוגדר",
     "notConfiguredBody": "Supabase env vars חסרים. עיין ב-SUPABASE_SETUP.md.",
     "signOutFailed": "ההתנתקות נכשלה",
-    "loadingApp": "טוען את GlobalBiz..."
+    "loadingApp": "טוען את GlobalBiz...",
+    "signupSuccessHasSession": "החשבון נוצר! מעביר אותך לאפליקציה..."
+  },
+  "authErrors": {
+    "alreadyRegistered": "כתובת אימייל זו כבר רשומה — נסה להתחבר במקום",
+    "invalidCredentials": "אימייל או סיסמה שגויים",
+    "emailNotConfirmed": "האימייל לא אושר עדיין — בדוק את תיבת הדואר ולחץ על הלינק",
+    "passwordTooShort": "הסיסמה קצרה מדי — לפחות 8 תווים",
+    "rateLimit": "יותר מדי ניסיונות — נסה שוב בעוד דקה",
+    "networkError": "בעיית רשת — בדוק חיבור אינטרנט ונסה שוב",
+    "signupDisabled": "ההרשמה כרגע מושבתת",
+    "unknown": "שגיאה לא ידועה — נסה שוב"
   },
   "demo": {
     "reminderSentTitle": "תזכורת נשלחה",
