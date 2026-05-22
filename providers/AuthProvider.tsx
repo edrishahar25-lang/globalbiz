@@ -101,8 +101,9 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
   const signUp = useCallback(async (p: SignUpParams) => {
     if (!isSupabaseConfigured) return { error: 'auth/not-configured' };
+    console.log('[auth.signUp] →', { email: p.email, fullName: p.fullName });
     try {
-      const { data, error } = await supabase.auth.signUp({
+      const result = await supabase.auth.signUp({
         email: p.email,
         password: p.password,
         options: {
@@ -113,9 +114,20 @@ export function AuthProvider({ children }: PropsWithChildren) {
           },
         },
       });
-      if (error) return { error: error.message };
-      // Create profile row if a user was returned (email confirmation may
-      // gate session — but the user row exists immediately).
+      const { data, error } = result;
+      console.log('[auth.signUp] ←', {
+        userId: data?.user?.id ?? null,
+        hasSession: Boolean(data?.session),
+        errorName: error?.name ?? null,
+        errorStatus: (error as { status?: number } | null)?.status ?? null,
+        errorCode: (error as { code?: string } | null)?.code ?? null,
+        errorMessage: error?.message ?? null,
+      });
+      if (error) {
+        // Surface full object for the user to inspect in DevTools
+        console.error('[auth.signUp] supabase returned error object:', error);
+        return { error: error.message };
+      }
       if (data.user) {
         const { error: pErr } = await supabase.from('profiles').upsert(
           {
@@ -127,13 +139,22 @@ export function AuthProvider({ children }: PropsWithChildren) {
           { onConflict: 'id' },
         );
         if (pErr) {
-          console.warn('[auth] profile upsert failed', pErr);
+          console.warn('[auth.signUp] profile upsert failed (non-fatal):', pErr);
         }
       }
       return { error: null };
     } catch (err) {
-      console.warn('[auth] signUp threw', err);
-      return { error: err instanceof Error ? err.message : 'unknown' };
+      console.error('[auth.signUp] threw exception:', err);
+      if (err instanceof Error) {
+        console.error('[auth.signUp] err.name =', err.name);
+        console.error('[auth.signUp] err.message =', err.message);
+        console.error('[auth.signUp] err.cause =', (err as { cause?: unknown }).cause);
+        console.error('[auth.signUp] err.stack =', err.stack);
+      }
+      // "Failed to fetch" specifically means the browser couldn't reach the URL.
+      // Bubble up so the UI can show the network-error i18n message.
+      const msg = err instanceof Error ? err.message : String(err);
+      return { error: msg };
     }
   }, []);
 
