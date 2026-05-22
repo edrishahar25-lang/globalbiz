@@ -13,11 +13,16 @@ import {
 } from '@/components/home';
 import { balances, currentUser, totalBalanceIls, transactions } from '@/data/mockData';
 import { colors } from '@/constants/colors';
+import { useAuth } from '@/providers/AuthProvider';
+import { computeInitials, displayName } from '@/lib/identity';
 
 export default function HomeScreen() {
   const router = useRouter();
   const { t } = useTranslation();
+  const { user, profile } = useAuth();
   const recentTransactions = transactions.slice(0, 8);
+  const userName = displayName({ fullName: profile?.full_name, email: user?.email });
+  const userInitials = computeInitials(userName);
 
   const actions: QuickActionItem[] = [
     {
@@ -56,7 +61,7 @@ export default function HomeScreen() {
           <View className="flex-row items-center justify-between px-5 pt-3 pb-6">
             <View className="flex-1">
               <Text className="text-white/55 font-heebo text-sm">{t('home.greeting')}</Text>
-              <Text className="text-white font-heebo-bold text-xl">{currentUser.name}</Text>
+              <Text className="text-white font-heebo-bold text-xl">{userName}</Text>
               {currentUser.taxAuthority.connected && (
                 <View className="flex-row items-center gap-1 mt-1.5 self-start bg-mint/15 border border-mint/30 rounded-full px-2 py-1">
                   <ShieldCheck color={colors.mint} size={11} strokeWidth={2.5} />
@@ -66,7 +71,7 @@ export default function HomeScreen() {
                 </View>
               )}
             </View>
-            <Avatar initials={currentUser.initials} seed={currentUser.name} size="md" flag="🇮🇱" />
+            <Avatar initials={userInitials} seed={userName} size="md" flag="🇮🇱" />
           </View>
 
           <View className="px-5 mb-5">

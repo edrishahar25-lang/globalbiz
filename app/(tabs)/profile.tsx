@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Alert, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '@/providers/AuthProvider';
 import {
   Bell,
   Download,
@@ -26,8 +27,10 @@ import { colors } from '@/constants/colors';
 
 export default function ProfileScreen() {
   const { t } = useTranslation();
+  const { signOut } = useAuth();
   const [notificationsOn, setNotificationsOn] = useState(true);
   const [biometricOn, setBiometricOn] = useState(false);
+  const [signingOut, setSigningOut] = useState(false);
 
   const handleSignOut = () => {
     Alert.alert(
@@ -38,8 +41,17 @@ export default function ProfileScreen() {
         {
           text: t('profile.signOut'),
           style: 'destructive',
-          onPress: () => {
-            Alert.alert(t('profile.signedOutTitle'), t('profile.signedOutBody'));
+          onPress: async () => {
+            try {
+              setSigningOut(true);
+              await signOut();
+              // AuthProvider state change triggers root redirect to (auth)/login
+            } catch (err) {
+              console.warn('[profile.signOut] failed', err);
+              Alert.alert(t('auth.signOutFailed'));
+            } finally {
+              setSigningOut(false);
+            }
           },
         },
       ],
@@ -130,10 +142,11 @@ export default function ProfileScreen() {
 
           <View className="px-5">
             <PrimaryButton
-              label={t('profile.signOut')}
+              label={signingOut ? t('profile.signOut') + '...' : t('profile.signOut')}
               onPress={handleSignOut}
               variant="secondary"
               size="md"
+              disabled={signingOut}
               icon={<LogOut color={colors.white} size={18} strokeWidth={2.2} />}
             />
           </View>
