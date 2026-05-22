@@ -1,13 +1,29 @@
 [build]
-  command = "npm install --legacy-peer-deps && npm run build:web"
+  # Map short env var names → EXPO_PUBLIC_* before building, so users can
+  # configure Netlify with either naming convention:
+  #   SUPABASE_URL / SUPABASE_ANON_KEY            (short, common)
+  #   EXPO_PUBLIC_SUPABASE_URL / *_ANON_KEY       (Expo-native, also works)
+  # Metro only inlines env vars prefixed with EXPO_PUBLIC_ into the web bundle,
+  # so the export step below requires the prefixed form.
+  command = """
+export EXPO_PUBLIC_SUPABASE_URL="${EXPO_PUBLIC_SUPABASE_URL:-$SUPABASE_URL}"
+export EXPO_PUBLIC_SUPABASE_ANON_KEY="${EXPO_PUBLIC_SUPABASE_ANON_KEY:-$SUPABASE_ANON_KEY}"
+echo "[netlify] EXPO_PUBLIC_SUPABASE_URL is $( [ -n "$EXPO_PUBLIC_SUPABASE_URL" ] && echo set || echo MISSING )"
+echo "[netlify] EXPO_PUBLIC_SUPABASE_ANON_KEY is $( [ -n "$EXPO_PUBLIC_SUPABASE_ANON_KEY" ] && echo set || echo MISSING )"
+npm install --legacy-peer-deps
+npm run build:web
+"""
   publish = "dist"
 
-# Required runtime env vars (set in Netlify Site config → Environment):
-#   EXPO_PUBLIC_SUPABASE_URL      = https://<project>.supabase.co
-#   EXPO_PUBLIC_SUPABASE_ANON_KEY = <anon public JWT>
-# Without these, the app loads but Auth is disabled and the user sees
-# a clear "auth not configured" message (no silent failure).
-# See SUPABASE_SETUP.md for full setup instructions.
+# Required env vars (set in Netlify Site config → Environment variables).
+# Either naming convention works thanks to the mapping above:
+#   SUPABASE_URL      = https://<project>.supabase.co
+#   SUPABASE_ANON_KEY = <anon public JWT>
+# OR equivalently:
+#   EXPO_PUBLIC_SUPABASE_URL
+#   EXPO_PUBLIC_SUPABASE_ANON_KEY
+# Without these, the app loads but Auth shows a clear "not configured"
+# message — never a silent failure. See SUPABASE_SETUP.md.
 
 [build.environment]
   NODE_VERSION = "20"
