@@ -42,16 +42,20 @@ function extractRefFromUrl(url: string): string | null {
   return m ? (m[1] ?? null) : null;
 }
 
-// URL format check — catches typos and missing scheme
-const URL_RE = /^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/;
+// URL format check — catches typos and missing scheme.
+// Case-insensitive on the subdomain since some platforms preserve casing.
+const URL_RE = /^https:\/\/[a-zA-Z0-9-]+\.supabase\.co\/?$/;
 const urlLooksValid = supabaseUrl ? URL_RE.test(supabaseUrl) : false;
 const keyLooksValid = supabaseAnonKey
   ? supabaseAnonKey.startsWith('eyJ') && supabaseAnonKey.length > 100
   : false;
 
-export const isSupabaseConfigured: boolean = Boolean(
-  supabaseUrl && supabaseAnonKey && urlLooksValid && keyLooksValid,
-);
+// "configured" means we have *something* to attempt the request with.
+// Strict shape checks (urlLooksValid / keyLooksValid) emit console warnings
+// but DO NOT block — that way a real Supabase HTTP error reaches the UI
+// instead of a false "env vars missing" banner. The previous behaviour
+// hid genuine 401s behind the configuration banner.
+export const isSupabaseConfigured: boolean = Boolean(supabaseUrl && supabaseAnonKey);
 
 // ============================================================
 // STARTUP DIAGNOSTICS — these print on every bundle load.
@@ -86,8 +90,13 @@ const initSummary = {
   configured: isSupabaseConfigured,
   runtime: typeof window === 'undefined' ? 'server/native' : 'browser',
 };
+// Build pipeline: Expo SDK 54 + Metro (NOT Vite). process.env.EXPO_PUBLIC_*
+// is inlined by Metro at `expo export` time. Vite-style import.meta.env
+// does not apply here.
 // eslint-disable-next-line no-console
 console.log('[supabase] init', initSummary);
+// eslint-disable-next-line no-console
+console.log('[supabase] bundler =', 'expo/metro', '| inline strategy =', 'process.env.EXPO_PUBLIC_*');
 
 if (!supabaseUrl) {
   console.error('[supabase] EXPO_PUBLIC_SUPABASE_URL is empty/undefined. Set it in Netlify env.');
