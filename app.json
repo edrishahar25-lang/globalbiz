@@ -1,0 +1,29 @@
+{
+  "expo": {
+    "name": "GlobalBiz",
+    "slug": "globalbiz",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "globalbiz",
+    "userInterfaceStyle": "dark",
+    "newArchEnabled": true,
+    "backgroundColor": "#0a0612",
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.globalbiz.app"
+    },
+    "android": {
+      "package": "com.globalbiz.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#0a0612"
+      }
+    },
+    "plugins": [
+      "expo-router",
+      "expo-asset"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}

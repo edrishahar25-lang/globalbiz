@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GlobalBiz — בקשת פטנט זמנית</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: 'Heebo', -apple-system, sans-serif; line-height: 1.7; color: #1a1a1a; background: #f5f4f0; margin: 0; }
+  main { max-width: 920px; margin: 0 auto; padding: 3.5em 2.5em; background: white; box-shadow: 0 2px 32px rgba(0,0,0,0.08); min-height: 100vh; }
+  h1 { color: #3b1d6e; border-bottom: 3px solid #6d28d9; padding-bottom: 0.5em; margin-top: 0; font-weight: 900; font-size: 2.2em; }
+  h2 { color: #3b1d6e; margin-top: 2.2em; padding-bottom: 0.3em; border-bottom: 1px solid #e5e5e5; font-weight: 700; }
+  h3 { color: #6d28d9; margin-top: 1.8em; font-weight: 700; }
+  h4 { color: #6d28d9; margin-top: 1.4em; font-weight: 700; font-size: 1.05em; }
+  p { margin: 0.9em 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1.2em 0; font-size: 0.93em; background: white; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+  th, td { border: 1px solid #e5e5e5; padding: 0.7em 0.9em; text-align: right; vertical-align: middle; }
+  th { background: linear-gradient(135deg, #3b1d6e, #6d28d9); color: white; font-weight: 700; }
+  tr:nth-child(even) td { background: #fafaf8; }
+  code { background: #f0eef5; padding: 0.15em 0.45em; border-radius: 4px; font-size: 0.92em; color: #3b1d6e; font-family: 'SF Mono', Consolas, monospace; }
+  pre { background: #1a0b2e; color: #e7e5e4; padding: 1em; border-radius: 8px; overflow-x: auto; }
+  pre code { background: transparent; color: inherit; padding: 0; }
+  hr { border: none; border-top: 1px solid #e5e5e5; margin: 2.5em 0; }
+  strong { color: #0a0a0a; font-weight: 700; }
+  ul, ol { padding-right: 1.6em; }
+  li { margin: 0.4em 0; }
+  blockquote { border-right: 4px solid #ff5b2e; margin: 1.2em 0; padding: 0.8em 1.2em; background: #fff5f2; color: #444; border-radius: 4px; }
+  @media print { main { box-shadow: none; padding: 1.5em; } body { background: white; } }
+</style></head><body><main><h1>בקשת פטנט זמנית — טיוטה ראשונית</h1>
+<p><strong>שם ההמצאה (עברית):</strong> מערכת ושיטה אינטגרטיבית להנפקת חשבוניות חוצות-מטבעות עם אימות אוטומטי מול רשות מסים בזמן אמת והצגה חזותית רב-שלבית למשתמש</p>
+<p><strong>Title (English):</strong> System and Method for Cross-Currency Invoice Generation with Real-Time Tax Authority Validation and Multi-State User Interface Feedback</p>
+<p><strong>ממציאים:</strong> [שם מלא, ת.ז., כתובת]
+<strong>תאריך הגשה משוער:</strong> [למלא בעת הגשה]
+<strong>יישות מסחרית:</strong> [שם החברה, ע.מ./ח.פ.]
+<strong>שטח טכנולוגי:</strong> Fintech / Mobile Applications / Tax Compliance Automation</p>
+<hr>
+<blockquote>
+<p>⚠️ <strong>הצהרה חשובה</strong></p>
+<p>זוהי <strong>טיוטה ראשונית</strong> שנכתבה לצורך כיוון בלבד. <strong>חובה</strong> להעביר לעורך פטנטים מוסמך לפני הגשה לרשם הפטנטים. עורך הפטנטים יבצע:</p>
+<ul>
+<li>חיפוש Prior Art מקיף</li>
+<li>ניסוח תביעות (claims) משפטי תקף</li>
+<li>בחירת אסטרטגיית הגשה: ישראלית / PCT / USPTO Provisional</li>
+<li>תרגום מקצועי אם נדרש</li>
+</ul>
+<p>פטנטים זמניים בישראל מוגשים דרך <strong>רשם הפטנטים</strong> (משרד המשפטים). אגרה <del>₪600-1,000 + שכ&quot;ט עו&quot;ד פטנטים (</del>₪8,000-15,000 לטיוטה מקצועית).</p>
+</blockquote>
+<hr>
+<h2>תקציר ההמצאה (Abstract)</h2>
+<p>ההמצאה היא <strong>מערכת תוכנה ושיטה</strong> המאפשרת לעצמאי או עסק קטן להנפיק חשבונית מס מובחנת מטעם בתוך אפליקציית מובייל אחת, <strong>תוך אינטגרציה אוטומטית</strong> עם API של רשות המסים לקבלת <strong>מספר הקצאה (Allocation Number)</strong> הנדרש על פי תיקון 60 לפקודת מע&quot;מ (חוק &quot;חשבוניות ישראל&quot;).</p>
+<p>המערכת מכילה ארבעה רכיבים חדשניים משולבים:</p>
+<ol>
+<li><strong>זיהוי אוטומטי</strong> של חשבוניות החייבות בהקצאה לפי סף סכום משתנה, ולפי מטבע מוצא (ההמרה ל-ILS מבוצעת באופן דינמי)</li>
+<li><strong>תהליך אימות רב-שלבי בזמן אמת</strong> מול רשות המסים, עם <strong>הצגה חזותית למשתמש</strong> של מצבים מתחלפים (connecting → verifying → receiving → success)</li>
+<li><strong>שילוב של תובנות AI</strong> הקושרות בין מצב ההקצאה לבין המלצות פיננסיות (חיסכון בעמלות, אזהרות איחור, דיווח מס אופטימלי)</li>
+<li><strong>תצוגה רב-לשונית ורב-כיוונית</strong> (RTL/LTR) המתאימה אוטומטית את ממשק החשבונית לשפת הלקוח החיצוני, תוך שמירה על הקצאת הרשויות בעברית</li>
+</ol>
+<p>ההמצאה פותרת בעיה ייחודית הנגרמת מהרגולציה החדשה: כיצד עצמאי ישראלי שעובד עם <strong>לקוחות בינלאומיים</strong> במטבעות זרים יכול להישאר ב-compliance מבלי לאבד את הסטנדרט הבינלאומי של הצגת החשבונית.</p>
+<hr>
+<h2>תחום ההמצאה (Field of the Invention)</h2>
+<p>ההמצאה שייכת לתחום:</p>
+<ul>
+<li><strong>מערכות חשבונאות דיגיטליות לעסקים קטנים</strong> (digital invoicing systems)</li>
+<li><strong>אינטגרציה רגולטורית אוטומטית</strong> עם רשויות מס (regulatory API integration)</li>
+<li><strong>תשלומים חוצי-גבולות במטבעות מרובים</strong> (cross-border multi-currency payments)</li>
+<li><strong>חוויית משתמש בזמן אמת לתהליכי אימות אסינכרוניים</strong> (real-time async validation UX)</li>
+</ul>
+<hr>
+<h2>רקע ההמצאה (Background)</h2>
+<h3>הבעיה הקיימת</h3>
+<p>החל מ-1.1.2026, על פי תיקון 60 לחוק מע&quot;מ, <strong>חובה לקבל מספר הקצאה</strong> (Allocation Number) מרשות המסים בישראל על כל חשבונית מס מעל ₪10,000. החל מ-1.6.2026 הסף יורד ל-₪5,000. <strong>ללא מספר ההקצאה, הלקוח אינו רשאי לקזז את המע&quot;מ.</strong></p>
+<p>הליך קבלת מספר ההקצאה מתבצע דרך API של רשות המסים. הליך זה:</p>
+<ol>
+<li>דורש תעודה דיגיטלית ייעודית של העוסק</li>
+<li>כרוך באימות נתוני העוסק במסד הנתונים של רשות המסים</li>
+<li>עשוי לקחת מספר שניות לתגובה</li>
+<li>עשוי להיכשל (תעודה פגה, חסרים פרטים, וכד&#39;)</li>
+</ol>
+<h3>הפתרונות הקיימים — וחולשותיהם</h3>
+<p><strong>מערכות חשבונאות מסורתיות</strong> (חשבשבת, רווחית, EZcount, וכו&#39;):</p>
+<ul>
+<li>✗ דסקטופ-בלבד, לא נייד</li>
+<li>✗ לא תומכות בקבלת כסף ישירות מחו&quot;ל</li>
+<li>✗ ממשק טכני, לא נגיש לעצמאי בודד</li>
+<li>✗ לא תומכות בריבוי מטבעות בצורה אינטואיטיבית</li>
+</ul>
+<p><strong>אפליקציות תשלום צרכניות</strong> (Bit, PayBox):</p>
+<ul>
+<li>✗ לא תומכות בכלל ביצירת חשבוניות</li>
+<li>✗ לא מתחברות לרשות המסים</li>
+<li>✗ מטבע יחיד (ILS)</li>
+<li>✗ שפה יחידה (עברית)</li>
+</ul>
+<p><strong>אפליקציות בינלאומיות</strong> (Wise, Stripe Invoice, PayPal):</p>
+<ul>
+<li>✗ לא תומכות ברגולציה הישראלית</li>
+<li>✗ לא יוצרות מספרי הקצאה</li>
+<li>✗ אינן מקבלות תעודה דיגיטלית ישראלית</li>
+</ul>
+<p><strong>הפער שההמצאה ממלאת:</strong> אין כיום שום מערכת המאפשרת לעצמאי ישראלי המקבל תשלום במטבע זר (USD/EUR/GBP), להפיק חשבונית <strong>בעברית או באנגלית</strong>, <strong>עם מספר הקצאה אוטומטי</strong> מרשות המסים, ב<strong>ממשק נייד אינטואיטיבי</strong>, בתהליך הנמשך <strong>פחות מ-3 שניות</strong> מצד המשתמש.</p>
+<hr>
+<h2>תיאור מפורט של ההמצאה (Detailed Description)</h2>
+<h3>1. ארכיטקטורה כללית</h3>
+<p>המערכת מורכבת מ:</p>
+<pre><code>┌─────────────────────────────────────────────────────────┐
+│                  אפליקציית מובייל                          │
+│         (React Native / Native iOS+Android)              │
+└────────────┬───────────────────────────────┬────────────┘
+             │                               │
+             ▼                               ▼
+   ┌──────────────────┐          ┌─────────────────────┐
+   │  Backend Server   │          │  AI Insights Engine  │
+   │  (Node.js/Postgres)│         │  (Anthropic Claude   │
+   │                   │          │   או דומה)          │
+   └────────┬──────────┘          └─────────────────────┘
+            │
+            ▼
+   ┌──────────────────────────────────────────────┐
+   │     API של רשות המסים בישראל                  │
+   │     (חשבוניות ישראל / SHAAM)                  │
+   └──────────────────────────────────────────────┘
+</code></pre>
+<h3>2. תהליך יצירת חשבונית (Invoice Creation Flow)</h3>
+<p><strong>שלב א&#39; — קלט משתמש:</strong>
+המשתמש בוחר:</p>
+<ul>
+<li>מטבע מתוך 4 אפשרויות (ILS/USD/EUR/GBP)</li>
+<li>סכום מספרי</li>
+<li>תיאור חופשי (אופציונלי)</li>
+</ul>
+<p><strong>שלב ב&#39; — הערכה אוטומטית של חובת הקצאה:</strong></p>
+<p>המערכת מבצעת חישוב:</p>
+<pre><code>amount_ILS = amount × exchange_rate(currency → ILS)
+requires_allocation = amount_ILS &gt; ALLOCATION_THRESHOLD_ILS
+</code></pre>
+<p>כאשר <code>ALLOCATION_THRESHOLD_ILS</code> מוגדר דינמית לפי תאריך:</p>
+<ul>
+<li>עד 31.5.2026: ₪10,000</li>
+<li>מ-1.6.2026: ₪5,000</li>
+</ul>
+<p><strong>שלב ג&#39; — הצגת אינדיקציה מקדימה למשתמש:</strong></p>
+<p>אם <code>requires_allocation === true</code>, המערכת מציגה <strong>באנר ירוק</strong> מעל כפתור &quot;צור חשבונית&quot;:</p>
+<blockquote>
+<p>&quot;🛡️ חשבונית זו תקבל מספר הקצאה אוטומטי מרשות המסים&quot;</p>
+</blockquote>
+<p>זוהי תכונה חדשנית — הודעה proactive <strong>לפני</strong> התחלת התהליך, המאפשרת למשתמש להבין מה צפוי לקרות.</p>
+<p><strong>שלב ד&#39; — תהליך האימות הרב-שלבי (החדשנות העיקרית של ההמצאה):</strong></p>
+<p>עם לחיצה על &quot;צור חשבונית&quot;, המערכת פותחת <strong>מודל מסך מלא</strong> שעובר בין 4 מצבים גרפיים בזמן אמת, כשכל מצב כולל:</p>
+<ul>
+<li>אייקון/אנימציה ייחודית</li>
+<li>טקסט מתחלף</li>
+<li>אינדיקטור התקדמות (progress dots)</li>
+<li>haptic feedback</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>שלב</th>
+<th>זמן (ms)</th>
+<th>טקסט מוצג</th>
+<th>אינדיקטור</th>
+<th>פעולת backend</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>0–850</td>
+<td>&quot;🔐 מתחבר לרשות המסים...&quot;</td>
+<td>● ○ ○</td>
+<td>יצירת session מאובטח עם API</td>
+</tr>
+<tr>
+<td>2</td>
+<td>850–1700</td>
+<td>&quot;📋 מאמת פרטי עוסק...&quot;</td>
+<td>● ● ○</td>
+<td>שליחת פרטי העוסק + תעודה דיגיטלית</td>
+</tr>
+<tr>
+<td>3</td>
+<td>1700–2550</td>
+<td>&quot;✓ מקבל מספר הקצאה...&quot;</td>
+<td>● ● ●</td>
+<td>קבלת המספר ושמירתו במסד הנתונים</td>
+</tr>
+<tr>
+<td>4</td>
+<td>2550+</td>
+<td>success state עם המספר</td>
+<td>✓</td>
+<td>רנדור החשבונית עם badge מאומת</td>
+</tr>
+</tbody></table>
+<p><strong>חידוש מרכזי:</strong> רוב מערכות החשבוניות מציגות &quot;loading spinner&quot; יחיד, או alert אחרי קבלת תשובה. ההמצאה מציגה <strong>תהליך מנומק עם הסבר</strong> של מה קורה ברגע נתון, מה שמקנה לאמון משתמש (trust) ושקיפות.</p>
+<h3>3. תצוגת הצלחה (Success View)</h3>
+<p>לאחר קבלת המספר, האפליקציה מציגה כרטיס מודגש עם:</p>
+<ul>
+<li>אייקון Shield ירוק עם אנימציית spring (scale 0→1 ב-spring physics)</li>
+<li>טקסט &quot;🛡️ מאומת רשות המסים ✓&quot;</li>
+<li><strong>מספר ההקצאה</strong> באותיות גדולות עם letter-spacing מורחב (פורמט: <code>2026-IL-XXXXXXXX</code>)</li>
+<li>&quot;תקף לניכוי מע&quot;מ ✓&quot;</li>
+</ul>
+<h3>4. ניהול מצבי allocation</h3>
+<p>לכל חשבונית במערכת קיים שדה <code>allocationStatus</code>:</p>
+<ul>
+<li><code>not_required</code> — חשבונית מתחת לסף, לא נדרשת</li>
+<li><code>pending</code> — הוגשה לרשות המסים, ממתינה לתשובה</li>
+<li><code>approved</code> — אושרה, יש מספר הקצאה</li>
+<li><code>failed</code> — נדחתה (סיבה תיגנס לבעל החשבון)</li>
+</ul>
+<p>תצוגת חשבוניות במערכת מתבצעת עם <strong>strip צבעוני</strong> המציין את הסטטוס:</p>
+<ul>
+<li>אישור (mint) — עם מספר ההקצאה</li>
+<li>ממתין (סגול) — עם אנימציית loader</li>
+<li>לא נדרש — ללא strip</li>
+</ul>
+<h3>5. אינטגרציה רב-לשונית עם שמירת הקצאה</h3>
+<p>כאשר משתמש מחליף שפה (he → en/de/es/fr):</p>
+<ul>
+<li>ה-UI מתורגם</li>
+<li><strong>מספר ההקצאה נשאר זהה</strong> (כפי שאושר)</li>
+<li>ה-badge &quot;Tax Authority Verified&quot; מתורגם</li>
+<li>הסכומים מוצגים בפורמט המקומי</li>
+</ul>
+<p>חידוש: מערכת אחת מציגה חשבונית <strong>גם לעצמאי הישראלי בעברית, גם ללקוח הגרמני בגרמנית</strong>, עם אותו allocation number.</p>
+<h3>6. תובנות AI הקשורות ל-allocation</h3>
+<p>המערכת מציגה למשתמש תובנות AI שמשלבות נתוני allocation:</p>
+<p>דוגמאות:</p>
+<ul>
+<li>&quot;12 חשבוניות שלך החודש קיבלו מספר הקצאה — הלקוחות שלך יוכלו לקזז ₪40,800 מע&quot;מ&quot;</li>
+<li>&quot;הקצאה ממוצעת מתבצעת ב-2.3 שניות — מהיר מ-87% מהמשתמשים&quot;</li>
+<li>&quot;התעודה הדיגיטלית שלך פגה ב-31.12.2026 — עוד 224 ימים. תזכורת לחידוש תופעל ב-1.10.2026&quot;</li>
+</ul>
+<hr>
+<h2>תביעות (Claims) — טיוטה לעיון בלבד</h2>
+<p><strong>Claim 1 (Independent):</strong></p>
+<blockquote>
+<p>מערכת ושיטה ליצירת חשבונית מס דיגיטלית באפליקציית מובייל, הכוללת:
+(א) מודול קלט המקבל סכום ומטבע (מתוך לפחות 4 מטבעות) ותיאור;
+(ב) מודול חישוב הממיר את הסכום לשקלים ובודק חציית סף allocation דינמי הנקבע לפי תאריך;
+(ג) מודול תקשורת אסינכרוני עם API חיצוני של רשות מסים, המבצע אימות ב-N שלבים, כאשר N≥3;
+(ד) מודול תצוגה המציג למשתמש בזמן אמת את שלב N הנוכחי באמצעות טקסט מתחלף, אינדיקטור התקדמות חזותי, ואייקון ייעודי;
+(ה) מודול שמירה המאחסן את מספר ההקצאה המתקבל ומקשר אותו לרשומת החשבונית;
+(ו) מודול לוקליזציה המאפשר תצוגה של אותה חשבונית בלפחות שתי שפות עם שמירה של מספר ההקצאה.</p>
+</blockquote>
+<p><strong>Claim 2 (Dependent):</strong></p>
+<blockquote>
+<p>השיטה לפי תביעה 1, כאשר סף ה-allocation דינמי משתנה לפי תאריך (₪10,000 עד 31.5.2026, ₪5,000 מ-1.6.2026).</p>
+</blockquote>
+<p><strong>Claim 3 (Dependent):</strong></p>
+<blockquote>
+<p>השיטה לפי תביעה 1, כאשר מודול התצוגה מציג באנר אינדיקציה (preview banner) לפני התחלת תהליך האימות, המודיע למשתמש על חובת הקצאה צפויה.</p>
+</blockquote>
+<p><strong>Claim 4 (Dependent):</strong></p>
+<blockquote>
+<p>השיטה לפי תביעה 1, כאשר מודול התצוגה כולל אנימציית spring (פיזיקלית) של אייקון אישור ב-success state.</p>
+</blockquote>
+<p><strong>Claim 5 (Dependent):</strong></p>
+<blockquote>
+<p>השיטה לפי תביעה 1, הכוללת בנוסף מודול תובנות AI היוצר המלצות פיננסיות על בסיס מצב ה-allocation של חשבוניות הלקוח.</p>
+</blockquote>
+<p><strong>Claim 6 (Independent — שפה):</strong></p>
+<blockquote>
+<p>שיטה לפי תביעה 1, הכוללת מודול לוקליזציה אוטומטית הקובע את כיוון הטקסט (RTL/LTR) על פי שפת ה-UI הנבחרת, <strong>תוך שמירה על כיוון מספר ההקצאה כ-LTR בכל המקרים</strong>.</p>
+</blockquote>
+<p><strong>Claim 7 (Dependent):</strong></p>
+<blockquote>
+<p>השיטה לפי תביעה 6, כאשר השפות הנתמכות כוללות לפחות חמש שפות, ולפחות שפה אחת היא RTL ולפחות שפה אחת LTR.</p>
+</blockquote>
+<hr>
+<h2>איורים (Drawings)</h2>
+<p><strong>Figure 1:</strong> ארכיטקטורת המערכת ברמה גבוהה
+<strong>Figure 2:</strong> Mock של מסך יצירת חשבונית (מתוך האפליקציה)
+<strong>Figure 3:</strong> רצף 4 השלבים של animation האימות
+<strong>Figure 4:</strong> Mock של מסך הצלחה עם מספר ההקצאה
+<strong>Figure 5:</strong> Diagram של ה-states של allocation
+<strong>Figure 6:</strong> Flow chart של ה-multi-language flow</p>
+<p>(כל ה-mocks ניתן להפיק מצילומי מסך של ה-prototype הקיים ב-<code>C:\Users\edris\GlobalBiz</code>)</p>
+<hr>
+<h2>prior art שכדאי לבדוק (לעורך הפטנטים)</h2>
+<p>חיפוש פטנטים שכדאי לעשות בקטגוריות:</p>
+<ul>
+<li>US/EP patents on &quot;tax authority API integration mobile invoicing&quot;</li>
+<li>IL patents on &quot;חשבוניות ישראל&quot; / &quot;VAT allocation number&quot;</li>
+<li>&quot;real-time multi-step validation UX mobile&quot;</li>
+<li>&quot;cross-currency invoice tax compliance&quot;</li>
+</ul>
+<hr>
+<h2>הצעדים הבאים</h2>
+<ol>
+<li><strong>תוך 7 ימים:</strong> העברת הטיוטה לעורך פטנטים (מומלצים: עו&quot;ד אהוד הילמן, עו&quot;ד דרור לדרמן, או משרד Reinhold Cohn &amp; Partners)</li>
+<li><strong>תוך 30 ימים:</strong> חיפוש prior art מעמיק + ניסוח claims סופיים</li>
+<li><strong>תוך 60 ימים:</strong> הגשה רשמית לרשם הפטנטים</li>
+<li><strong>תוך 365 ימים מיום הגשת ה-provisional:</strong> השלמת הבקשה הרגילה (utility patent / non-provisional)</li>
+</ol>
+<p><strong>עלות צפויה:</strong></p>
+<ul>
+<li>אגרת הגשה ראשונית: ₪600-1,000</li>
+<li>שכ&quot;ט עו&quot;ד פטנטים (provisional): ₪8,000-15,000</li>
+<li>שכ&quot;ט עו&quot;ד פטנטים (utility מלא): ₪25,000-50,000</li>
+<li>הגשות נוספות בחו&quot;ל (PCT / USPTO / EPO): ₪40,000-100,000</li>
+</ul>
+<p><strong>אופציה נוספת — USPTO Provisional:</strong>
+לאלטרנטיבה זולה ומהירה, אפשר להגיש Provisional Patent Application ב-USPTO תמורת <strong>$300</strong> (small entity) או <strong>$140</strong> (micro entity), המעניק 12 חודשי priority. אחר כך אפשר להגיש PCT או utility ישירות. <strong>דורש פנייה ל-Patent Attorney בארה&quot;ב.</strong></p>
+<hr>
+<p><strong>גרסה:</strong> טיוטה ראשונית — מאי 2026
+<strong>מצב:</strong> לעיון משפטי בלבד — לא לשימוש כהגשה רשמית</p>
+</main></body></html>

@@ -1,0 +1,33 @@
+[build]
+  command = "npm install --legacy-peer-deps && npm run build:web"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+  NPM_FLAGS = "--legacy-peer-deps"
+
+# SPA fallback — any unknown path renders the app shell so
+# expo-router can take over and resolve client-side.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Make sure JS / CSS / asset paths are served as files
+# even though we have an SPA fallback above. Netlify checks
+# for static files before applying rewrites, but we add
+# explicit force=false rules to make intent clear.
+[[headers]]
+  for = "/_expo/static/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/_expo/static/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

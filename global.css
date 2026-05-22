@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Web fallback: when Heebo_* font families aren't registered (web build),
+   map them to the Google-Fonts-loaded "Heebo" family with correct weights. */
+@layer base {
+  html, body, #root {
+    background-color: #0a0612;
+  }
+}

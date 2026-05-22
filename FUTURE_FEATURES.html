@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GlobalBiz — מה צריך להוסיף</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: 'Heebo', -apple-system, sans-serif; line-height: 1.7; color: #1a1a1a; background: #f5f4f0; margin: 0; }
+  main { max-width: 920px; margin: 0 auto; padding: 3.5em 2.5em; background: white; box-shadow: 0 2px 32px rgba(0,0,0,0.08); min-height: 100vh; }
+  h1 { color: #3b1d6e; border-bottom: 3px solid #6d28d9; padding-bottom: 0.5em; margin-top: 0; font-weight: 900; font-size: 2.2em; }
+  h2 { color: #3b1d6e; margin-top: 2.2em; padding-bottom: 0.3em; border-bottom: 1px solid #e5e5e5; font-weight: 700; }
+  h3 { color: #6d28d9; margin-top: 1.8em; font-weight: 700; }
+  h4 { color: #6d28d9; margin-top: 1.4em; font-weight: 700; font-size: 1.05em; }
+  p { margin: 0.9em 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1.2em 0; font-size: 0.93em; background: white; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+  th, td { border: 1px solid #e5e5e5; padding: 0.7em 0.9em; text-align: right; vertical-align: middle; }
+  th { background: linear-gradient(135deg, #3b1d6e, #6d28d9); color: white; font-weight: 700; }
+  tr:nth-child(even) td { background: #fafaf8; }
+  code { background: #f0eef5; padding: 0.15em 0.45em; border-radius: 4px; font-size: 0.92em; color: #3b1d6e; font-family: 'SF Mono', Consolas, monospace; }
+  pre { background: #1a0b2e; color: #e7e5e4; padding: 1em; border-radius: 8px; overflow-x: auto; }
+  pre code { background: transparent; color: inherit; padding: 0; }
+  hr { border: none; border-top: 1px solid #e5e5e5; margin: 2.5em 0; }
+  strong { color: #0a0a0a; font-weight: 700; }
+  ul, ol { padding-right: 1.6em; }
+  li { margin: 0.4em 0; }
+  blockquote { border-right: 4px solid #ff5b2e; margin: 1.2em 0; padding: 0.8em 1.2em; background: #fff5f2; color: #444; border-radius: 4px; }
+  @media print { main { box-shadow: none; padding: 1.5em; } body { background: white; } }
+</style></head><body><main><h1>GlobalBiz — מה צריך להוסיף לאפליקציה</h1>
+<p><strong>גרסה:</strong> מאי 2026 · אחרי השלמת הפרוטוטייפ
+<strong>מטרה:</strong> roadmap של פיצ&#39;רים שיהפכו את הפרוטוטייפ למוצר MVP אמיתי לבנק</p>
+<hr>
+<h2>איך לקרוא את המסמך</h2>
+<p>לכל פיצ&#39;ר יש:</p>
+<ul>
+<li><strong>חשיבות לבנק</strong> (★★★ קריטי / ★★ חשוב / ★ נחמד)</li>
+<li><strong>זמן פיתוח</strong> משוער</li>
+<li><strong>למה זה משנה</strong> — ערך עסקי</li>
+<li><strong>מה זה כרגע</strong> — מצב נוכחי</li>
+<li><strong>לאן צריך להגיע</strong></li>
+</ul>
+<hr>
+<h2>A. חובה ל-MVP אמיתי — אסור לעלות לאוויר בלי זה</h2>
+<h3>A1. Onboarding + KYC ★★★</h3>
+<p><strong>זמן:</strong> 3-4 שבועות
+<strong>מצב נוכחי:</strong> אין — האפליקציה נכנסת ישר ל-Home עם משתמשת מדומה
+<strong>צריך:</strong> מסכי הרשמה (טלפון → SMS OTP → סלפי + ת.ז. דרך Persona/Onfido/Veriff → אישור עוסק מורשה ברשות המסים → תעודה דיגיטלית)
+<strong>למה לבנק:</strong> ללא KYC מלא הבנק לא יכול לפתוח חשבונות. זה התנאי הראשון לרישוי PSP/EMI.</p>
+<h3>A2. אינטגרציה אמיתית מול API &quot;חשבוניות ישראל&quot; ★★★</h3>
+<p><strong>זמן:</strong> 6-8 שבועות (כולל תהליך רישום מול רשות המסים)
+<strong>מצב נוכחי:</strong> mock — אנימציה של 3 שניות, מספר רנדומלי
+<strong>צריך:</strong> חיבור אמיתי ל-SHAAM API, ניהול תעודה דיגיטלית, retry logic, error handling, logging לכל הקצאה
+<strong>למה לבנק:</strong> זה ה-USP. ללא אינטגרציה אמיתית — הסיפור שלך מתפרק</p>
+<h3>A3. חיבור לחשבון בנק ישראלי (PFM / Open Banking) ★★★</h3>
+<p><strong>זמן:</strong> 4-6 שבועות
+<strong>מצב נוכחי:</strong> אין — היתרות מומצאות
+<strong>צריך:</strong> Open Banking API (לפי תקנת PSD2 הישראלית, שעוד תיכנס לתוקף בהדרגה), או חיבור ישיר לחשבונות הפועלים/דיסקונט/לאומי לפי הבנק התומך
+<strong>למה לבנק:</strong> בלי חיבור לחשבון בנק, המשתמש לא יכול להוציא/להפקיד כסף אמיתי</p>
+<h3>A4. תשלום אמיתי מקבלת USD/EUR מחו&quot;ל ★★★</h3>
+<p><strong>זמן:</strong> 4-8 שבועות (תלוי בשותף)
+<strong>מצב נוכחי:</strong> אין — רק QR mock
+<strong>צריך:</strong> או Stripe Connect (קל יותר, עמלה גבוהה ~3%), או חשבון IBAN וירטואלי דרך Wise Platform / Currencycloud / Banking-as-a-Service partner
+<strong>למה לבנק:</strong> <strong>זה הסעיף שמייצר את ההכנסה לבנק</strong> מ-FX margins</p>
+<h3>A5. אבטחה: 2FA + Device Management ★★★</h3>
+<p><strong>זמן:</strong> 2-3 שבועות
+<strong>מצב נוכחי:</strong> ה-toggle של ביומטרי שם, אבל לא עושה כלום
+<strong>צריך:</strong> TOTP (Google Authenticator), SMS fallback, רשימת מכשירים מורשים עם אפשרות revocation
+<strong>למה לבנק:</strong> דרישה רגולטורית של בנק ישראל — בלי 2FA אמיתי הבנק יסרב</p>
+<h3>A6. AML / Fraud Detection מובנה ★★★</h3>
+<p><strong>זמן:</strong> 4-6 שבועות (כולל אינטגרציה)
+<strong>מצב נוכחי:</strong> אין
+<strong>צריך:</strong> Chainalysis / Elliptic / ComplyAdvantage — סינון בכל עסקה בינלאומית, גיוון לפי מדינות OFAC, alerts ל-compliance officer
+<strong>למה לבנק:</strong> <strong>תנאי רישוי</strong>. בלי AML המוצר לא יקבל אישור</p>
+<hr>
+<h2>B. חזק מאוד ל-MVP — ייצר תלות גבוהה ושימוש יומיומי</h2>
+<h3>B1. ניהול חשבונות יורו/דולר נפרדים בארנק ★★★</h3>
+<p><strong>זמן:</strong> 2 שבועות (אם A4 קיים)
+<strong>מצב נוכחי:</strong> היתרות מוצגות אבל לא אינטראקטיביות
+<strong>צריך:</strong> לחיצה על יתרת USD → פתיחת עמוד dedicated עם histroy + תפעול ספציפי לאותו מטבע
+<strong>למה לבנק:</strong> ערך אמיתי לעצמאי, מבדל ברור מ-Bit</p>
+<h3>B2. גישת רואה חשבון (Accountant Portal) ★★★</h3>
+<p><strong>זמן:</strong> 3-4 שבועות
+<strong>מצב נוכחי:</strong> אין
+<strong>צריך:</strong> הזמנת רו&quot;ח באימייל, מתן הרשאת קריאה בלבד, ייצוא חשבוניות/הוצאות לחשבשבת/רווחית/EZcount
+<strong>למה לבנק:</strong> <strong>כל עצמאי ישראלי עובד עם רו&quot;ח</strong> — אם לרו&quot;ח קל לעבוד עם GlobalBiz, השוק נסגר</p>
+<h3>B3. תשלומים חוזרים (Recurring) ★★</h3>
+<p><strong>זמן:</strong> 2-3 שבועות
+<strong>מצב נוכחי:</strong> אין
+<strong>צריך:</strong> הגדרת תשלום חודשי לקבלן משנה (1 לכל חודש), חשבונית ריטיינר חודשית ללקוח, alerts לפני
+<strong>למה לבנק:</strong> ARPU גבוה — עצמאים עם ריטיינרים = משתמשים יציבים</p>
+<h3>B4. דוח הוצאות + קיזוז אוטומטי ★★★</h3>
+<p><strong>זמן:</strong> 3 שבועות
+<strong>מצב נוכחי:</strong> AI insight stub
+<strong>צריך:</strong> זיהוי אוטומטי של הוצאות עסקיות (Figma, Vercel, Adobe, AWS), שיוך לקטגוריה, חישוב קיזוז מע&quot;מ + מס הכנסה, ייצוא דוח חודשי
+<strong>למה לבנק:</strong> חוסך לעצמאי שעות עבודה בחודש — value prop חזק לאחיזה</p>
+<h3>B5. חשבוניות מרובות (Bulk Invoicing) ★★</h3>
+<p><strong>זמן:</strong> 2-3 שבועות
+<strong>מצב נוכחי:</strong> רק חשבונית בודדת
+<strong>צריך:</strong> טעינת CSV של לקוחות + סכומים, יצירת N חשבוניות בבת אחת, <strong>N הקצאות במקביל מרשות המסים</strong>
+<strong>למה לבנק:</strong> סוכנויות/סטודיואים עם 20+ לקוחות חודשיים יעברו אלינו רק בזכות זה</p>
+<h3>B6. כרטיס Debit Business ★★★</h3>
+<p><strong>זמן:</strong> 6-10 שבועות (תלוי ב-BIN sponsor)
+<strong>מצב נוכחי:</strong> אין
+<strong>צריך:</strong> הנפקת כרטיס וירטואלי + פלסטיק דרך BIN sponsor (Bank Hapoalim International? Discount IPS?), אפשרות freeze/unfreeze, מגבלות יומיות, התראות
+<strong>למה לבנק:</strong> <strong>מקור הכנסה ישיר</strong> (interchange ~1.5%) + תלות עמוקה</p>
+<h3>B7. שותפויות לקבלני משנה (&quot;Sub-contractor groups&quot;) ★★</h3>
+<p><strong>זמן:</strong> 3-4 שבועות
+<strong>מצב נוכחי:</strong> אין — תשלום בודד בלבד
+<strong>צריך:</strong> יצירת קבוצה (פרויקט), חלוקת תשלום בין N קבלני משנה, גם תיעוד טופס 856 לרשות המסים
+<strong>למה לבנק:</strong> ייחודי — אף אחד לא עושה את זה. סטודיואים יחפשו את זה.</p>
+<hr>
+<h2>C. נחמד שיש — שיפור חווית משתמש</h2>
+<h3>C1. סריקת קבלות (OCR) ★★</h3>
+<p><strong>זמן:</strong> 2-3 שבועות
+<strong>צריך:</strong> מצלמה → Tesseract / Google Vision API → אוטו-מילוי שדה הוצאה
+<strong>למה:</strong> מהיר יותר מהזנה ידנית</p>
+<h3>C2. צ&#39;אט תמיכה מובנה ★</h3>
+<p><strong>זמן:</strong> 1 שבוע (אם משתמשים ב-Intercom/Crisp)
+<strong>צריך:</strong> widget בתוך האפליקציה
+<strong>למה:</strong> הפחתת churn</p>
+<h3>C3. מסכי דשבורד גרפיים ★</h3>
+<p><strong>זמן:</strong> 2-3 שבועות
+<strong>צריך:</strong> Victory Native / React Native SVG charts — גרפים של הכנסות, הוצאות, מגמות
+<strong>למה:</strong> אסתטיקה לדמו, עומק לעו&quot;ש העצמאי</p>
+<h3>C4. התראות Push אמיתיות ★★</h3>
+<p><strong>זמן:</strong> 1-2 שבועות
+<strong>מצב נוכחי:</strong> רק toggle ב-Profile
+<strong>צריך:</strong> Expo Notifications + backend trigger בקבלת תשלום / איחור חשבונית / ריבית הצטברה
+<strong>למה:</strong> retention, engagement</p>
+<h3>C5. מצב כהה/בהיר ★</h3>
+<p><strong>זמן:</strong> 1 שבוע
+<strong>מצב נוכחי:</strong> רק כהה
+<strong>צריך:</strong> toggle בהגדרות + רספונסיביות לפלטה החדשה
+<strong>למה:</strong> העדפה אישית</p>
+<hr>
+<h2>D. חדשנות פוטנציאלית — פיצ&#39;רים שאף אחד לא עושה</h2>
+<h3>D1. AI Assistant בטקסט חופשי ★★★</h3>
+<p><strong>זמן:</strong> 4-6 שבועות
+<strong>רעיון:</strong> &quot;שלם לאורי 1800 על backend&quot; → האפליקציה מבינה, פותחת flow מוכן עם השם, הסכום, התיאור — רק ללחוץ confirm
+<strong>למה זה ענק:</strong> Bit/Paybox צרצרים שזקוקים ל-5 לחיצות. כאן זה משפט אחד.
+<strong>איך:</strong> Claude API → JSON structured output → router.push למסך הזנת סכום ממולא</p>
+<h3>D2. Cashback אוטומטי על הוצאות עסקיות ★★</h3>
+<p><strong>זמן:</strong> 4 שבועות (דורש partnerships)
+<strong>רעיון:</strong> 1.5% cashback על תשלום ל-Figma, AWS, Vercel, וכד&#39; (BIN partners)
+<strong>למה:</strong> הכנסה לבנק + סטיקיניות</p>
+<h3>D3. Invoice Factoring / Credit Line ★★★</h3>
+<p><strong>זמן:</strong> 8-12 שבועות
+<strong>רעיון:</strong> חשבונית פתוחה של ₪15K → קבלת ₪13K עכשיו, עם ריבית 1.5% חודשי. הבנק מקבל את הכסף מהלקוח ישירות.
+<strong>למה לבנק:</strong> מוצר מימון רווחי + פתרון cash flow לעצמאי
+<strong>זה ענק</strong> — זה הופך את GlobalBiz מאפליקציית תשלומים ל<strong>גוף מימון מיני</strong> לעצמאים</p>
+<h3>D4. Currency Hedging — נעילת שער ★</h3>
+<p><strong>זמן:</strong> 4 שבועות
+<strong>רעיון:</strong> לקוח אמריקאי משלם בעוד 30 יום $5,000 — אפשר לנעול שער עכשיו תמורת עמלה קטנה (0.3%)
+<strong>למה:</strong> הגנה מתנודתיות + עמלה לבנק</p>
+<h3>D5. שוק עצמאים פנימי (Marketplace) ★</h3>
+<p><strong>זמן:</strong> 6-8 שבועות
+<strong>רעיון:</strong> עצמאים על GlobalBiz מציעים שירותים זה לזה (network effect)
+<strong>למה:</strong> Lock-in גבוה, גם הפניות בתוך המערכת</p>
+<h3>D6. סוכן מס AI — דיווח אוטומטי לרשות המסים ★★★</h3>
+<p><strong>זמן:</strong> 6-10 שבועות
+<strong>רעיון:</strong> דוח 6111 / טופס 1301 מוכן אוטומטית בסוף שנה, עם המלצות אופטימיזציה
+<strong>למה:</strong> ערך כספי ברור (חוסך לעצמאי ₪3,000-8,000 בשנה בשירותי רו&quot;ח)</p>
+<hr>
+<h2>דירוג עדיפויות לפי ההצעה שלי</h2>
+<h3>Tier 1 — להתחיל מיד (חודשיים הראשונים)</h3>
+<ol>
+<li>✅ KYC + Onboarding (A1)</li>
+<li>✅ אינטגרציה אמיתית רשות המסים (A2)</li>
+<li>✅ 2FA + Device Management (A5)</li>
+<li>✅ AML/Fraud (A6)</li>
+</ol>
+<h3>Tier 2 — לאחר אישור רגולטורי (חודשים 3-5)</h3>
+<ol start="5">
+<li>✅ קבלת USD/EUR אמיתית (A4)</li>
+<li>✅ חשבון בנק ישראלי (A3)</li>
+<li>✅ גישת רו&quot;ח (B2)</li>
+<li>✅ דוח הוצאות אוטומטי (B4)</li>
+</ol>
+<h3>Tier 3 — לאחר 500 משתמשים פעילים (חודשים 6-9)</h3>
+<ol start="9">
+<li>✅ כרטיס Debit (B6)</li>
+<li>✅ Recurring payments (B3)</li>
+<li>✅ AI Assistant טקסט חופשי (D1)</li>
+<li>✅ Push notifications (C4)</li>
+</ol>
+<h3>Tier 4 — צמיחה (שנה שנייה)</h3>
+<ol start="13">
+<li>Invoice Factoring (D3) — <strong>המהפך הכלכלי</strong></li>
+<li>Bulk Invoicing (B5)</li>
+<li>Sub-contractor groups (B7)</li>
+<li>AI Tax Agent (D6)</li>
+</ol>
+<hr>
+<h2>הערכת השקעה כוללת</h2>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>זמן פיתוח</th>
+<th>עלות פיתוח</th>
+<th>תוצאה</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Tier 1 (יסודות)</td>
+<td>3 חודשים</td>
+<td>₪400-600K</td>
+<td>אפליקציה לגיטימית, רישוי PSP</td>
+</tr>
+<tr>
+<td>Tier 2 (כסף אמיתי)</td>
+<td>3 חודשים</td>
+<td>₪500-800K</td>
+<td>מוצר רב-מטבעי שעצמאי משתמש בו</td>
+</tr>
+<tr>
+<td>Tier 3 (גידול)</td>
+<td>4 חודשים</td>
+<td>₪700K-1M</td>
+<td>מוצר עם מבדלים אמיתיים</td>
+</tr>
+<tr>
+<td>Tier 4 (מהפך)</td>
+<td>6 חודשים</td>
+<td>₪1-2M</td>
+<td>פלטפורמת fintech מלאה</td>
+</tr>
+</tbody></table>
+<p><strong>סה&quot;כ ל-MVP חזק:</strong> <strong>16 חודשים, ₪2.6-4.4M</strong></p>
+<p>לבנק שמשקיע — ROI: כפי שמופיע במסמך הניתוח התחרותי, ARPU של ₪1,518/שנה × 30,000 משתמשים פעילים = ₪45.5M/שנה. החזר ההשקעה תוך 18-24 חודשים מהשקת ה-Tier 2.</p>
+<hr>
+<h2>מה אני הכי ממליץ להוסיף עכשיו לדמו</h2>
+<p>אם אתה רוצה לחזק את הדמו לבנק <strong>בלי לבנות backend</strong> (להישאר ב-prototype):</p>
+<ol>
+<li><strong>מסך KYC mock</strong> — onboarding flow מצולם בלבד שמראה: סלפי → צילום ת.ז. → אישור עוסק → תעודה דיגיטלית (5 מסכים, ~3 ימים)</li>
+<li><strong>AI Assistant in-app</strong> — שורת חיפוש &quot;?כיצד אוכל לעזור&quot; שמובילה ל-flow מהיר (mock עם הכנות). אפשר אפילו ב-Claude API אמיתי (~2 ימים)</li>
+<li><strong>דשבורד &quot;פרוייקטים פעילים&quot;</strong> — רשימת 3-4 פרוייקטים עם שעות, חשבוניות, רווחיות (~2 ימים)</li>
+<li><strong>מסך Invoice Factoring</strong> — &quot;החשבונית של Berlin Studio (€3,800) — קבל ₪14,500 עכשיו במקום לחכות 30 יום. ריבית: 1.2%&quot; (~1 יום)</li>
+</ol>
+<p>ה-4 פיצ&#39;רים הללו לוקחים שבוע עבודה ונותנים לדמו רוחב פיצ&#39;רים שאף אחד מהמתחרים לא מתקרב אליו.</p>
+<hr>
+<p><strong>גרסה:</strong> מאי 2026
+<strong>עודכן ע&quot;י:</strong> Claude Code (Anthropic)
+<strong>עבור:</strong> שירה כהן / Cohen Studio / GlobalBiz</p>
+</main></body></html>

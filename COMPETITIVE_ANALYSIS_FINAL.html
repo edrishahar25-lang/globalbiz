@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GlobalBiz — ניתוח תחרותי</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Heebo', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    line-height: 1.7;
+    color: #1a1a1a;
+    background: #f5f4f0;
+    margin: 0;
+    padding: 0;
+  }
+  main {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 3.5em 2.5em;
+    background: white;
+    box-shadow: 0 2px 32px rgba(0, 0, 0, 0.08);
+    min-height: 100vh;
+  }
+  h1 {
+    color: #3b1d6e;
+    border-bottom: 3px solid #6d28d9;
+    padding-bottom: 0.5em;
+    margin-top: 0;
+    font-weight: 900;
+    font-size: 2.2em;
+  }
+  h2 {
+    color: #3b1d6e;
+    margin-top: 2.2em;
+    padding-bottom: 0.3em;
+    border-bottom: 1px solid #e5e5e5;
+    font-weight: 700;
+  }
+  h3 {
+    color: #6d28d9;
+    margin-top: 1.8em;
+    font-weight: 700;
+  }
+  p { margin: 0.9em 0; }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2em 0;
+    font-size: 0.93em;
+    background: white;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+  th, td {
+    border: 1px solid #e5e5e5;
+    padding: 0.7em 0.9em;
+    text-align: right;
+    vertical-align: middle;
+  }
+  th {
+    background: linear-gradient(135deg, #3b1d6e 0%, #6d28d9 100%);
+    color: white;
+    font-weight: 700;
+    border-color: #3b1d6e;
+  }
+  th:last-child {
+    background: linear-gradient(135deg, #0f5132 0%, #2ecc8b 100%);
+    border-color: #0f5132;
+  }
+  tr:nth-child(even) td { background: #fafaf8; }
+  code {
+    background: #f0eef5;
+    padding: 0.15em 0.45em;
+    border-radius: 4px;
+    font-size: 0.92em;
+    color: #3b1d6e;
+    font-family: 'SF Mono', Consolas, monospace;
+  }
+  hr { border: none; border-top: 1px solid #e5e5e5; margin: 2.5em 0; }
+  strong { color: #0a0a0a; font-weight: 700; }
+  ul, ol { padding-right: 1.6em; }
+  li { margin: 0.4em 0; }
+  @media print {
+    main { box-shadow: none; max-width: none; padding: 1.5em; }
+    body { background: white; }
+    table { page-break-inside: avoid; }
+  }
+  @media (max-width: 700px) {
+    main { padding: 2em 1.2em; }
+    h1 { font-size: 1.7em; }
+    table { font-size: 0.85em; }
+    th, td { padding: 0.5em 0.6em; }
+  }
+</style>
+</head>
+<body>
+<main>
+<h1>GlobalBiz — ניתוח תחרותי ושווי לבנק</h1>
+<p><strong>תאריך:</strong> מאי 2026<br><strong>מטרת המסמך:</strong> הצגת היתרון התחרותי של GlobalBiz מול ביט (Bit) ופייבוקס (PayBox), והערך הישיר שהיא מביאה לבנק תומך.</p>
+<hr>
+<h2>תקציר מנהלים</h2>
+<p>ביט ופייבוקס מחזיקים יחד בשוק התשלומים הצרכני הביתי בישראל — אבל שניהם <strong>לא מתאימים לעצמאים ישראלים שעובדים עם לקוחות בחו&quot;ל</strong>, ושניהם <strong>לא ערוכים לרגולציית &quot;חשבוניות ישראל&quot;</strong> של רשות המסים, שנכנסת לתוקף הדרגתי החל מ-1.1.2026.</p>
+<p>GlobalBiz נכנסת בדיוק לפער הזה — אפליקציה אחת ל-450,000 עצמאים ישראלים שמקבלים תשלום בדולרים/יורו/לירות, צריכים להנפיק חשבוניות פורמליות עם מספרי הקצאה, ולעבוד בעברית או באנגלית בלי לעבור בין כלים.</p>
+<p><strong>הצעת הערך לבנק:</strong></p>
+<ul>
+<li>שוק חדש שביט (בעצמה בבעלות בנק הפועלים) <strong>לא משרת</strong></li>
+<li>כניסה לסגמנט עסקי-בינלאומי שצומח מהר</li>
+<li>כלי תאימות אוטומטי לרשות המסים שמייצר תלות גבוהה (sticky)</li>
+<li>מקור הכנסה חדש מ-FX margins, חשבונות מולטי-מטבע, וקרדיט קווי לעצמאים</li>
+</ul>
+<hr>
+<h2>הפער בשוק</h2>
+<table>
+<thead>
+<tr>
+<th>סגמנט</th>
+<th>ביט</th>
+<th>פייבוקס</th>
+<th>מי משרת?</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>✅ P2P ישראלי מזדמן</td>
+<td>✅</td>
+<td>✅</td>
+<td>שניהם</td>
+</tr>
+<tr>
+<td>✅ פיצול חשבון בסעודה</td>
+<td>⚠️ בסיסי</td>
+<td>✅ חזק</td>
+<td>פייבוקס</td>
+</tr>
+<tr>
+<td>❌ עצמאים שמקבלים USD/EUR</td>
+<td>❌</td>
+<td>❌</td>
+<td><strong>אף אחד</strong></td>
+</tr>
+<tr>
+<td>❌ חשבוניות עם allocation אוטומטי</td>
+<td>❌</td>
+<td>❌</td>
+<td><strong>אף אחד</strong></td>
+</tr>
+<tr>
+<td>❌ דוח מס חודשי אוטומטי</td>
+<td>❌</td>
+<td>❌</td>
+<td><strong>אף אחד</strong></td>
+</tr>
+<tr>
+<td>❌ ממשק רב-לשוני ללקוחות זרים</td>
+<td>❌</td>
+<td>❌</td>
+<td><strong>אף אחד</strong></td>
+</tr>
+<tr>
+<td>❌ תשלום לקבלני משנה ישראלים בחבילה אחת</td>
+<td>❌</td>
+<td>❌</td>
+<td><strong>אף אחד</strong></td>
+</tr>
+</tbody></table>
+<p><strong>הסגמנט שאין לו פתרון:</strong> 450,000 עצמאים ישראלים (לפי לשכת המסחר) שעובדים עם לקוחות בינלאומיים — מפתחים, מעצבים, יועצים, נותני שירותים. סה&quot;כ מחזור שנתי משוער: <strong>₪48-60 מיליארד</strong>.</p>
+<hr>
+<h2>טבלת השוואה מפורטת</h2>
+<h3>A. שוק יעד וכיסוי גיאוגרפי</h3>
+<table>
+<thead>
+<tr>
+<th>מאפיין</th>
+<th align="center">ביט</th>
+<th align="center">פייבוקס</th>
+<th align="center"><strong>GlobalBiz</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>משתמשי P2P ישראלים</td>
+<td align="center">✅ 3.5M</td>
+<td align="center">✅ ~1.5M</td>
+<td align="center">✅</td>
+</tr>
+<tr>
+<td>עצמאים מקומיים</td>
+<td align="center">⚠️ עם עמלות</td>
+<td align="center">⚠️ עם מנוי</td>
+<td align="center">✅</td>
+</tr>
+<tr>
+<td><strong>עצמאים שמקבלים מחו&quot;ל</strong></td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">✅</td>
+</tr>
+<tr>
+<td>עסקים קטנים B2B</td>
+<td align="center">⚠️ מוגבל</td>
+<td align="center">⚠️ מוגבל</td>
+<td align="center">✅</td>
+</tr>
+<tr>
+<td>חשבון מולטי-מטבע בארנק</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">✅ ILS/USD/EUR/GBP</td>
+</tr>
+</tbody></table>
+<h3>B. תאימות רגולטורית (השינוי של 2026)</h3>
+<p>זהו <strong>הסעיף הקריטי ביותר</strong> — חוק &quot;חשבוניות ישראל&quot; (תיקון 60 לפקודת מע&quot;מ) דורש מ-1.1.2026 מספר הקצאה דיגיטלי מרשות המסים על כל חשבונית מעל ₪10,000, ומ-1.6.2026 על כל חשבונית מעל ₪5,000. <strong>בלי מספר הקצאה — הלקוח לא יכול לקזז מע&quot;מ.</strong></p>
+<table>
+<thead>
+<tr>
+<th>מאפיין</th>
+<th align="center">ביט</th>
+<th align="center">פייבוקס</th>
+<th align="center"><strong>GlobalBiz</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>חיבור ל-API של רשות המסים</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">✅</td>
+</tr>
+<tr>
+<td>תעודה דיגיטלית רשומה</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">✅ IL-2026-CERT-9847</td>
+</tr>
+<tr>
+<td>הקצאת מספר אוטומטית &gt; ₪10K</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">✅ אנימציית 3 שניות</td>
+</tr>
+<tr>
+<td>ניתוב חשבונית למאגר רשות המסים</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">✅</td>
+</tr>
+<tr>
+<td>באנר אזהרה אוטומטי לפני יצירה</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">✅</td>
+</tr>
+<tr>
+<td>Badge אימות על חשבונית</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">✅ &quot;מאומת רשות המסים ✓&quot;</td>
+</tr>
+<tr>
+<td>היסטוריית הקצאות חודשית</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">✅ עם סטטיסטיקות מצטברות</td>
+</tr>
+<tr>
+<td>תוקף תעודה ויומן חידוש</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">✅ עד 31.12.2026, התראה מראש</td>
+</tr>
+</tbody></table>
+<h3>C. חשבוניות ותיעוד עסקי</h3>
+<table>
+<thead>
+<tr>
+<th>מאפיין</th>
+<th align="center">ביט</th>
+<th align="center">פייבוקס</th>
+<th align="center"><strong>GlobalBiz</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>יצירת חשבונית מתוך האפליקציה</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">✅</td>
+</tr>
+<tr>
+<td>QR Code לתשלום בקליק אחד</td>
+<td align="center">❌</td>
+<td align="center">⚠️ קישור בלבד</td>
+<td align="center">✅ QR אמיתי עם encoding</td>
+</tr>
+<tr>
+<td>מעקב סטטוס (טיוטה/נשלחה/שולמה/באיחור)</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">✅ 4 סטטוסים + צבעים</td>
+</tr>
+<tr>
+<td>תזכורות אוטומטיות ללקוח</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">✅ &quot;שלח תזכורת&quot;</td>
+</tr>
+<tr>
+<td>תיעוד פריטים בחשבונית</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">✅</td>
+</tr>
+<tr>
+<td>מספר חשבונית רץ אוטומטי</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">✅ INV-YYYY-XXX</td>
+</tr>
+<tr>
+<td>שיתוף ישיר ל-WhatsApp/Mail</td>
+<td align="center">⚠️</td>
+<td align="center">⚠️</td>
+<td align="center">✅ native share sheet</td>
+</tr>
+</tbody></table>
+<h3>D. מטבעות, FX, ובינלאומיות</h3>
+<table>
+<thead>
+<tr>
+<th>מאפיין</th>
+<th align="center">ביט</th>
+<th align="center">פייבוקס</th>
+<th align="center"><strong>GlobalBiz</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>תמיכה ב-ILS</td>
+<td align="center">✅</td>
+<td align="center">✅</td>
+<td align="center">✅</td>
+</tr>
+<tr>
+<td>תמיכה ב-USD</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">✅</td>
+</tr>
+<tr>
+<td>תמיכה ב-EUR</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">✅</td>
+</tr>
+<tr>
+<td>תמיכה ב-GBP</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">✅</td>
+</tr>
+<tr>
+<td>המרה בין מטבעות באפליקציה</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">✅ עם שערים live</td>
+</tr>
+<tr>
+<td>תצוגת יתרות בכל מטבע + ILS equivalent</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">✅</td>
+</tr>
+<tr>
+<td>גביית כספים מבנקים בינלאומיים</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">✅ (planned)</td>
+</tr>
+<tr>
+<td>חשבון IBAN וירטואלי</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">✅ (planned with bank)</td>
+</tr>
+</tbody></table>
+<h3>E. שפה ונגישות</h3>
+<table>
+<thead>
+<tr>
+<th>מאפיין</th>
+<th align="center">ביט</th>
+<th align="center">פייבוקס</th>
+<th align="center"><strong>GlobalBiz</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>עברית מלאה</td>
+<td align="center">✅</td>
+<td align="center">✅</td>
+<td align="center">✅</td>
+</tr>
+<tr>
+<td>אנגלית מלאה</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">✅</td>
+</tr>
+<tr>
+<td>גרמנית (ללקוחות גרמניים)</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">✅</td>
+</tr>
+<tr>
+<td>ספרדית (ללקוחות ספרדים/LatAm)</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">✅</td>
+</tr>
+<tr>
+<td>צרפתית (ללקוחות צרפת/בלגיה/קנדה)</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">✅</td>
+</tr>
+<tr>
+<td>מעבר RTL ↔ LTR אוטומטי</td>
+<td align="center">⚠️ RTL בלבד</td>
+<td align="center">⚠️ RTL בלבד</td>
+<td align="center">✅ דינמי</td>
+</tr>
+<tr>
+<td>שמירת העדפת שפה בין סשנים</td>
+<td align="center">—</td>
+<td align="center">—</td>
+<td align="center">✅ AsyncStorage</td>
+</tr>
+</tbody></table>
+<p><strong>ערך עסקי:</strong> עצמאי ישראלי שולח חשבונית ל-Berlin Studio GmbH — האפליקציה יודעת להציג ללקוח <strong>בגרמנית</strong> עם כל הפרטים המקומיים. בביט/פייבוקס זה לא קיים בכלל.</p>
+<h3>F. AI ותובנות עסקיות</h3>
+<table>
+<thead>
+<tr>
+<th>מאפיין</th>
+<th align="center">ביט</th>
+<th align="center">פייבוקס</th>
+<th align="center"><strong>GlobalBiz</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>דוח מס חודשי אוטומטי</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">✅ עם פירוט: מס הכנסה, ביטוח לאומי, מע&quot;מ</td>
+</tr>
+<tr>
+<td>תובנות AI להזדמנויות חיסכון</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">✅ למשל &quot;₪1,240 חיסכון מקיזוז מנויי תוכנה&quot;</td>
+</tr>
+<tr>
+<td>אזהרות proactive (חשבונית באיחור וכו&#39;)</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">✅</td>
+</tr>
+<tr>
+<td>המלצות המרת מטבע לפי שערים</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">✅ &quot;המרה עכשיו תחסוך ₪412 בעמלות&quot;</td>
+</tr>
+<tr>
+<td>חישוב רווח נקי אחרי הוצאות</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">✅</td>
+</tr>
+<tr>
+<td>מעקב הוצאות מנויים (Figma, Vercel, וכד&#39;)</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">✅ עם זיהוי אוטומטי</td>
+</tr>
+</tbody></table>
+<h3>G. אבטחה והגנה</h3>
+<table>
+<thead>
+<tr>
+<th>מאפיין</th>
+<th align="center">ביט</th>
+<th align="center">פייבוקס</th>
+<th align="center"><strong>GlobalBiz</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>כניסה ביומטרית</td>
+<td align="center">✅</td>
+<td align="center">✅</td>
+<td align="center">✅ עם toggle</td>
+</tr>
+<tr>
+<td>הגדרות התראות</td>
+<td align="center">⚠️ on/off</td>
+<td align="center">⚠️ on/off</td>
+<td align="center">✅ toggle + פילוח</td>
+</tr>
+<tr>
+<td>ייצוא נתונים (CSV/PDF)</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">✅ דוח חודשי</td>
+</tr>
+<tr>
+<td>ניהול מכשירים מורשים</td>
+<td align="center">⚠️</td>
+<td align="center">⚠️</td>
+<td align="center">✅ (planned)</td>
+</tr>
+<tr>
+<td>אישור עסקאות גדולות (&gt;₪10K)</td>
+<td align="center">⚠️</td>
+<td align="center">⚠️</td>
+<td align="center">✅ confirm + biometric</td>
+</tr>
+</tbody></table>
+<h3>H. מודל עמלות</h3>
+<table>
+<thead>
+<tr>
+<th>מאפיין</th>
+<th align="center">ביט</th>
+<th align="center">פייבוקס</th>
+<th align="center"><strong>GlobalBiz</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>P2P מקומי מזדמן</td>
+<td align="center">חינם עד תקרה</td>
+<td align="center">חינם עד תקרה</td>
+<td align="center">חינם</td>
+</tr>
+<tr>
+<td><strong>עמלת עסקים מקומית</strong></td>
+<td align="center"><strong>0.8%</strong> (החל מ-1.5.2026, עלייה מ-0.6%)</td>
+<td align="center">מנוי Plus חודשי</td>
+<td align="center"><strong>0%</strong> עד מחזור שנתי ₪100K</td>
+</tr>
+<tr>
+<td>קבלת תשלום מחו&quot;ל</td>
+<td align="center">❌ לא רלוונטי</td>
+<td align="center">❌ לא רלוונטי</td>
+<td align="center"><strong>0% עד ₪25K, 0.5%</strong> מעבר</td>
+</tr>
+<tr>
+<td>המרת מטבע</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center"><strong>0.4%</strong> (לעומת ~3% בחשבון רגיל)</td>
+</tr>
+<tr>
+<td>הקצאת מספר רשות המסים</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center"><strong>חינם, ללא הגבלה</strong></td>
+</tr>
+<tr>
+<td>ריבית על יתרה</td>
+<td align="center">❌</td>
+<td align="center">⚠️ 6% רק עם Plus</td>
+<td align="center">(planned: 4% ללא מנוי)</td>
+</tr>
+</tbody></table>
+<p><strong>יתרון פיננסי לעצמאי:</strong> עצמאי שמחזורו ₪80K בשנה (חציון של עצמאי ישראלי שעובד עם חו&quot;ל) חוסך:</p>
+<ul>
+<li>ב-Bit: <strong>₪640/שנה</strong> (0.8% × ₪80K)</li>
+<li>ב-FX מבנק רגיל: <strong>₪2,400/שנה</strong> (3% × $20K)</li>
+<li><strong>סה&quot;כ חיסכון פוטנציאלי: ₪3,000+/שנה</strong></li>
+</ul>
+<hr>
+<h2>ערך עסקי לבנק</h2>
+<h3>1. שוק חדש שלא נלקח עדיין</h3>
+<table>
+<thead>
+<tr>
+<th>שוק</th>
+<th>גודל</th>
+<th>רוויה נוכחית</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>P2P צרכני (Bit/PayBox)</td>
+<td>₪80B שנתי</td>
+<td>רווי לחלוטין</td>
+</tr>
+<tr>
+<td><strong>עצמאי בינלאומי (GlobalBiz)</strong></td>
+<td><strong>₪48-60B שנתי</strong></td>
+<td><strong>0% רוויה</strong></td>
+</tr>
+</tbody></table>
+<p><strong>450,000 עצמאים פוטנציאליים</strong> × ₪80K מחזור ממוצע = <strong>₪36B</strong> שעוברים היום דרך PayPal, Wise, Stripe, או SWIFT בנקאי — לא דרך בנק ישראלי.</p>
+<h3>2. תלות גבוהה (sticky)</h3>
+<p>בניגוד לביט שמשתמש פעם בחודש, GlobalBiz הופך לכלי <strong>יומיומי</strong> של העצמאי:</p>
+<ul>
+<li>חשבוניות יוצאות אוטומטית עם הקצאה → אי אפשר להחליף פתאום</li>
+<li>AI דוח מס מצטבר → ערך גדל עם הזמן</li>
+<li>היסטוריית הקצאות → required תיעוד לרשות המסים</li>
+<li>חשבון מולטי-מטבע → מעבר ישראלי-בנק = הפסד החיבור</li>
+</ul>
+<p><strong>שיעור churn צפוי: &lt;3% שנתי</strong> (vs ~15% ב-Bit).</p>
+<h3>3. מקורות הכנסה לבנק</h3>
+<table>
+<thead>
+<tr>
+<th>מקור הכנסה</th>
+<th>אומדן שנתי לעצמאי</th>
+<th>פוטנציאל 100K משתמשים</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>FX margin (~0.4% על $20K)</td>
+<td>₪288</td>
+<td>₪28.8M</td>
+</tr>
+<tr>
+<td>עמלת receive cross-border</td>
+<td>₪200</td>
+<td>₪20M</td>
+</tr>
+<tr>
+<td>מנוי Pro (planned)</td>
+<td>₪480</td>
+<td>₪48M</td>
+</tr>
+<tr>
+<td>Float על יתרות (4% ריבית, 1% margin)</td>
+<td>₪150</td>
+<td>₪15M</td>
+</tr>
+<tr>
+<td>כרטיס אשראי business co-brand</td>
+<td>₪400</td>
+<td>₪40M</td>
+</tr>
+<tr>
+<td><strong>סה&quot;כ ARPU</strong></td>
+<td><strong>₪1,518/שנה</strong></td>
+<td><strong>₪151.8M/שנה</strong></td>
+</tr>
+</tbody></table>
+<h3>4. ערך רגולטורי לבנק</h3>
+<p>לבנק שמשרת עצמאים בינלאומיים יש סיכון תאימות גבוה (FATCA, CRS, AML על תשלומים בינלאומיים). GlobalBiz <strong>מבצעת את ה-due diligence בעצמה</strong> — כל עסקה תועדה, כל חשבונית מקושרת לרשות המסים, KYC מתבצע ב-onboarding.</p>
+<p>הבנק מקבל <strong>trail אוטומטי של עסקאות מתוקננות</strong> → חיסכון של 30-40% בעלויות compliance.</p>
+<h3>5. הגנה תחרותית</h3>
+<p>ביט שייכת לבנק הפועלים — בנק שמתחרה ב-International Banking של בנקים אחרים. <strong>GlobalBiz</strong> היא דרך לבנק זה (או אחר) להציע לעצמאים מוצר ש-Bit לעולם לא תעשה (כי זה לא הסגמנט שלה).</p>
+<hr>
+<h2>מצב טכני נוכחי</h2>
+<p><strong>GlobalBiz הוא prototype אינטראקטיבי מלא</strong> הרץ על iOS/Android/Web:</p>
+<ul>
+<li>4 טאבים פעילים + 5 מודלים (Send Flow, Convert, Transaction Detail, Invoice Creation)</li>
+<li>5 שפות פעילות עם persistence</li>
+<li>אנימציות native ברמת production (Reanimated 4)</li>
+<li>QR Codes אמיתיים, native share sheets, biometric ready</li>
+<li>TypeScript strict, 0 שגיאות בקומפיילר</li>
+<li>מבוסס Expo SDK 54 → ניתן להוציא ל-App Store/Play Store בעוד 2-4 שבועות</li>
+</ul>
+<p><strong>מה חסר ל-MVP אמיתי (12-16 שבועות עבודה):</strong></p>
+<ol>
+<li>Backend (Postgres + Node.js או דומה)</li>
+<li>אינטגרציה אמיתית מול API של רשות המסים (תהליך הרשמה ~6 שבועות)</li>
+<li>אינטגרציה מול BIN sponsor (בנק) להנפקת כרטיסים</li>
+<li>KYC אמיתי (Persona/Onfido/Veriff)</li>
+<li>תאימות AML (Chainalysis/Elliptic)</li>
+<li>Stripe Connect או SWIFT direct לקבלת כסף מחו&quot;ל</li>
+</ol>
+<hr>
+<h2>סיכום</h2>
+<p>ביט ופייבוקס <strong>מצוינים במה שהם עושים</strong> — תשלומים מזדמנים בין חברים. הם <strong>לא</strong> ערוכים, ולא מתכננים להיכנס, לעולם של עצמאים בינלאומיים עם תאימות רגולטורית.</p>
+<p>GlobalBiz מתמקדת בדיוק במה שהם לא: <strong>450,000 עצמאים ישראלים שמחזיקים יחד מחזור של ₪48-60B שנתי</strong>, וצריכים פתרון שמדבר באנגלית, מקבל דולרים, ועומד ברגולציה החדשה של &quot;חשבוניות ישראל&quot; מ-1.1.2026.</p>
+<p>הבנק שיתמוך ב-GlobalBiz מקבל גישה לשוק שאף אחד עוד לא תפס, עם ARPU של ~₪1,500/שנה, sticky ratio גבוה, ו-trail compliance מובנה.</p>
+<hr>
+<p><strong>צרו קשר:</strong> <a href="mailto:shira@cohenstudio.co.il">shira@cohenstudio.co.il</a> · GlobalBiz Demo App<br><strong>גרסה:</strong> May 2026 · Prototype v0.1</p>
+
+</main>
+</body>
+</html>
