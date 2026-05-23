@@ -191,6 +191,26 @@
     "signupDisabled": "Registrierung derzeit deaktiviert",
     "unknown": "Unbekannter Fehler — bitte erneut versuchen"
   },
+  "empty": {
+    "transactions": "Aktivität erscheint hier",
+    "transactionsSubtitle": "Deine Überweisungen, Rechnungen und Zahlungen werden hier sichtbar, sobald du Geld empfängst oder sendest",
+    "invoices": "Noch keine Rechnungen",
+    "invoicesSubtitle": "Erstelle deine erste Rechnung mit dem Formular oben",
+    "contacts": "Noch keine Kontakte",
+    "contactsSubtitle": "Füge einen ersten Kontakt hinzu, um eine Zahlung zu senden",
+    "addFirstContact": "Ersten Kontakt hinzufügen",
+    "taxReport": "Noch keine Steuerdaten",
+    "taxReportSubtitle": "Dein Steuerbericht wird automatisch berechnet, sobald du diesen Monat Einnahmen hast",
+    "aiInsights": "KI-Einblicke erscheinen mit Aktivität",
+    "aiInsightsSubtitle": "Je mehr Rechnungen und Ausgaben du hast, desto mehr Sparpotenziale findet die KI",
+    "balance": "0",
+    "noChange": "—"
+  },
+  "taxAuthority": {
+    "notConnectedTitle": "Noch nicht mit der Steuerbehörde verbunden",
+    "notConnectedSubtitle": "Verbinde dein digitales Zertifikat, um automatische Zuteilungsnummern für Rechnungen über ₪10.000 zu erhalten",
+    "connectCta": "Jetzt verbinden"
+  },
   "demo": {
     "reminderSentTitle": "Erinnerung gesendet",
     "reminderSentBody": "Erinnerung an {{name}} erfolgreich gesendet.",

@@ -1,9 +1,11 @@
 import { ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
-import { GradientBackground } from '@/components/ui';
+import { FileText } from 'lucide-react-native';
+import { EmptyState, GlassCard, GradientBackground } from '@/components/ui';
 import { InvoiceCard, PaymentRequestForm } from '@/components/receive';
 import { invoices } from '@/data/mockData';
+import { colors } from '@/constants/colors';
 
 export default function ReceiveScreen() {
   const { t } = useTranslation();
@@ -13,6 +15,7 @@ export default function ReceiveScreen() {
   );
   const draftInvoices = invoices.filter((i) => i.status === 'draft');
   const paidInvoices = invoices.filter((i) => i.status === 'paid');
+  const hasAnyInvoice = invoices.length > 0;
 
   return (
     <GradientBackground variant="bgRich">
@@ -33,22 +36,37 @@ export default function ReceiveScreen() {
             <PaymentRequestForm />
           </View>
 
-          <View className="px-5 mb-3 flex-row items-center justify-between">
-            <Text className="text-white font-heebo-bold text-lg">
-              {t('receive.openInvoices')}
-            </Text>
-            <Text className="text-white/45 font-heebo-medium text-xs">
-              {t('receive.openInvoicesCount', { count: openInvoices.length })}
-            </Text>
-          </View>
+          {!hasAnyInvoice ? (
+            <View className="px-5">
+              <GlassCard variant="subtle">
+                <EmptyState
+                  icon={<FileText color={colors.violetGlow} size={28} strokeWidth={1.8} />}
+                  title={t('empty.invoices')}
+                  subtitle={t('empty.invoicesSubtitle')}
+                />
+              </GlassCard>
+            </View>
+          ) : null}
 
-          <View className="px-5 gap-2.5 mb-6">
-            {openInvoices.map((inv) => (
-              <InvoiceCard key={inv.id} invoice={inv} />
-            ))}
-          </View>
+          {openInvoices.length > 0 ? (
+            <>
+              <View className="px-5 mb-3 flex-row items-center justify-between">
+                <Text className="text-white font-heebo-bold text-lg">
+                  {t('receive.openInvoices')}
+                </Text>
+                <Text className="text-white/45 font-heebo-medium text-xs">
+                  {t('receive.openInvoicesCount', { count: openInvoices.length })}
+                </Text>
+              </View>
+              <View className="px-5 gap-2.5 mb-6">
+                {openInvoices.map((inv) => (
+                  <InvoiceCard key={inv.id} invoice={inv} />
+                ))}
+              </View>
+            </>
+          ) : null}
 
-          {draftInvoices.length > 0 && (
+          {draftInvoices.length > 0 ? (
             <>
               <View className="px-5 mb-3">
                 <Text className="text-white font-heebo-bold text-lg">{t('receive.drafts')}</Text>
@@ -59,9 +77,9 @@ export default function ReceiveScreen() {
                 ))}
               </View>
             </>
-          )}
+          ) : null}
 
-          {paidInvoices.length > 0 && (
+          {paidInvoices.length > 0 ? (
             <>
               <View className="px-5 mb-3">
                 <Text className="text-white font-heebo-bold text-lg">
@@ -74,7 +92,7 @@ export default function ReceiveScreen() {
                 ))}
               </View>
             </>
-          )}
+          ) : null}
         </ScrollView>
       </SafeAreaView>
     </GradientBackground>

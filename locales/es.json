@@ -191,6 +191,26 @@
     "signupDisabled": "Registros desactivados actualmente",
     "unknown": "Error desconocido — vuelve a intentarlo"
   },
+  "empty": {
+    "transactions": "La actividad aparecerá aquí",
+    "transactionsSubtitle": "Tus transferencias, facturas y pagos se mostrarán en cuanto empieces a recibir o enviar fondos",
+    "invoices": "Aún no hay facturas",
+    "invoicesSubtitle": "Crea tu primera factura usando el formulario de arriba",
+    "contacts": "Aún no hay contactos",
+    "contactsSubtitle": "Añade un primer contacto al que enviar un pago",
+    "addFirstContact": "Añadir primer contacto",
+    "taxReport": "Aún no hay datos fiscales",
+    "taxReportSubtitle": "Tu informe fiscal se calcula automáticamente cuando tengas ingresos este mes",
+    "aiInsights": "La información de IA aparece con actividad",
+    "aiInsightsSubtitle": "A medida que acumules facturas y gastos, la IA sugerirá oportunidades de ahorro",
+    "balance": "0",
+    "noChange": "—"
+  },
+  "taxAuthority": {
+    "notConnectedTitle": "Aún no conectado a la Autoridad Fiscal",
+    "notConnectedSubtitle": "Conecta tu certificado digital para recibir números de asignación automáticos en facturas superiores a ₪10.000",
+    "connectCta": "Conectar ahora"
+  },
   "demo": {
     "reminderSentTitle": "Recordatorio enviado",
     "reminderSentBody": "Recordatorio enviado a {{name}} con éxito.",

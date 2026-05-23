@@ -191,6 +191,26 @@
     "signupDisabled": "Signups are currently disabled",
     "unknown": "Unknown error — please try again"
   },
+  "empty": {
+    "transactions": "Activity will appear here",
+    "transactionsSubtitle": "Your transfers, invoices, and payments will show up as soon as you start receiving or sending funds",
+    "invoices": "No invoices yet",
+    "invoicesSubtitle": "Create your first invoice using the form above",
+    "contacts": "No contacts yet",
+    "contactsSubtitle": "Add a first contact to send a payment to",
+    "addFirstContact": "Add your first contact",
+    "taxReport": "No tax data yet",
+    "taxReportSubtitle": "Your tax report is calculated automatically once you have income this month",
+    "aiInsights": "AI insights appear with activity",
+    "aiInsightsSubtitle": "As you accumulate invoices and expenses, AI will suggest savings opportunities",
+    "balance": "0",
+    "noChange": "—"
+  },
+  "taxAuthority": {
+    "notConnectedTitle": "Not connected to Tax Authority yet",
+    "notConnectedSubtitle": "Connect your digital certificate to get automatic Allocation Numbers on invoices above ₪10,000",
+    "connectCta": "Connect now"
+  },
   "demo": {
     "reminderSentTitle": "Reminder sent",
     "reminderSentBody": "Reminder sent to {{name}} successfully.",

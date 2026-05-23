@@ -191,6 +191,26 @@
     "signupDisabled": "Inscriptions actuellement désactivées",
     "unknown": "Erreur inconnue — réessayez"
   },
+  "empty": {
+    "transactions": "L'activité apparaîtra ici",
+    "transactionsSubtitle": "Vos virements, factures et paiements s'afficheront dès que vous commencerez à recevoir ou envoyer des fonds",
+    "invoices": "Pas encore de factures",
+    "invoicesSubtitle": "Créez votre première facture à l'aide du formulaire ci-dessus",
+    "contacts": "Pas encore de contacts",
+    "contactsSubtitle": "Ajoutez un premier contact pour lui envoyer un paiement",
+    "addFirstContact": "Ajouter le premier contact",
+    "taxReport": "Pas encore de données fiscales",
+    "taxReportSubtitle": "Votre rapport fiscal est calculé automatiquement dès que vous avez des revenus ce mois-ci",
+    "aiInsights": "Les analyses IA apparaissent avec l'activité",
+    "aiInsightsSubtitle": "Au fur et à mesure que vous accumulez des factures et des dépenses, l'IA suggérera des économies",
+    "balance": "0",
+    "noChange": "—"
+  },
+  "taxAuthority": {
+    "notConnectedTitle": "Pas encore connecté à l'Autorité Fiscale",
+    "notConnectedSubtitle": "Connectez votre certificat numérique pour obtenir des numéros d'allocation automatiques sur les factures de plus de ₪10 000",
+    "connectCta": "Se connecter"
+  },
   "demo": {
     "reminderSentTitle": "Rappel envoyé",
     "reminderSentBody": "Rappel envoyé à {{name}} avec succès.",

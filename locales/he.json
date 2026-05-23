@@ -191,6 +191,26 @@
     "signupDisabled": "ההרשמה כרגע מושבתת",
     "unknown": "שגיאה לא ידועה — נסה שוב"
   },
+  "empty": {
+    "transactions": "פעילות תופיע כאן",
+    "transactionsSubtitle": "ההעברות, החשבוניות והתשלומים שלך יופיעו ברגע שתתחיל לקבל או לשלוח כספים",
+    "invoices": "אין חשבוניות עדיין",
+    "invoicesSubtitle": "צור את החשבונית הראשונה שלך עם הטופס למעלה",
+    "contacts": "אין אנשי קשר עדיין",
+    "contactsSubtitle": "הוסף איש קשר ראשון כדי לשלוח אליו תשלום",
+    "addFirstContact": "הוסף איש קשר ראשון",
+    "taxReport": "אין נתוני מס עדיין",
+    "taxReportSubtitle": "דוח המס יחושב אוטומטית ברגע שיהיו לך הכנסות החודש",
+    "aiInsights": "תובנות AI יופיעו עם פעילות",
+    "aiInsightsSubtitle": "ככל שיהיו לך יותר חשבוניות והוצאות, ה-AI יציע הזדמנויות חיסכון",
+    "balance": "0",
+    "noChange": "—"
+  },
+  "taxAuthority": {
+    "notConnectedTitle": "עוד לא מחובר לרשות המסים",
+    "notConnectedSubtitle": "חבר את התעודה הדיגיטלית שלך כדי לקבל מספרי הקצאה אוטומטיים בחשבוניות מעל ₪10,000",
+    "connectCta": "חבר עכשיו"
+  },
   "demo": {
     "reminderSentTitle": "תזכורת נשלחה",
     "reminderSentBody": "התזכורת נשלחה ל-{{name}} בהצלחה.",
