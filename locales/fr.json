@@ -74,7 +74,8 @@
     "shareQr": "Partager le QR",
     "copyLink": "Copier le lien",
     "shareMessage": "Demande de paiement : {{amount}}",
-    "allocationBanner": "Cette facture recevra un numéro d'allocation automatique de l'Autorité Fiscale israélienne"
+    "allocationBanner": "Cette facture recevra un numéro d'allocation automatique de l'Autorité Fiscale israélienne",
+    "allocationPendingBanner": "Cette facture nécessite un numéro d'allocation. Connectez votre certificat numérique de l'Autorité Fiscale pour l'émettre automatiquement"
   },
   "invoice": {
     "status": {
@@ -100,7 +101,9 @@
     "done": "Terminé",
     "noDescription": "Aucune description",
     "shareMessage": "Facture {{amount}} · Allocation : {{allocation}}",
-    "allocationPending": "En attente d'approbation de l'Autorité Fiscale..."
+    "allocationPending": "En attente d'approbation de l'Autorité Fiscale...",
+    "allocationPendingTitle": "Allocation en attente — Autorité Fiscale",
+    "allocationPendingSubtitle": "Cette facture nécessite un numéro d'allocation. Connectez votre certificat numérique."
   },
   "send": {
     "title": "Envoyer un paiement",

@@ -74,7 +74,8 @@
     "shareQr": "Compartir QR",
     "copyLink": "Copiar enlace",
     "shareMessage": "Solicitud de pago: {{amount}}",
-    "allocationBanner": "Esta factura recibirá un número de asignación automático de la Autoridad Fiscal de Israel"
+    "allocationBanner": "Esta factura recibirá un número de asignación automático de la Autoridad Fiscal de Israel",
+    "allocationPendingBanner": "Esta factura necesita un número de asignación. Conecta tu certificado digital de la Autoridad Fiscal para emitirlo automáticamente"
   },
   "invoice": {
     "status": {
@@ -100,7 +101,9 @@
     "done": "Listo",
     "noDescription": "Sin descripción",
     "shareMessage": "Factura {{amount}} · Asignación: {{allocation}}",
-    "allocationPending": "Esperando aprobación de la Autoridad Fiscal..."
+    "allocationPending": "Esperando aprobación de la Autoridad Fiscal...",
+    "allocationPendingTitle": "Asignación pendiente — Autoridad Fiscal",
+    "allocationPendingSubtitle": "Esta factura requiere un número de asignación. Conecta tu certificado digital."
   },
   "send": {
     "title": "Enviar pago",

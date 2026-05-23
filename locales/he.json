@@ -74,7 +74,8 @@
     "shareQr": "שתף QR",
     "copyLink": "העתק לינק",
     "shareMessage": "בקשת תשלום: {{amount}}",
-    "allocationBanner": "חשבונית זו תקבל מספר הקצאה אוטומטי מרשות המסים"
+    "allocationBanner": "חשבונית זו תקבל מספר הקצאה אוטומטי מרשות המסים",
+    "allocationPendingBanner": "חשבונית זו תידרש מספר הקצאה. חבר את התעודה הדיגיטלית לרשות המסים כדי להנפיק אותו אוטומטית"
   },
   "invoice": {
     "status": {
@@ -100,7 +101,9 @@
     "done": "סיום",
     "noDescription": "ללא תיאור",
     "shareMessage": "חשבונית {{amount}} · מספר הקצאה: {{allocation}}",
-    "allocationPending": "ממתין לאישור רשות המסים..."
+    "allocationPending": "ממתין לאישור רשות המסים...",
+    "allocationPendingTitle": "ממתין להקצאה מרשות המסים",
+    "allocationPendingSubtitle": "חשבונית זו דורשת מספר הקצאה. חבר את התעודה הדיגיטלית כדי להנפיק אותו."
   },
   "send": {
     "title": "שליחת תשלום",

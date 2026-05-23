@@ -13,11 +13,12 @@ import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
 import QRCode from 'react-native-qrcode-svg';
-import { Copy, FileText, Share2, ShieldCheck } from 'lucide-react-native';
+import { Copy, FileText, Share2, ShieldOff } from 'lucide-react-native';
 import { GlassCard, PrimaryButton } from '@/components/ui';
 import { colors } from '@/constants/colors';
 import { ALLOCATION_THRESHOLD_ILS, currencies } from '@/data/mockData';
 import { formatCurrency } from '@/lib/format';
+import { useAuth } from '@/providers/AuthProvider';
 import type { CurrencyCode } from '@/types';
 
 const CURRENCY_OPTIONS: CurrencyCode[] = ['ILS', 'USD', 'EUR', 'GBP'];
@@ -40,6 +41,7 @@ function buildPaymentUrl(params: {
 export function PaymentRequestForm() {
   const { t } = useTranslation();
   const router = useRouter();
+  const { user } = useAuth();
   const [currency, setCurrency] = useState<CurrencyCode>('ILS');
   const [amount, setAmount] = useState('');
   const [description, setDescription] = useState('');
@@ -49,17 +51,23 @@ export function PaymentRequestForm() {
   const amountIls = isValid ? parsed * currencies[currency].rateToIls : 0;
   const requiresAllocation = amountIls > ALLOCATION_THRESHOLD_ILS;
 
+  // Recipient slug for the payment URL — taken from the authenticated user.
+  // No hardcoded persona slug. Until a public-facing username field is added
+  // to the profile, we use the user's UUID. The URL is informational only
+  // until the globalbiz.me/pay landing page is built.
+  const recipientSlug = user?.id ?? '';
+
   const paymentUrl = useMemo(
     () =>
-      isValid
+      isValid && recipientSlug
         ? buildPaymentUrl({
-            to: 'shira-cohen',
+            to: recipientSlug,
             amount: parsed,
             currency,
             description: description.trim() || undefined,
           })
         : '',
-    [isValid, parsed, currency, description],
+    [isValid, parsed, currency, description, recipientSlug],
   );
 
   const tap = () => {
@@ -246,10 +254,10 @@ export function PaymentRequestForm() {
         )}
 
         {requiresAllocation && (
-          <View className="bg-mint/15 border border-mint/40 rounded-2xl px-3.5 py-3 flex-row items-start gap-2.5">
-            <ShieldCheck color={colors.mint} size={18} strokeWidth={2.4} />
-            <Text className="flex-1 text-mint font-heebo-medium text-[13px] leading-5">
-              🛡️ {t('receive.allocationBanner')}
+          <View className="bg-white/5 border border-white/20 rounded-2xl px-3.5 py-3 flex-row items-start gap-2.5">
+            <ShieldOff color={colors.muted} size={18} strokeWidth={2.2} />
+            <Text className="flex-1 text-white/70 font-heebo-medium text-[13px] leading-5">
+              {t('receive.allocationPendingBanner')}
             </Text>
           </View>
         )}

@@ -74,7 +74,8 @@
     "shareQr": "QR teilen",
     "copyLink": "Link kopieren",
     "shareMessage": "Zahlungsanforderung: {{amount}}",
-    "allocationBanner": "Diese Rechnung erhält automatisch eine Zuteilungsnummer der isr. Steuerbehörde"
+    "allocationBanner": "Diese Rechnung erhält automatisch eine Zuteilungsnummer der isr. Steuerbehörde",
+    "allocationPendingBanner": "Diese Rechnung benötigt eine Zuteilungsnummer. Verbinde dein digitales Zertifikat, um sie automatisch zu erhalten"
   },
   "invoice": {
     "status": {
@@ -100,7 +101,9 @@
     "done": "Fertig",
     "noDescription": "Keine Beschreibung",
     "shareMessage": "Rechnung {{amount}} · Zuteilung: {{allocation}}",
-    "allocationPending": "Warte auf Genehmigung der Steuerbehörde..."
+    "allocationPending": "Warte auf Genehmigung der Steuerbehörde...",
+    "allocationPendingTitle": "Zuteilung ausstehend — Steuerbehörde",
+    "allocationPendingSubtitle": "Diese Rechnung benötigt eine Zuteilungsnummer. Verbinde dein digitales Zertifikat."
   },
   "send": {
     "title": "Zahlung senden",

@@ -1,6 +1,5 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import {
-  ActivityIndicator,
   Platform,
   Pressable,
   ScrollView,
@@ -19,36 +18,11 @@ import Animated, {
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
-import { ShieldCheck, Share2, X } from 'lucide-react-native';
+import { CheckCircle2, Share2, ShieldOff, X } from 'lucide-react-native';
 import { GlassCard, GradientBackground, PrimaryButton } from '@/components/ui';
 import { colors } from '@/constants/colors';
 import { formatCurrency, formatFullDateTime } from '@/lib/format';
 import type { CurrencyCode } from '@/types';
-
-type Step = 'connecting' | 'verifying' | 'receiving' | 'success';
-
-const PROGRESS_STEPS: Step[] = ['connecting', 'verifying', 'receiving'];
-
-function StepProgress({ current }: { current: Step }) {
-  const currentIdx = PROGRESS_STEPS.indexOf(current);
-  const isSuccess = current === 'success';
-  return (
-    <View className="flex-row gap-2 mt-6">
-      {PROGRESS_STEPS.map((s, idx) => {
-        const isActive = isSuccess || idx <= currentIdx;
-        return (
-          <View
-            key={s}
-            className={`h-1.5 rounded-full ${
-              isActive ? 'bg-mint' : 'bg-white/15'
-            }`}
-            style={{ width: isActive ? 32 : 24 }}
-          />
-        );
-      })}
-    </View>
-  );
-}
 
 function DetailRow({ label, value }: { label: string; value: string }) {
   return (
@@ -73,56 +47,28 @@ export default function InvoiceCreatedScreen() {
   const parsed = parseFloat(params.amount ?? '0');
   const currency: CurrencyCode = params.currency ?? 'ILS';
   const description = params.description ?? '';
-
-  const [step, setStep] = useState<Step>(
-    requiresAllocation ? 'connecting' : 'success',
-  );
-
-  const allocationNumber = useMemo(() => {
-    const n = Math.floor(Math.random() * 99999999)
-      .toString()
-      .padStart(8, '0');
-    return `2026-IL-${n}`;
-  }, []);
-
   const createdAtIso = useMemo(() => new Date().toISOString(), []);
 
-  useEffect(() => {
-    if (!requiresAllocation) return;
-    const t1 = setTimeout(() => setStep('verifying'), 850);
-    const t2 = setTimeout(() => setStep('receiving'), 1700);
-    const t3 = setTimeout(() => setStep('success'), 2550);
-    return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
-      clearTimeout(t3);
-    };
-  }, [requiresAllocation]);
+  // NOTE: Until the user's profile has a verified Tax Authority digital
+  // certificate, we cannot issue an allocation number. The previous code
+  // generated `2026-IL-XXXXXXXX` with Math.random — fake, misleading,
+  // and a regulatory hazard. Removed.
 
-  const shieldScale = useSharedValue(0);
-  const successOpacity = useSharedValue(0);
+  const iconScale = useSharedValue(0);
+  const bodyOpacity = useSharedValue(0);
 
   useEffect(() => {
-    if (step === 'success') {
-      shieldScale.value = withDelay(80, withSpring(1, { damping: 9, stiffness: 110 }));
-      successOpacity.value = withDelay(220, withTiming(1, { duration: 400 }));
-      if (Platform.OS !== 'web') {
-        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
-      }
+    iconScale.value = withDelay(80, withSpring(1, { damping: 9, stiffness: 110 }));
+    bodyOpacity.value = withDelay(220, withTiming(1, { duration: 400 }));
+    if (Platform.OS !== 'web') {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
     }
-  }, [step, shieldScale, successOpacity]);
+  }, [iconScale, bodyOpacity]);
 
-  const shieldStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: shieldScale.value }],
+  const iconStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: iconScale.value }],
   }));
-  const successStyle = useAnimatedStyle(() => ({ opacity: successOpacity.value }));
-
-  const stepLabel = (s: Step): string => {
-    if (s === 'connecting') return `🔐 ${t('invoice.steps.connecting')}`;
-    if (s === 'verifying') return `📋 ${t('invoice.steps.verifying')}`;
-    if (s === 'receiving') return `✓ ${t('invoice.steps.receiving')}`;
-    return t('invoice.steps.success');
-  };
+  const bodyStyle = useAnimatedStyle(() => ({ opacity: bodyOpacity.value }));
 
   const handleShare = async () => {
     if (Platform.OS !== 'web') {
@@ -132,104 +78,75 @@ export default function InvoiceCreatedScreen() {
       await Share.share({
         message: t('invoice.shareMessage', {
           amount: formatCurrency(parsed, currency),
-          allocation: requiresAllocation ? allocationNumber : '—',
+          allocation: '—',
         }),
       });
     } catch {
-      // ignore
+      // user cancelled or unsupported
     }
   };
 
-  const renderHeader = () => (
-    <View className="flex-row items-center justify-between px-5 pt-3 pb-3">
-      <Pressable
-        onPress={() => router.dismissAll()}
-        className="w-10 h-10 rounded-full bg-glass-strong border border-glass-border items-center justify-center"
-        style={({ pressed }) => pressed && { opacity: 0.7 }}
-      >
-        <X color={colors.white} size={18} strokeWidth={2.5} />
-      </Pressable>
-      <Text className="text-white font-heebo-bold text-base">
-        {step === 'success' ? t('invoice.createdTitle') : ''}
-      </Text>
-      <View style={{ width: 40 }} />
-    </View>
-  );
-
-  if (step !== 'success') {
-    return (
-      <GradientBackground variant="bgRich">
-        <SafeAreaView style={{ flex: 1 }} edges={['top']}>
-          {renderHeader()}
-          <View className="flex-1 items-center justify-center px-8">
-            <View className="w-24 h-24 rounded-full bg-glass-strong border border-glass-border items-center justify-center">
-              <ActivityIndicator size="large" color={colors.violetGlow} />
-            </View>
-            <Text className="text-white font-heebo-bold text-lg mt-6 text-center">
-              {stepLabel(step)}
-            </Text>
-            <StepProgress current={step} />
-          </View>
-        </SafeAreaView>
-      </GradientBackground>
-    );
-  }
+  const heroVariant = requiresAllocation ? 'subtle' : 'primary';
+  const iconCircleClass = requiresAllocation
+    ? 'bg-glass-strong border-white/30'
+    : 'bg-violet-base/20 border-violet-glow';
+  const iconColor = requiresAllocation ? colors.muted : colors.violetGlow;
+  const heroTitle = requiresAllocation
+    ? t('invoice.allocationPendingTitle')
+    : t('invoice.createdTitle');
+  const heroSubtitle = requiresAllocation
+    ? t('invoice.allocationPendingSubtitle')
+    : null;
 
   return (
     <GradientBackground variant="bgRich">
       <SafeAreaView style={{ flex: 1 }} edges={['top']}>
-        {renderHeader()}
+        <View className="flex-row items-center justify-between px-5 pt-3 pb-3">
+          <Pressable
+            onPress={() => router.dismissAll()}
+            className="w-10 h-10 rounded-full bg-glass-strong border border-glass-border items-center justify-center"
+            style={({ pressed }) => pressed && { opacity: 0.7 }}
+          >
+            <X color={colors.white} size={18} strokeWidth={2.5} />
+          </Pressable>
+          <Text className="text-white font-heebo-bold text-base">
+            {t('invoice.createdTitle')}
+          </Text>
+          <View style={{ width: 40 }} />
+        </View>
+
         <ScrollView
           contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 40 }}
           showsVerticalScrollIndicator={false}
         >
-          <GlassCard variant={requiresAllocation ? 'mint' : 'primary'}>
+          <GlassCard variant={heroVariant}>
             <View className="p-6 items-center">
-              <Animated.View style={shieldStyle}>
+              <Animated.View style={iconStyle}>
                 <View
-                  className={`w-28 h-28 rounded-full items-center justify-center border-2 ${
-                    requiresAllocation ? 'bg-mint/20 border-mint' : 'bg-violet-base/20 border-violet-glow'
-                  }`}
+                  className={`w-28 h-28 rounded-full items-center justify-center border-2 ${iconCircleClass}`}
                 >
-                  <ShieldCheck
-                    color={requiresAllocation ? colors.mint : colors.violetGlow}
-                    size={60}
-                    strokeWidth={2.5}
-                  />
+                  {requiresAllocation ? (
+                    <ShieldOff color={iconColor} size={60} strokeWidth={2.2} />
+                  ) : (
+                    <CheckCircle2 color={iconColor} size={60} strokeWidth={2.5} />
+                  )}
                 </View>
               </Animated.View>
 
-              <Animated.View style={[successStyle, { alignItems: 'center', marginTop: 20 }]}>
-                {requiresAllocation && (
-                  <Text className="text-mint font-heebo-bold text-base mb-3">
-                    🛡️ {t('invoice.taxAuthorityVerified')} ✓
+              <Animated.View style={[bodyStyle, { alignItems: 'center', marginTop: 20 }]}>
+                <Text className="text-white font-heebo-bold text-xl text-center">
+                  {heroTitle}
+                </Text>
+                {heroSubtitle ? (
+                  <Text className="text-white/55 font-heebo text-sm text-center mt-2 leading-5">
+                    {heroSubtitle}
                   </Text>
-                )}
-                {requiresAllocation ? (
-                  <>
-                    <Text className="text-white/55 font-heebo text-xs">
-                      {t('invoice.allocationNumberLabel')}
-                    </Text>
-                    <Text
-                      className="text-white font-heebo-bold mt-1"
-                      style={{ fontSize: 22, letterSpacing: 1, fontFamily: 'Heebo_700Bold' }}
-                    >
-                      {allocationNumber}
-                    </Text>
-                    <Text className="text-mint font-heebo-medium text-xs mt-2">
-                      {t('invoice.validForVat')} ✓
-                    </Text>
-                  </>
-                ) : (
-                  <Text className="text-white font-heebo-bold text-2xl mt-1">
-                    {t('invoice.createdTitle')}
-                  </Text>
-                )}
+                ) : null}
               </Animated.View>
             </View>
           </GlassCard>
 
-          <Animated.View style={[successStyle, { marginTop: 20 }]}>
+          <Animated.View style={[bodyStyle, { marginTop: 20 }]}>
             <GlassCard variant="subtle">
               <View className="px-5">
                 <DetailRow
@@ -250,14 +167,23 @@ export default function InvoiceCreatedScreen() {
             </GlassCard>
           </Animated.View>
 
-          <Animated.View style={[successStyle, { marginTop: 24, gap: 10 }]}>
-            <PrimaryButton
-              label={t('invoice.shareInvoice')}
-              onPress={handleShare}
-              variant="primary"
-              size="md"
-              icon={<Share2 color={colors.white} size={18} strokeWidth={2.2} />}
-            />
+          <Animated.View style={[bodyStyle, { marginTop: 24, gap: 10 }]}>
+            {requiresAllocation ? (
+              <PrimaryButton
+                label={t('taxAuthority.connectCta')}
+                onPress={() => router.dismissAll()}
+                variant="primary"
+                size="md"
+              />
+            ) : (
+              <PrimaryButton
+                label={t('invoice.shareInvoice')}
+                onPress={handleShare}
+                variant="primary"
+                size="md"
+                icon={<Share2 color={colors.white} size={18} strokeWidth={2.2} />}
+              />
+            )}
             <PrimaryButton
               label={t('invoice.done')}
               onPress={() => router.dismissAll()}

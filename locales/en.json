@@ -74,7 +74,8 @@
     "shareQr": "Share QR",
     "copyLink": "Copy link",
     "shareMessage": "Payment request: {{amount}}",
-    "allocationBanner": "This invoice will receive an automatic Allocation Number from Israeli Tax Authority"
+    "allocationBanner": "This invoice will receive an automatic Allocation Number from Israeli Tax Authority",
+    "allocationPendingBanner": "This invoice will need an Allocation Number. Connect your Tax Authority digital certificate to issue it automatically"
   },
   "invoice": {
     "status": {
@@ -100,7 +101,9 @@
     "done": "Done",
     "noDescription": "No description",
     "shareMessage": "Invoice {{amount}} · Allocation: {{allocation}}",
-    "allocationPending": "Awaiting Tax Authority approval..."
+    "allocationPending": "Awaiting Tax Authority approval...",
+    "allocationPendingTitle": "Allocation pending Tax Authority",
+    "allocationPendingSubtitle": "This invoice requires an Allocation Number. Connect your digital certificate to issue it."
   },
   "send": {
     "title": "Send Payment",
