@@ -11,7 +11,90 @@
     "changeFromLastMonth": "+{{percent}}% מהחודש שעבר",
     "recentActivity": "פעילות אחרונה",
     "viewAll": "הצג הכל",
-    "taxAuthorityConnected": "מחובר לרשות המסים"
+    "taxAuthorityConnected": "מחובר לרשות המסים",
+    "earlyAccessTagline": "אתה ברשימת ההמתנה ל-Early Access"
+  },
+  "common": {
+    "ok": "אישור",
+    "close": "סגור",
+    "cancel": "ביטול",
+    "copied": "הועתק ✓",
+    "copyFailed": "ההעתקה נכשלה",
+    "yes": "כן",
+    "no": "לא"
+  },
+  "onboarding": {
+    "title": "התקדמות ההצטרפות",
+    "accountCreated": "החשבון נוצר",
+    "profileCompleted": "הפרופיל מולא",
+    "waitlistSubmitted": "טופס רשימת המתנה נשלח",
+    "waitlistHint": "מלא את הטופס למטה כדי לסיים את ההצטרפות",
+    "earlyAccessReview": "Early Access — בבדיקה",
+    "earlyAccessGranted": "Early Access — אושר ✓",
+    "reviewHint": "ניצור איתך קשר תוך 7-14 ימי עסקים",
+    "bankingLocked": "גישה לתשלומים — נעולה",
+    "taxAuthorityLocked": "חיבור רשות המסים — נעול"
+  },
+  "waitlist": {
+    "title": "הצטרף לרשימת ההמתנה",
+    "updateTitle": "עדכן את הבקשה שלך",
+    "subtitle": "ספר לנו מה אתה צריך כדי שנדע להעביר אותך לראש הרשימה",
+    "country": "מדינת מגורים",
+    "countryPlaceholder": "ישראל",
+    "businessType": "תחום עיסוק",
+    "worksInternationally": "עובד עם לקוחות בינלאומיים?",
+    "monthlyIncome": "הכנסה חודשית בינלאומית משוערת",
+    "currentTools": "כלי תשלום שאתה משתמש בהם היום",
+    "referralSource": "איך הגעת אלינו?",
+    "referralPlaceholder": "חבר / רשת חברתית / חיפוש...",
+    "submitCta": "הצטרף לרשימת ההמתנה",
+    "updateCta": "עדכן בקשה",
+    "submitting": "שולח...",
+    "updating": "מעדכן...",
+    "submitted": "הבקשה נשלחה — נחזור אליך עם עדכון",
+    "updated": "הבקשה עודכנה",
+    "fillAllRequired": "מלא את כל השדות עם *",
+    "notAuthenticated": "צריך להתחבר כדי לשלוח בקשה"
+  },
+  "businessType": {
+    "developer": "מפתח/ת",
+    "designer": "מעצב/ת",
+    "consultant": "יועץ/ת",
+    "copywriter": "קופירייטר/ית",
+    "translator": "מתרגם/ת",
+    "marketing": "שיווק",
+    "accounting": "ראיית חשבון",
+    "other": "אחר"
+  },
+  "incomeRange": {
+    "lt_1k": "פחות מ-$1,000",
+    "1k_5k": "$1,000-$5,000",
+    "5k_20k": "$5,000-$20,000",
+    "gt_20k": "מעל $20,000"
+  },
+  "tools": {
+    "wise": "Wise",
+    "paypal": "PayPal",
+    "payoneer": "Payoneer",
+    "bank": "העברה בנקאית",
+    "other": "אחר"
+  },
+  "why": {
+    "sectionTitle": "למה GlobalBiz?",
+    "intlTitle": "לעצמאים שעובדים עם חו\"ל",
+    "intlBody": "תשלומים בדולר, יורו וליש\"ט בלי לרדוף אחרי שערים, עמלות מוסתרות או חשבונות בנק במדינות אחרות",
+    "taxTitle": "מוכן לחוק חשבוניות ישראל 2026",
+    "taxBody": "מ-1.1.2026, חשבונית מעל ₪10,000 חייבת מספר הקצאה מרשות המסים. אנחנו בונים את החיבור — אתה מקבל אותו אוטומטית",
+    "automationTitle": "אוטומציה במקום עבודה ידנית",
+    "automationBody": "חשבוניות, גביה, תזכורות תשלום, דוח מס חודשי, וקיזוז הוצאות — נעשים אוטומטית במקום להסיע נתונים בין כלים",
+    "bankTitle": "פתרון בשותפות עם בנק ישראלי",
+    "bankBody": "אנחנו בונים את GlobalBiz בשיתוף עם בנק מסחרי כדי שיהיו לך IBAN, כרטיס debit, ושירות פיקדונות אמיתיים — לא ארנק וירטואלי"
+  },
+  "locked": {
+    "receiveTitle": "קבלת תשלומים נעולה",
+    "receiveSubtitle": "פתיחת חשבונות מולטי-מטבע + מספרי הקצאה לרשות המסים יזמינו אחרי שאישור Early Access יתקבל. נודיע לך באימייל ברגע שמתחילים",
+    "sendTitle": "שליחת תשלומים נעולה",
+    "sendSubtitle": "העברות לקבלני משנה והמרות מטבע יזמינו אחרי שאישור Early Access יתקבל. אתה ברשימת ההמתנה."
   },
   "actions": {
     "send": "שליחה",
@@ -125,13 +208,6 @@
     "successBody": "{{amount}} ל-{{name}}",
     "done": "סיום",
     "enterAmount": "הזן סכום"
-  },
-  "common": {
-    "ok": "אישור",
-    "close": "סגור",
-    "cancel": "ביטול",
-    "copied": "הועתק ✓",
-    "copyFailed": "ההעתקה נכשלה"
   },
   "auth": {
     "welcomeBack": "ברוך שובך",

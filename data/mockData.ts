@@ -1,27 +1,11 @@
-// Production "empty" state — no demo records.
+// Reference data only. No user records, no demo personas, no balances.
 //
-// The only data exported from this module now is REFERENCE DATA that the
-// app needs regardless of whether the user has any activity:
-//   - currencies      : FX symbols + indicative ILS conversion rates
-//   - toIls           : helper used by formatters
-//   - ALLOCATION_THRESHOLD_ILS : the regulatory threshold for Israeli
-//                       Tax Authority invoice allocation (₪10K → ₪5K)
-//   - quickActions    : the 4 navigation actions on Home
-//
-// All previously-demoed records (user persona, balances, transactions,
-// contacts, invoices, tax report, AI insights) are removed. Screens
-// now render proper empty-state UIs until real data is wired in.
+// Kept here because format.ts + CurrencyFlag still need the currency
+// table (symbols + flags + indicative ILS rates) to render UI labels
+// for future locked features. None of these values are user-specific
+// and none are persisted; they're constants of the financial UI shell.
 
-import type {
-  Balance,
-  Contact,
-  Currency,
-  CurrencyCode,
-  Invoice,
-  QuickAction,
-  TaxReport,
-  Transaction,
-} from '@/types';
+import type { Currency, CurrencyCode } from '@/types';
 
 export const currencies: Record<CurrencyCode, Currency> = {
   ILS: { code: 'ILS', symbol: '₪', name: 'שקל ישראלי', flag: '🇮🇱', rateToIls: 1 },
@@ -32,23 +16,3 @@ export const currencies: Record<CurrencyCode, Currency> = {
 
 export const toIls = (amount: number, currency: CurrencyCode): number =>
   amount * currencies[currency].rateToIls;
-
-export const ALLOCATION_THRESHOLD_ILS = 10000;
-
-// ---------- Empty data sets — real values come from Supabase ----------
-
-export const balances: Balance[] = [];
-export const totalBalanceIls: number = 0;
-export const transactions: Transaction[] = [];
-export const contacts: Contact[] = [];
-export const invoices: Invoice[] = [];
-export const taxReport: TaxReport | null = null;
-
-// ---------- Navigation actions (not user data) ----------
-
-export const quickActions: QuickAction[] = [
-  { id: 'qa-send', labelHe: 'שליחה', icon: 'send', route: '/send' },
-  { id: 'qa-receive', labelHe: 'קבלה', icon: 'receive', route: '/receive' },
-  { id: 'qa-invoice', labelHe: 'חשבונית', icon: 'invoice', route: '/receive' },
-  { id: 'qa-convert', labelHe: 'המרה', icon: 'convert', route: '/' },
-];

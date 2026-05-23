@@ -11,7 +11,81 @@
     "changeFromLastMonth": "+{{percent}}% gegenüber dem Vormonat",
     "recentActivity": "Letzte Aktivität",
     "viewAll": "Alle anzeigen",
-    "taxAuthorityConnected": "Mit Steuerbehörde verbunden"
+    "taxAuthorityConnected": "Mit Steuerbehörde verbunden",
+    "earlyAccessTagline": "Du bist auf der Early-Access-Warteliste"
+  },
+  "onboarding": {
+    "title": "Onboarding-Fortschritt",
+    "accountCreated": "Konto erstellt",
+    "profileCompleted": "Profil vervollständigt",
+    "waitlistSubmitted": "Warteliste-Antrag gesendet",
+    "waitlistHint": "Fülle das Formular unten aus, um das Onboarding abzuschließen",
+    "earlyAccessReview": "Early Access — in Prüfung",
+    "earlyAccessGranted": "Early Access — genehmigt ✓",
+    "reviewHint": "Wir melden uns innerhalb von 7-14 Werktagen",
+    "bankingLocked": "Zahlungszugriff — gesperrt",
+    "taxAuthorityLocked": "Steuerbehörde-Integration — gesperrt"
+  },
+  "waitlist": {
+    "title": "Trete der Warteliste bei",
+    "updateTitle": "Antrag aktualisieren",
+    "subtitle": "Sag uns, was du brauchst, damit wir dich priorisieren können",
+    "country": "Wohnsitzland",
+    "countryPlaceholder": "Israel",
+    "businessType": "Geschäftsart",
+    "worksInternationally": "Arbeitest du mit internationalen Kunden?",
+    "monthlyIncome": "Geschätztes monatliches internationales Einkommen",
+    "currentTools": "Aktuell genutzte Zahlungstools",
+    "referralSource": "Wie hast du von uns erfahren?",
+    "referralPlaceholder": "Freund / Social / Suche...",
+    "submitCta": "Warteliste beitreten",
+    "updateCta": "Antrag aktualisieren",
+    "submitting": "Wird gesendet...",
+    "updating": "Wird aktualisiert...",
+    "submitted": "Antrag gesendet — wir melden uns",
+    "updated": "Antrag aktualisiert",
+    "fillAllRequired": "Fülle alle Felder mit * aus",
+    "notAuthenticated": "Anmelden zum Einreichen"
+  },
+  "businessType": {
+    "developer": "Entwickler:in",
+    "designer": "Designer:in",
+    "consultant": "Berater:in",
+    "copywriter": "Texter:in",
+    "translator": "Übersetzer:in",
+    "marketing": "Marketing",
+    "accounting": "Buchhaltung",
+    "other": "Andere"
+  },
+  "incomeRange": {
+    "lt_1k": "Weniger als $1.000",
+    "1k_5k": "$1.000-$5.000",
+    "5k_20k": "$5.000-$20.000",
+    "gt_20k": "Über $20.000"
+  },
+  "tools": {
+    "wise": "Wise",
+    "paypal": "PayPal",
+    "payoneer": "Payoneer",
+    "bank": "Banküberweisung",
+    "other": "Andere"
+  },
+  "why": {
+    "sectionTitle": "Warum GlobalBiz?",
+    "intlTitle": "Für Freelancer mit internationalen Kunden",
+    "intlBody": "USD, EUR und GBP empfangen ohne Wechselkurse, versteckte Gebühren oder ausländische Bankkonten",
+    "taxTitle": "Bereit für Israel Invoice Law 2026",
+    "taxBody": "Ab 1.1.2026 benötigen Rechnungen über ₪10.000 eine Zuteilungsnummer der isr. Steuerbehörde. Wir bauen die Integration — du bekommst sie automatisch",
+    "automationTitle": "Automatisierung statt Handarbeit",
+    "automationBody": "Rechnungen, Inkasso, Zahlungserinnerungen, monatlicher Steuerbericht und Ausgabenabgleich — automatisiert statt zwischen Tools zu jonglieren",
+    "bankTitle": "Mit einer israelischen Bank",
+    "bankBody": "GlobalBiz entsteht in Partnerschaft mit einer Geschäftsbank — echte IBAN, Debitkarte und Einlagen, kein virtuelles Wallet"
+  },
+  "locked": {
+    "receiveTitle": "Zahlungsempfang gesperrt",
+    "receiveSubtitle": "Multi-Währungs-Konten + automatische Zuteilungsnummern werden nach Early-Access-Freigabe verfügbar. Wir senden eine E-Mail",
+    "sendTitle": "Zahlungsversand gesperrt",
+    "sendSubtitle": "Auftragnehmer bezahlen und Währungsumtausch werden nach Early-Access-Freigabe verfügbar."
   },
   "actions": {
     "send": "Senden",
@@ -131,7 +205,9 @@
     "close": "Schließen",
     "cancel": "Abbrechen",
     "copied": "Kopiert ✓",
-    "copyFailed": "Kopieren fehlgeschlagen"
+    "copyFailed": "Kopieren fehlgeschlagen",
+    "yes": "Ja",
+    "no": "Nein"
   },
   "auth": {
     "welcomeBack": "Willkommen zurück",

@@ -11,7 +11,81 @@
     "changeFromLastMonth": "+{{percent}}% from last month",
     "recentActivity": "Recent Activity",
     "viewAll": "View all",
-    "taxAuthorityConnected": "Connected to Tax Authority"
+    "taxAuthorityConnected": "Connected to Tax Authority",
+    "earlyAccessTagline": "You're on the Early Access waitlist"
+  },
+  "onboarding": {
+    "title": "Onboarding progress",
+    "accountCreated": "Account created",
+    "profileCompleted": "Profile completed",
+    "waitlistSubmitted": "Waitlist application submitted",
+    "waitlistHint": "Fill out the form below to finish onboarding",
+    "earlyAccessReview": "Early Access — under review",
+    "earlyAccessGranted": "Early Access — approved ✓",
+    "reviewHint": "We'll get back to you within 7-14 business days",
+    "bankingLocked": "Payments access — locked",
+    "taxAuthorityLocked": "Tax Authority integration — locked"
+  },
+  "waitlist": {
+    "title": "Join the waitlist",
+    "updateTitle": "Update your application",
+    "subtitle": "Tell us what you need so we can prioritize your access",
+    "country": "Country of residence",
+    "countryPlaceholder": "Israel",
+    "businessType": "Business type",
+    "worksInternationally": "Work with international clients?",
+    "monthlyIncome": "Estimated monthly international income",
+    "currentTools": "Payment tools you currently use",
+    "referralSource": "How did you hear about us?",
+    "referralPlaceholder": "Friend / social / search...",
+    "submitCta": "Join the waitlist",
+    "updateCta": "Update application",
+    "submitting": "Submitting...",
+    "updating": "Updating...",
+    "submitted": "Application sent — we'll be in touch",
+    "updated": "Application updated",
+    "fillAllRequired": "Fill in all fields marked with *",
+    "notAuthenticated": "Sign in to submit"
+  },
+  "businessType": {
+    "developer": "Developer",
+    "designer": "Designer",
+    "consultant": "Consultant",
+    "copywriter": "Copywriter",
+    "translator": "Translator",
+    "marketing": "Marketing",
+    "accounting": "Accounting",
+    "other": "Other"
+  },
+  "incomeRange": {
+    "lt_1k": "Less than $1,000",
+    "1k_5k": "$1,000-$5,000",
+    "5k_20k": "$5,000-$20,000",
+    "gt_20k": "Over $20,000"
+  },
+  "tools": {
+    "wise": "Wise",
+    "paypal": "PayPal",
+    "payoneer": "Payoneer",
+    "bank": "Bank transfer",
+    "other": "Other"
+  },
+  "why": {
+    "sectionTitle": "Why GlobalBiz?",
+    "intlTitle": "For freelancers working internationally",
+    "intlBody": "Receive USD, EUR, and GBP without chasing exchange rates, hidden fees, or foreign bank accounts",
+    "taxTitle": "Ready for Israel Invoice law 2026",
+    "taxBody": "From 1.1.2026, invoices over ₪10,000 require an Allocation Number from the Israeli Tax Authority. We build the integration — you get it automatically",
+    "automationTitle": "Automation instead of manual work",
+    "automationBody": "Invoices, collections, payment reminders, monthly tax reports, expense reconciliation — handled automatically instead of moving data between tools",
+    "bankTitle": "Built with an Israeli bank",
+    "bankBody": "GlobalBiz is being built in partnership with a commercial bank — real IBAN, debit card, and deposits, not a virtual wallet"
+  },
+  "locked": {
+    "receiveTitle": "Receiving payments is locked",
+    "receiveSubtitle": "Multi-currency accounts + automatic Tax Authority Allocation Numbers unlock after Early Access approval. We'll email you when you're in",
+    "sendTitle": "Sending payments is locked",
+    "sendSubtitle": "Paying subcontractors and currency conversion unlock after Early Access approval. You're on the waitlist."
   },
   "actions": {
     "send": "Send",
@@ -131,7 +205,9 @@
     "close": "Close",
     "cancel": "Cancel",
     "copied": "Copied ✓",
-    "copyFailed": "Copy failed"
+    "copyFailed": "Copy failed",
+    "yes": "Yes",
+    "no": "No"
   },
   "auth": {
     "welcomeBack": "Welcome back",

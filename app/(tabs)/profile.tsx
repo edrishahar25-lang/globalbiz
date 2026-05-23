@@ -15,7 +15,6 @@ import {
 } from 'lucide-react-native';
 import { EmptyState, GlassCard, GradientBackground, PrimaryButton } from '@/components/ui';
 import {
-  AiInsightCard,
   LanguageSelector,
   SettingsRow,
   SettingsToggleRow,
@@ -23,7 +22,6 @@ import {
   TaxReportCard,
   UserCard,
 } from '@/components/profile';
-import { taxReport } from '@/data/mockData';
 import { colors } from '@/constants/colors';
 
 export default function ProfileScreen() {
@@ -92,20 +90,14 @@ export default function ProfileScreen() {
             <Text className="text-white font-heebo-bold text-lg">{t('profile.aiInsights')}</Text>
           </View>
           <View className="px-5 gap-2.5 mb-6">
-            {taxReport && taxReport.aiInsights.length > 0 ? (
-              taxReport.aiInsights.map((insight) => (
-                <AiInsightCard key={insight.id} insight={insight} />
-              ))
-            ) : (
-              <GlassCard variant="subtle">
-                <EmptyState
-                  compact
-                  icon={<Sparkles color={colors.violetGlow} size={24} strokeWidth={1.8} />}
-                  title={t('empty.aiInsights')}
-                  subtitle={t('empty.aiInsightsSubtitle')}
-                />
-              </GlassCard>
-            )}
+            <GlassCard variant="subtle">
+              <EmptyState
+                compact
+                icon={<Sparkles color={colors.violetGlow} size={24} strokeWidth={1.8} />}
+                title={t('empty.aiInsights')}
+                subtitle={t('empty.aiInsightsSubtitle')}
+              />
+            </GlassCard>
           </View>
 
           <View className="px-5 mb-3">

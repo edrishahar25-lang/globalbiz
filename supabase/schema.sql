@@ -3,36 +3,33 @@
 -- Idempotent: safe to run multiple times.
 
 -- ============================================================
--- 1) profiles — one row per user, populated on signup
+-- 0) shared updated_at trigger function (used by both tables)
 -- ============================================================
-create table if not exists public.profiles (
-  id uuid references auth.users(id) on delete cascade primary key,
-  full_name text not null,
-  business_name text,
-  preferred_language text not null default 'he',
-  created_at timestamp with time zone not null default now(),
-  updated_at timestamp with time zone not null default now()
-);
-
--- Trigger to keep updated_at fresh
 create or replace function public.touch_updated_at()
-returns trigger
-language plpgsql
-as $$
+returns trigger language plpgsql as $$
 begin
   new.updated_at = now();
   return new;
 end;
 $$;
 
+-- ============================================================
+-- 1) profiles — one row per auth user, populated on signup
+-- ============================================================
+create table if not exists public.profiles (
+  id                 uuid references auth.users(id) on delete cascade primary key,
+  full_name          text not null,
+  business_name      text,
+  preferred_language text not null default 'he',
+  created_at         timestamp with time zone not null default now(),
+  updated_at         timestamp with time zone not null default now()
+);
+
 drop trigger if exists profiles_touch_updated_at on public.profiles;
 create trigger profiles_touch_updated_at
   before update on public.profiles
   for each row execute function public.touch_updated_at();
 
--- ============================================================
--- 2) Row Level Security — users can only read/edit their own row
--- ============================================================
 alter table public.profiles enable row level security;
 
 drop policy if exists "Users can read own profile" on public.profiles;
@@ -51,10 +48,7 @@ create policy "Users can update own profile"
   using (auth.uid() = id)
   with check (auth.uid() = id);
 
--- ============================================================
--- 3) Optional: auto-create profile when a new auth user is added
---    (acts as a safety net if the client-side upsert fails)
--- ============================================================
+-- Server-side safety net for new signups
 create or replace function public.handle_new_user()
 returns trigger
 language plpgsql
@@ -78,3 +72,90 @@ drop trigger if exists on_auth_user_created on auth.users;
 create trigger on_auth_user_created
   after insert on auth.users
   for each row execute function public.handle_new_user();
+
+-- ============================================================
+-- 2) waitlist_users — Phase 2 early-access onboarding
+--    Each authed user fills out the waitlist form once;
+--    can update later. Admin grades them out-of-band by
+--    setting onboarding_status / early_access_priority in
+--    the dashboard or via SQL.
+-- ============================================================
+
+-- enums (drop & recreate cleanly if shape changes — safe via DO block)
+do $$
+begin
+  if not exists (select 1 from pg_type where typname = 'business_type') then
+    create type business_type as enum (
+      'developer', 'designer', 'consultant', 'copywriter',
+      'translator', 'marketing', 'accounting', 'other'
+    );
+  end if;
+  if not exists (select 1 from pg_type where typname = 'monthly_income_range') then
+    create type monthly_income_range as enum (
+      'lt_1k', '1k_5k', '5k_20k', 'gt_20k'
+    );
+  end if;
+  if not exists (select 1 from pg_type where typname = 'onboarding_status') then
+    create type onboarding_status as enum (
+      'pending', 'reviewing', 'approved', 'rejected'
+    );
+  end if;
+  if not exists (select 1 from pg_type where typname = 'early_access_priority') then
+    create type early_access_priority as enum (
+      'standard', 'high', 'urgent'
+    );
+  end if;
+end$$;
+
+create table if not exists public.waitlist_users (
+  id                     uuid references auth.users(id) on delete cascade primary key,
+  full_name              text not null,
+  email                  text not null,
+  country                text not null,
+  business_type          business_type not null,
+  works_internationally  boolean not null,
+  monthly_income_range   monthly_income_range not null,
+  current_tools          text[] not null default '{}',
+  referral_source        text,
+  onboarding_status      onboarding_status not null default 'pending',
+  early_access_priority  early_access_priority not null default 'standard',
+  created_at             timestamp with time zone not null default now(),
+  updated_at             timestamp with time zone not null default now()
+);
+
+drop trigger if exists waitlist_users_touch_updated_at on public.waitlist_users;
+create trigger waitlist_users_touch_updated_at
+  before update on public.waitlist_users
+  for each row execute function public.touch_updated_at();
+
+alter table public.waitlist_users enable row level security;
+
+-- Users can only see + edit their own row.
+-- onboarding_status + early_access_priority are admin-controlled —
+-- a user CAN set them on first insert, but in the client we never do.
+-- Admins update via service_role (bypasses RLS).
+drop policy if exists "Users can read own waitlist" on public.waitlist_users;
+create policy "Users can read own waitlist"
+  on public.waitlist_users for select
+  using (auth.uid() = id);
+
+drop policy if exists "Users can insert own waitlist" on public.waitlist_users;
+create policy "Users can insert own waitlist"
+  on public.waitlist_users for insert
+  with check (auth.uid() = id);
+
+drop policy if exists "Users can update own waitlist" on public.waitlist_users;
+create policy "Users can update own waitlist"
+  on public.waitlist_users for update
+  using (auth.uid() = id)
+  with check (auth.uid() = id);
+
+-- Useful indexes for admin filtering / CSV export
+create index if not exists waitlist_users_status_idx
+  on public.waitlist_users (onboarding_status, early_access_priority, created_at desc);
+create index if not exists waitlist_users_country_idx
+  on public.waitlist_users (country);
+
+-- Force PostgREST to refresh its schema cache so the new table is
+-- visible immediately (avoids PGRST205 right after migration).
+notify pgrst, 'reload schema';

@@ -11,7 +11,81 @@
     "changeFromLastMonth": "+{{percent}}% par rapport au mois dernier",
     "recentActivity": "Activité récente",
     "viewAll": "Voir tout",
-    "taxAuthorityConnected": "Connecté à l'Autorité Fiscale"
+    "taxAuthorityConnected": "Connecté à l'Autorité Fiscale",
+    "earlyAccessTagline": "Vous êtes sur la liste Early Access"
+  },
+  "onboarding": {
+    "title": "Progression d'inscription",
+    "accountCreated": "Compte créé",
+    "profileCompleted": "Profil complété",
+    "waitlistSubmitted": "Candidature envoyée",
+    "waitlistHint": "Remplissez le formulaire ci-dessous pour terminer",
+    "earlyAccessReview": "Early Access — en cours d'examen",
+    "earlyAccessGranted": "Early Access — approuvé ✓",
+    "reviewHint": "Nous revenons vers vous sous 7-14 jours ouvrés",
+    "bankingLocked": "Accès aux paiements — verrouillé",
+    "taxAuthorityLocked": "Intégration Autorité Fiscale — verrouillée"
+  },
+  "waitlist": {
+    "title": "Rejoindre la liste d'attente",
+    "updateTitle": "Mettre à jour votre candidature",
+    "subtitle": "Dites-nous ce dont vous avez besoin pour qu'on vous priorise",
+    "country": "Pays de résidence",
+    "countryPlaceholder": "Israël",
+    "businessType": "Type d'activité",
+    "worksInternationally": "Travaillez-vous avec des clients internationaux ?",
+    "monthlyIncome": "Revenu mensuel international estimé",
+    "currentTools": "Outils de paiement actuellement utilisés",
+    "referralSource": "Comment nous avez-vous connus ?",
+    "referralPlaceholder": "Ami / réseaux / recherche...",
+    "submitCta": "Rejoindre la liste",
+    "updateCta": "Mettre à jour",
+    "submitting": "Envoi...",
+    "updating": "Mise à jour...",
+    "submitted": "Candidature envoyée — nous reviendrons vers vous",
+    "updated": "Candidature mise à jour",
+    "fillAllRequired": "Remplissez tous les champs marqués *",
+    "notAuthenticated": "Connectez-vous pour soumettre"
+  },
+  "businessType": {
+    "developer": "Développeur/se",
+    "designer": "Designer",
+    "consultant": "Consultant/e",
+    "copywriter": "Rédacteur/trice",
+    "translator": "Traducteur/trice",
+    "marketing": "Marketing",
+    "accounting": "Comptabilité",
+    "other": "Autre"
+  },
+  "incomeRange": {
+    "lt_1k": "Moins de $1 000",
+    "1k_5k": "$1 000-$5 000",
+    "5k_20k": "$5 000-$20 000",
+    "gt_20k": "Plus de $20 000"
+  },
+  "tools": {
+    "wise": "Wise",
+    "paypal": "PayPal",
+    "payoneer": "Payoneer",
+    "bank": "Virement bancaire",
+    "other": "Autre"
+  },
+  "why": {
+    "sectionTitle": "Pourquoi GlobalBiz ?",
+    "intlTitle": "Pour les freelances avec clients internationaux",
+    "intlBody": "Recevez USD, EUR, GBP sans courir après les taux, les frais cachés ou les comptes à l'étranger",
+    "taxTitle": "Prêt pour la Loi Facture Israël 2026",
+    "taxBody": "À partir du 1.1.2026, les factures sur ₪10 000 nécessitent un Numéro d'Allocation. Nous construisons l'intégration — vous l'obtenez automatiquement",
+    "automationTitle": "Automatisation au lieu du manuel",
+    "automationBody": "Factures, recouvrement, relances, rapport fiscal mensuel et réconciliation — automatisés",
+    "bankTitle": "En partenariat avec une banque israélienne",
+    "bankBody": "GlobalBiz est construit avec une banque commerciale — IBAN réel, carte débit et dépôts, pas un portefeuille virtuel"
+  },
+  "locked": {
+    "receiveTitle": "Réception de paiements verrouillée",
+    "receiveSubtitle": "Comptes multi-devises + Numéros d'Allocation automatiques se débloqueront après approbation Early Access",
+    "sendTitle": "Envoi de paiements verrouillé",
+    "sendSubtitle": "Payer les sous-traitants et la conversion de devises se débloqueront après approbation Early Access."
   },
   "actions": {
     "send": "Envoyer",
@@ -131,7 +205,9 @@
     "close": "Fermer",
     "cancel": "Annuler",
     "copied": "Copié ✓",
-    "copyFailed": "Échec de la copie"
+    "copyFailed": "Échec de la copie",
+    "yes": "Oui",
+    "no": "Non"
   },
   "auth": {
     "welcomeBack": "Bon retour",

@@ -11,7 +11,81 @@
     "changeFromLastMonth": "+{{percent}}% desde el mes pasado",
     "recentActivity": "Actividad reciente",
     "viewAll": "Ver todo",
-    "taxAuthorityConnected": "Conectado a la Autoridad Fiscal"
+    "taxAuthorityConnected": "Conectado a la Autoridad Fiscal",
+    "earlyAccessTagline": "Estás en la lista de espera de Early Access"
+  },
+  "onboarding": {
+    "title": "Progreso de incorporación",
+    "accountCreated": "Cuenta creada",
+    "profileCompleted": "Perfil completado",
+    "waitlistSubmitted": "Solicitud enviada",
+    "waitlistHint": "Completa el formulario de abajo para terminar",
+    "earlyAccessReview": "Early Access — en revisión",
+    "earlyAccessGranted": "Early Access — aprobado ✓",
+    "reviewHint": "Te contactaremos en 7-14 días hábiles",
+    "bankingLocked": "Acceso a pagos — bloqueado",
+    "taxAuthorityLocked": "Integración Autoridad Fiscal — bloqueada"
+  },
+  "waitlist": {
+    "title": "Únete a la lista de espera",
+    "updateTitle": "Actualizar tu solicitud",
+    "subtitle": "Cuéntanos qué necesitas para que podamos priorizarte",
+    "country": "País de residencia",
+    "countryPlaceholder": "Israel",
+    "businessType": "Tipo de actividad",
+    "worksInternationally": "¿Trabajas con clientes internacionales?",
+    "monthlyIncome": "Ingreso mensual internacional estimado",
+    "currentTools": "Herramientas de pago que usas hoy",
+    "referralSource": "¿Cómo nos conociste?",
+    "referralPlaceholder": "Amigo / redes / búsqueda...",
+    "submitCta": "Unirme a la lista",
+    "updateCta": "Actualizar solicitud",
+    "submitting": "Enviando...",
+    "updating": "Actualizando...",
+    "submitted": "Solicitud enviada — te contactaremos",
+    "updated": "Solicitud actualizada",
+    "fillAllRequired": "Completa todos los campos con *",
+    "notAuthenticated": "Inicia sesión para enviar"
+  },
+  "businessType": {
+    "developer": "Desarrollador/a",
+    "designer": "Diseñador/a",
+    "consultant": "Consultor/a",
+    "copywriter": "Copywriter",
+    "translator": "Traductor/a",
+    "marketing": "Marketing",
+    "accounting": "Contabilidad",
+    "other": "Otro"
+  },
+  "incomeRange": {
+    "lt_1k": "Menos de $1.000",
+    "1k_5k": "$1.000-$5.000",
+    "5k_20k": "$5.000-$20.000",
+    "gt_20k": "Más de $20.000"
+  },
+  "tools": {
+    "wise": "Wise",
+    "paypal": "PayPal",
+    "payoneer": "Payoneer",
+    "bank": "Transferencia bancaria",
+    "other": "Otro"
+  },
+  "why": {
+    "sectionTitle": "¿Por qué GlobalBiz?",
+    "intlTitle": "Para freelancers con clientes internacionales",
+    "intlBody": "Recibe USD, EUR y GBP sin perseguir tipos de cambio, comisiones ocultas o cuentas en el extranjero",
+    "taxTitle": "Listo para la Ley de Facturas Israel 2026",
+    "taxBody": "Desde el 1.1.2026 las facturas sobre ₪10.000 requieren un Número de Asignación. Construimos la integración — tú lo obtienes automáticamente",
+    "automationTitle": "Automatización en lugar de trabajo manual",
+    "automationBody": "Facturas, cobros, recordatorios, informe fiscal mensual y conciliación de gastos — todo automático",
+    "bankTitle": "Construido con un banco israelí",
+    "bankBody": "GlobalBiz se construye con un banco comercial — IBAN, tarjeta de débito y depósitos reales, no una billetera virtual"
+  },
+  "locked": {
+    "receiveTitle": "Recepción de pagos bloqueada",
+    "receiveSubtitle": "Cuentas multi-moneda + Números de Asignación automáticos se desbloquean tras la aprobación de Early Access",
+    "sendTitle": "Envío de pagos bloqueado",
+    "sendSubtitle": "Pagar a subcontratistas y convertir monedas se desbloquean tras la aprobación de Early Access."
   },
   "actions": {
     "send": "Enviar",
@@ -131,7 +205,9 @@
     "close": "Cerrar",
     "cancel": "Cancelar",
     "copied": "Copiado ✓",
-    "copyFailed": "Error al copiar"
+    "copyFailed": "Error al copiar",
+    "yes": "Sí",
+    "no": "No"
   },
   "auth": {
     "welcomeBack": "Bienvenido de vuelta",

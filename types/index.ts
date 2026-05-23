@@ -135,3 +135,51 @@ export type QuickAction = {
   icon: 'send' | 'receive' | 'invoice' | 'convert' | 'scan';
   route: string;
 };
+
+// ---------- Waitlist (Phase 2 onboarding) ----------
+
+export const BUSINESS_TYPES = [
+  'developer',
+  'designer',
+  'consultant',
+  'copywriter',
+  'translator',
+  'marketing',
+  'accounting',
+  'other',
+] as const;
+export type BusinessType = (typeof BUSINESS_TYPES)[number];
+
+export const MONTHLY_INCOME_RANGES = ['lt_1k', '1k_5k', '5k_20k', 'gt_20k'] as const;
+export type MonthlyIncomeRange = (typeof MONTHLY_INCOME_RANGES)[number];
+
+export const PAYMENT_TOOLS = ['wise', 'paypal', 'payoneer', 'bank', 'other'] as const;
+export type PaymentTool = (typeof PAYMENT_TOOLS)[number];
+
+export type OnboardingStatus = 'pending' | 'reviewing' | 'approved' | 'rejected';
+export type EarlyAccessPriority = 'standard' | 'high' | 'urgent';
+
+export type WaitlistEntry = {
+  id: string;
+  full_name: string;
+  email: string;
+  country: string;
+  business_type: BusinessType;
+  works_internationally: boolean;
+  monthly_income_range: MonthlyIncomeRange;
+  current_tools: PaymentTool[];
+  referral_source: string | null;
+  onboarding_status: OnboardingStatus;
+  early_access_priority: EarlyAccessPriority;
+  created_at: string;
+  updated_at: string;
+};
+
+export type WaitlistSubmitInput = Omit<
+  WaitlistEntry,
+  | 'id'
+  | 'onboarding_status'
+  | 'early_access_priority'
+  | 'created_at'
+  | 'updated_at'
+>;
