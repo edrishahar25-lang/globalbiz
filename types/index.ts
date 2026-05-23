@@ -157,7 +157,9 @@ export const PAYMENT_TOOLS = ['wise', 'paypal', 'payoneer', 'bank', 'other'] as 
 export type PaymentTool = (typeof PAYMENT_TOOLS)[number];
 
 export type OnboardingStatus = 'pending' | 'reviewing' | 'approved' | 'rejected';
-export type EarlyAccessPriority = 'standard' | 'high' | 'urgent';
+
+export const EARLY_ACCESS_PRIORITIES = ['low', 'normal', 'high'] as const;
+export type EarlyAccessPriority = (typeof EARLY_ACCESS_PRIORITIES)[number];
 
 export type WaitlistEntry = {
   id: string;

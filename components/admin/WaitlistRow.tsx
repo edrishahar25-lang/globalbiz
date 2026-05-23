@@ -1,60 +1,47 @@
-import { Pressable, Text, View } from 'react-native';
+import { useMemo } from 'react';
+import { Text, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { Check, X } from 'lucide-react-native';
 import { Avatar, GlassCard } from '@/components/ui';
 import { StatusBadge } from './StatusBadge';
-import { colors } from '@/constants/colors';
+import { SegmentedControl } from './SegmentedControl';
 import { computeInitials } from '@/lib/identity';
 import { formatRelativeDate } from '@/lib/format';
-import type { OnboardingStatus, WaitlistEntry } from '@/types';
+import {
+  EARLY_ACCESS_PRIORITIES,
+  type EarlyAccessPriority,
+  type OnboardingStatus,
+  type WaitlistEntry,
+} from '@/types';
+
+const STATUS_VALUES: OnboardingStatus[] = ['pending', 'approved', 'rejected'];
 
 type Props = {
   entry: WaitlistEntry;
   onUpdateStatus: (id: string, status: OnboardingStatus) => void;
+  onUpdatePriority: (id: string, priority: EarlyAccessPriority) => void;
   busy?: boolean;
 };
 
-function MiniBtn({
-  label,
-  onPress,
-  variant,
-  disabled,
-  icon,
-}: {
-  label: string;
-  onPress: () => void;
-  variant: 'approve' | 'reject';
-  disabled?: boolean;
-  icon: React.ReactNode;
-}) {
-  const cls =
-    variant === 'approve'
-      ? 'bg-mint/20 border-mint/40'
-      : 'bg-accent/15 border-accent/40';
-  const textCls = variant === 'approve' ? 'text-mint' : 'text-accent';
-  return (
-    <Pressable
-      onPress={onPress}
-      disabled={disabled}
-      className={`flex-row items-center gap-1.5 rounded-full border px-3 py-1.5 ${cls} ${
-        disabled ? 'opacity-50' : ''
-      }`}
-      style={({ pressed }) => pressed && { opacity: 0.7 }}
-      hitSlop={6}
-    >
-      {icon}
-      <Text className={`font-heebo-medium text-xs ${textCls}`}>{label}</Text>
-    </Pressable>
-  );
-}
-
-export function WaitlistRow({ entry, onUpdateStatus, busy }: Props) {
+export function WaitlistRow({ entry, onUpdateStatus, onUpdatePriority, busy }: Props) {
   const { t } = useTranslation();
   const initials = computeInitials(entry.full_name);
 
+  const statusOpts = useMemo(
+    () => STATUS_VALUES.map((s) => ({ value: s, label: t(`admin.status.${s}`) })),
+    [t],
+  );
+  const priorityOpts = useMemo(
+    () =>
+      EARLY_ACCESS_PRIORITIES.map((p) => ({
+        value: p,
+        label: t(`admin.priority.${p}`),
+      })),
+    [t],
+  );
+
   return (
     <GlassCard variant="subtle">
-      <View className="p-4 gap-3">
+      <View className="p-4 gap-3.5">
         <View className="flex-row items-start gap-3">
           <Avatar initials={initials} seed={entry.full_name} size="md" />
           <View className="flex-1">
@@ -74,6 +61,10 @@ export function WaitlistRow({ entry, onUpdateStatus, busy }: Props) {
               {entry.country} · {t(`businessType.${entry.business_type}`)} ·{' '}
               {t(`incomeRange.${entry.monthly_income_range}`)}
             </Text>
+            <Text className="text-white/45 font-heebo text-xs mt-0.5">
+              {t('admin.colInternational')}:{' '}
+              {entry.works_internationally ? t('common.yes') : t('common.no')}
+            </Text>
             {entry.current_tools.length > 0 ? (
               <Text className="text-white/40 font-heebo text-xs mt-0.5" numberOfLines={1}>
                 {entry.current_tools.map((tk) => t(`tools.${tk}`)).join(' · ')}
@@ -90,22 +81,21 @@ export function WaitlistRow({ entry, onUpdateStatus, busy }: Props) {
           </View>
         </View>
 
-        <View className="flex-row gap-2 flex-wrap">
-          <MiniBtn
-            label={t('admin.approve')}
-            onPress={() => onUpdateStatus(entry.id, 'approved')}
-            variant="approve"
-            disabled={busy || entry.onboarding_status === 'approved'}
-            icon={<Check color={colors.mint} size={12} strokeWidth={2.8} />}
-          />
-          <MiniBtn
-            label={t('admin.reject')}
-            onPress={() => onUpdateStatus(entry.id, 'rejected')}
-            variant="reject"
-            disabled={busy || entry.onboarding_status === 'rejected'}
-            icon={<X color={colors.accent} size={12} strokeWidth={2.8} />}
-          />
-        </View>
+        <SegmentedControl<OnboardingStatus>
+          label={t('admin.colStatus')}
+          options={statusOpts}
+          value={entry.onboarding_status === 'reviewing' ? 'pending' : entry.onboarding_status}
+          onChange={(v) => onUpdateStatus(entry.id, v)}
+          disabled={busy}
+        />
+        <SegmentedControl<EarlyAccessPriority>
+          label={t('admin.colPriority')}
+          options={priorityOpts}
+          value={entry.early_access_priority}
+          onChange={(v) => onUpdatePriority(entry.id, v)}
+          activeClass="bg-mint/30"
+          disabled={busy}
+        />
       </View>
     </GlassCard>
   );

@@ -153,7 +153,7 @@ export default function ProfileScreen() {
             <View className="px-5 mb-3">
               <PrimaryButton
                 label={t('admin.openDashboard')}
-                onPress={() => router.push('/admin/waitlist' as never)}
+                onPress={() => router.push('/admin' as never)}
                 variant="secondary"
                 size="md"
                 icon={<ShieldAlert color={colors.violetGlow} size={18} strokeWidth={2.2} />}

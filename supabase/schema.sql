@@ -102,7 +102,7 @@ begin
   end if;
   if not exists (select 1 from pg_type where typname = 'early_access_priority') then
     create type early_access_priority as enum (
-      'standard', 'high', 'urgent'
+      'low', 'normal', 'high'
     );
   end if;
 end$$;
@@ -118,7 +118,7 @@ create table if not exists public.waitlist_users (
   current_tools          text[] not null default '{}',
   referral_source        text,
   onboarding_status      onboarding_status not null default 'pending',
-  early_access_priority  early_access_priority not null default 'standard',
+  early_access_priority  early_access_priority not null default 'normal',
   created_at             timestamp with time zone not null default now(),
   updated_at             timestamp with time zone not null default now()
 );
@@ -173,6 +173,8 @@ alter table public.admin_users enable row level security;
 -- is_admin() is SECURITY DEFINER so it bypasses RLS during the lookup
 -- itself — that breaks the policy-recursion cycle. Callable by any
 -- authenticated user; just returns boolean, no data leak.
+-- Admin = the founder email OR any row in admin_users. The founder
+-- email is the primary gate (matches the client useIsAdmin check).
 create or replace function public.is_admin()
 returns boolean
 language sql
@@ -180,9 +182,13 @@ stable
 security definer
 set search_path = public
 as $$
-  select exists (
-    select 1 from public.admin_users where user_id = auth.uid()
-  );
+  select
+    coalesce(
+      (select lower(au.email) = 'edrishahar25@gmail.com'
+         from auth.users au where au.id = auth.uid()),
+      false
+    )
+    or exists (select 1 from public.admin_users where user_id = auth.uid());
 $$;
 
 grant execute on function public.is_admin() to authenticated;

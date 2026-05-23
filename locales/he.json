@@ -97,10 +97,16 @@
     "sendSubtitle": "העברות לקבלני משנה והמרות מטבע יזמינו אחרי שאישור Early Access יתקבל. אתה ברשימת ההמתנה."
   },
   "admin": {
+    "brandTitle": "GlobalBiz Admin",
+    "subtitle": "ניהול רשימת המתנה",
     "title": "ניהול רשימת המתנה",
-    "openDashboard": "לוח ניהול רשימת המתנה",
+    "openDashboard": "לוח ניהול (Admin)",
     "forbidden": "אין לך הרשאת ניהול",
+    "accessDenied": "הגישה נדחתה",
+    "accessDeniedRedirect": "מעביר אותך חזרה לאתר...",
     "total": "סה״כ בקשות",
+    "latestSignups": "הרשמות אחרונות",
+    "allUsers": "כל הנרשמים",
     "searchPlaceholder": "חיפוש לפי שם או אימייל...",
     "filterStatus": "סטטוס",
     "filterBusinessType": "תחום עיסוק",
@@ -109,6 +115,9 @@
     "resetFilters": "אפס פילטרים",
     "approve": "אשר",
     "reject": "דחה",
+    "colStatus": "סטטוס",
+    "colPriority": "עדיפות",
+    "colInternational": "עובד עם חו״ל",
     "exportCsv": "ייצא {{count}} שורות ל-CSV",
     "exportFailed": "ייצוא נכשל",
     "exportNativeUnsupported": "ייצוא CSV זמין רק בדפדפן. פתח את הdashboard ב-globalbiz-app.netlify.app",
@@ -120,6 +129,11 @@
       "reviewing": "בבדיקה",
       "approved": "אושר",
       "rejected": "נדחה"
+    },
+    "priority": {
+      "low": "נמוכה",
+      "normal": "רגילה",
+      "high": "גבוהה"
     }
   },
   "actions": {

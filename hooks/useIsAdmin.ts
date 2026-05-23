@@ -1,33 +1,15 @@
-import { useEffect, useState } from 'react';
-import { isSupabaseConfigured, supabase } from '@/lib/supabase';
 import { useAuth } from '@/providers/AuthProvider';
 
-/** null = still loading. true/false = known. */
+// Founder admin allow-list. The DB's is_admin() function enforces the
+// same email server-side (RLS), so this client check is UX-only — a
+// non-admin who bypasses it still gets 0 rows from Supabase.
+const ADMIN_EMAILS = ['edrishahar25@gmail.com'];
+
+/** null = still resolving auth. true/false = known. */
 export function useIsAdmin(): boolean | null {
   const { user, initializing } = useAuth();
-  const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
-
-  useEffect(() => {
-    if (initializing) return;
-    if (!isSupabaseConfigured || !user) {
-      setIsAdmin(false);
-      return;
-    }
-    let cancelled = false;
-    (async () => {
-      const { data, error } = await supabase.rpc('is_admin');
-      if (cancelled) return;
-      if (error) {
-        console.warn('[admin] is_admin RPC failed', error);
-        setIsAdmin(false);
-        return;
-      }
-      setIsAdmin(Boolean(data));
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [user, initializing]);
-
-  return isAdmin;
+  if (initializing) return null;
+  const email = (user?.email ?? '').trim().toLowerCase();
+  if (!email) return false;
+  return ADMIN_EMAILS.map((e) => e.toLowerCase()).includes(email);
 }

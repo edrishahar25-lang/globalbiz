@@ -88,10 +88,16 @@
     "sendSubtitle": "Paying subcontractors and currency conversion unlock after Early Access approval. You're on the waitlist."
   },
   "admin": {
+    "brandTitle": "GlobalBiz Admin",
+    "subtitle": "Waitlist Management",
     "title": "Waitlist Admin",
-    "openDashboard": "Open waitlist admin",
+    "openDashboard": "Open admin dashboard",
     "forbidden": "You don't have admin permission",
+    "accessDenied": "Access denied",
+    "accessDeniedRedirect": "Taking you back to the app...",
     "total": "Total applications",
+    "latestSignups": "Latest signups",
+    "allUsers": "All signups",
     "searchPlaceholder": "Search by name or email...",
     "filterStatus": "Status",
     "filterBusinessType": "Business type",
@@ -100,6 +106,9 @@
     "resetFilters": "Reset filters",
     "approve": "Approve",
     "reject": "Reject",
+    "colStatus": "Status",
+    "colPriority": "Priority",
+    "colInternational": "Works internationally",
     "exportCsv": "Export {{count}} rows to CSV",
     "exportFailed": "Export failed",
     "exportNativeUnsupported": "CSV export is available only on the web. Open the dashboard at globalbiz-app.netlify.app",
@@ -111,6 +120,11 @@
       "reviewing": "Reviewing",
       "approved": "Approved",
       "rejected": "Rejected"
+    },
+    "priority": {
+      "low": "Low",
+      "normal": "Normal",
+      "high": "High"
     }
   },
   "actions": {

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { isSupabaseConfigured, supabase } from '@/lib/supabase';
 import type {
   BusinessType,
+  EarlyAccessPriority,
   OnboardingStatus,
   WaitlistEntry,
 } from '@/types';
@@ -24,6 +25,10 @@ type Hook = State & {
   updateStatus: (
     id: string,
     status: OnboardingStatus,
+  ) => Promise<{ error: string | null }>;
+  updatePriority: (
+    id: string,
+    priority: EarlyAccessPriority,
   ) => Promise<{ error: string | null }>;
 };
 
@@ -96,5 +101,27 @@ export function useWaitlistAdmin(filters: AdminFilters): Hook {
     [],
   );
 
-  return { ...state, refresh: fetchAll, updateStatus };
+  const updatePriority = useCallback(
+    async (id: string, priority: EarlyAccessPriority) => {
+      if (!isSupabaseConfigured) return { error: 'auth/not-configured' };
+      const { error } = await supabase
+        .from('waitlist_users')
+        .update({ early_access_priority: priority })
+        .eq('id', id);
+      if (error) {
+        console.warn('[admin] updatePriority error', error);
+        return { error: error.message };
+      }
+      setState((s) => ({
+        ...s,
+        entries: s.entries.map((e) =>
+          e.id === id ? { ...e, early_access_priority: priority } : e,
+        ),
+      }));
+      return { error: null };
+    },
+    [],
+  );
+
+  return { ...state, refresh: fetchAll, updateStatus, updatePriority };
 }
