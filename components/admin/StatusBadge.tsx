@@ -3,10 +3,10 @@ import { useTranslation } from 'react-i18next';
 import type { OnboardingStatus } from '@/types';
 
 const STYLE: Record<OnboardingStatus, { bg: string; text: string }> = {
-  pending: { bg: 'bg-white/10', text: 'text-white/70' },
-  reviewing: { bg: 'bg-violet-base/25', text: 'text-violet-glow' },
-  approved: { bg: 'bg-mint/20', text: 'text-mint' },
-  rejected: { bg: 'bg-accent/20', text: 'text-accent' },
+  pending: { bg: 'bg-ink-faint/15', text: 'text-ink-soft' },
+  reviewing: { bg: 'bg-cyan-base/15', text: 'text-violet-deep' },
+  approved: { bg: 'bg-mint/15', text: 'text-mint' },
+  rejected: { bg: 'bg-accent/15', text: 'text-accent' },
 };
 
 export function StatusBadge({ status }: { status: OnboardingStatus }) {

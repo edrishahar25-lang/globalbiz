@@ -61,10 +61,10 @@ export default function ForgotPasswordScreen() {
             keyboardShouldPersistTaps="handled"
           >
             <View className="mb-8">
-              <Text className="text-white font-heebo-black text-3xl mb-2">
+              <Text className="text-ink font-heebo-black text-3xl mb-2">
                 {t('auth.resetPasswordTitle')}
               </Text>
-              <Text className="text-white/55 font-heebo text-base">
+              <Text className="text-ink-soft font-heebo text-base">
                 {t('auth.resetPasswordSubtitle')}
               </Text>
             </View>

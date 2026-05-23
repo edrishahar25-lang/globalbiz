@@ -14,14 +14,14 @@ export function UserCard() {
     <GlassCard variant="primary">
       <View className="p-6 items-center">
         <Avatar initials={initials} seed={name} size="xl" flag="🇮🇱" />
-        <Text className="text-white font-heebo-black text-2xl mt-4">{name}</Text>
+        <Text className="text-ink font-heebo-black text-2xl mt-4">{name}</Text>
         {businessName ? (
-          <Text className="text-white/70 font-heebo-medium text-base mt-0.5">
+          <Text className="text-ink-soft font-heebo-medium text-base mt-0.5">
             {businessName}
           </Text>
         ) : null}
         {user?.email ? (
-          <Text className="text-white/40 font-heebo text-xs mt-2">{user.email}</Text>
+          <Text className="text-ink-faint font-heebo text-xs mt-2">{user.email}</Text>
         ) : null}
       </View>
     </GlassCard>

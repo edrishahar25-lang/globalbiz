@@ -51,10 +51,11 @@ export function PrimaryButton({
     onPress();
   };
 
+  const labelColor = variant === 'secondary' ? 'text-violet-glow' : 'text-white';
   const labelNode = (
     <View className="flex-row items-center justify-center gap-2">
       {icon}
-      <Text className={`font-heebo-bold text-white ${textSizeClass[size]}`}>{label}</Text>
+      <Text className={`font-heebo-bold ${labelColor} ${textSizeClass[size]}`}>{label}</Text>
     </View>
   );
 
@@ -63,7 +64,7 @@ export function PrimaryButton({
       <Pressable
         onPress={handlePress}
         disabled={disabled}
-        className={`rounded-2xl border border-glass-border bg-glass-strong items-center justify-center ${disabled ? 'opacity-50' : ''} ${className}`}
+        className={`rounded-2xl border-2 border-turquoise bg-white items-center justify-center ${disabled ? 'opacity-50' : ''} ${className}`}
         style={({ pressed }) => [sizeStyles[size], pressed && { opacity: 0.8 }]}
       >
         {labelNode}

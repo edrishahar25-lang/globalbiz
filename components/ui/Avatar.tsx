@@ -61,9 +61,9 @@ export function Avatar({ initials, seed, size = 'md', flag, className = '' }: Pr
             borderRadius: flagBox / 2,
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: colors.ink2,
+            backgroundColor: colors.white,
             borderWidth: 2,
-            borderColor: colors.ink,
+            borderColor: colors.glassBorder,
           }}
         >
           <Text style={{ fontSize: flagBox * 0.65 }}>{flag}</Text>

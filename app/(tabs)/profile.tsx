@@ -70,7 +70,7 @@ export default function ProfileScreen() {
           showsVerticalScrollIndicator={false}
         >
           <View className="px-5 pt-3 pb-5">
-            <Text className="text-white font-heebo-black text-3xl">{t('profile.title')}</Text>
+            <Text className="text-ink font-heebo-black text-3xl">{t('profile.title')}</Text>
           </View>
 
           <View className="px-5 mb-6">
@@ -79,7 +79,7 @@ export default function ProfileScreen() {
 
           <View className="px-5 mb-3 flex-row items-center gap-2">
             <Shield color={colors.mint} size={18} strokeWidth={2.4} />
-            <Text className="text-white font-heebo-bold text-lg">
+            <Text className="text-ink font-heebo-bold text-lg">
               🇮🇱 {t('profile.taxAuthoritySection')}
             </Text>
           </View>
@@ -92,7 +92,7 @@ export default function ProfileScreen() {
           </View>
 
           <View className="px-5 mb-3">
-            <Text className="text-white font-heebo-bold text-lg">{t('profile.aiInsights')}</Text>
+            <Text className="text-ink font-heebo-bold text-lg">{t('profile.aiInsights')}</Text>
           </View>
           <View className="px-5 gap-2.5 mb-6">
             <GlassCard variant="subtle">
@@ -106,7 +106,7 @@ export default function ProfileScreen() {
           </View>
 
           <View className="px-5 mb-3">
-            <Text className="text-white font-heebo-bold text-lg">{t('profile.settings')}</Text>
+            <Text className="text-ink font-heebo-bold text-lg">{t('profile.settings')}</Text>
           </View>
           <View className="px-5 mb-6">
             <GlassCard variant="subtle">
@@ -140,12 +140,12 @@ export default function ProfileScreen() {
 
           <View className="px-5 mb-3 flex-row items-center gap-2">
             <Globe color={colors.violetGlow} size={18} strokeWidth={2.2} />
-            <Text className="text-white font-heebo-bold text-lg">{t('profile.language')}</Text>
+            <Text className="text-ink font-heebo-bold text-lg">{t('profile.language')}</Text>
           </View>
           <View className="px-5 mb-3">
             <LanguageSelector />
           </View>
-          <Text className="text-white/45 font-heebo text-xs px-6 mb-6">
+          <Text className="text-ink-faint font-heebo text-xs px-6 mb-6">
             {t('profile.needsReload')}
           </Text>
 
@@ -168,7 +168,7 @@ export default function ProfileScreen() {
               variant="secondary"
               size="md"
               disabled={signingOut}
-              icon={<LogOut color={colors.white} size={18} strokeWidth={2.2} />}
+              icon={<LogOut color={colors.violetGlow} size={18} strokeWidth={2.2} />}
             />
           </View>
         </ScrollView>

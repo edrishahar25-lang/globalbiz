@@ -16,15 +16,15 @@ export function SegmentedControl<T extends string>({
   options,
   value,
   onChange,
-  activeClass = 'bg-violet-base/40',
+  activeClass = 'bg-turquoise/20',
   disabled,
 }: Props<T>) {
   return (
     <View className="gap-1.5">
-      <Text className="text-white/45 font-heebo-medium text-[10px] uppercase tracking-wide">
+      <Text className="text-ink-faint font-heebo-medium text-[10px] uppercase tracking-wide">
         {label}
       </Text>
-      <View className="flex-row bg-glass-strong border border-glass-border rounded-xl overflow-hidden">
+      <View className="flex-row bg-sky border border-glass-border rounded-xl overflow-hidden">
         {options.map((o, i) => {
           const active = o.value === value;
           return (
@@ -39,7 +39,7 @@ export function SegmentedControl<T extends string>({
             >
               <Text
                 className={`font-heebo-medium text-xs ${
-                  active ? 'text-white' : 'text-white/55'
+                  active ? 'text-ink' : 'text-ink-soft'
                 }`}
               >
                 {o.label}

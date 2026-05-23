@@ -47,35 +47,35 @@ export function WaitlistRow({ entry, onUpdateStatus, onUpdatePriority, busy }: P
           <View className="flex-1">
             <View className="flex-row items-center justify-between gap-2">
               <Text
-                className="text-white font-heebo-bold text-base flex-1"
+                className="text-ink font-heebo-bold text-base flex-1"
                 numberOfLines={1}
               >
                 {entry.full_name}
               </Text>
               <StatusBadge status={entry.onboarding_status} />
             </View>
-            <Text className="text-white/55 font-heebo text-xs mt-0.5" numberOfLines={1}>
+            <Text className="text-ink-soft font-heebo text-xs mt-0.5" numberOfLines={1}>
               {entry.email}
             </Text>
-            <Text className="text-white/45 font-heebo text-xs mt-1">
+            <Text className="text-ink-faint font-heebo text-xs mt-1">
               {entry.country} · {t(`businessType.${entry.business_type}`)} ·{' '}
               {t(`incomeRange.${entry.monthly_income_range}`)}
             </Text>
-            <Text className="text-white/45 font-heebo text-xs mt-0.5">
+            <Text className="text-ink-faint font-heebo text-xs mt-0.5">
               {t('admin.colInternational')}:{' '}
               {entry.works_internationally ? t('common.yes') : t('common.no')}
             </Text>
             {entry.current_tools.length > 0 ? (
-              <Text className="text-white/40 font-heebo text-xs mt-0.5" numberOfLines={1}>
+              <Text className="text-ink-faint font-heebo text-xs mt-0.5" numberOfLines={1}>
                 {entry.current_tools.map((tk) => t(`tools.${tk}`)).join(' · ')}
               </Text>
             ) : null}
             {entry.referral_source ? (
-              <Text className="text-white/35 font-heebo text-[11px] mt-1" numberOfLines={1}>
+              <Text className="text-ink-faint font-heebo text-[11px] mt-1" numberOfLines={1}>
                 ↪ {entry.referral_source}
               </Text>
             ) : null}
-            <Text className="text-white/35 font-heebo text-[10px] mt-1">
+            <Text className="text-ink-faint font-heebo text-[10px] mt-1">
               {formatRelativeDate(entry.created_at)}
             </Text>
           </View>

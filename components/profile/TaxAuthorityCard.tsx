@@ -23,10 +23,10 @@ export function TaxAuthorityCard() {
         <View className="w-12 h-12 rounded-full bg-glass-strong border border-glass-border items-center justify-center mb-3">
           <ShieldOff color={colors.muted} size={22} strokeWidth={2} />
         </View>
-        <Text className="text-white font-heebo-bold text-base text-center">
+        <Text className="text-ink font-heebo-bold text-base text-center">
           {t('taxAuthority.notConnectedTitle')}
         </Text>
-        <Text className="text-white/55 font-heebo text-xs text-center mt-1.5 leading-5">
+        <Text className="text-ink-soft font-heebo text-xs text-center mt-1.5 leading-5">
           {t('taxAuthority.notConnectedSubtitle')}
         </Text>
         <View className="w-full max-w-xs mt-4">

@@ -18,7 +18,7 @@ export default function Root({ children }: PropsWithChildren) {
         />
 
         <style dangerouslySetInnerHTML={{ __html: `
-          html, body, #root { background-color: #0a0612; min-height: 100%; height: 100%; }
+          html, body, #root { background-color: #EAFBFF; min-height: 100%; height: 100%; overflow-x: hidden; max-width: 100%; }
           body { margin: 0; }
           [class*="font-heebo"], [style*="Heebo_"] {
             font-family: 'Heebo', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;

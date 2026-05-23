@@ -32,9 +32,9 @@ export default function HomeScreen() {
           {/* Greeting */}
           <View className="flex-row items-center justify-between px-5 pt-3 pb-6">
             <View className="flex-1">
-              <Text className="text-white/55 font-heebo text-sm">{t('home.greeting')}</Text>
-              <Text className="text-white font-heebo-bold text-xl">{userName}</Text>
-              <Text className="text-white/45 font-heebo text-xs mt-1">
+              <Text className="text-ink-soft font-heebo text-sm">{t('home.greeting')}</Text>
+              <Text className="text-ink font-heebo-bold text-xl">{userName}</Text>
+              <Text className="text-ink-faint font-heebo text-xs mt-1">
                 {t('home.earlyAccessTagline')}
               </Text>
             </View>
@@ -58,7 +58,7 @@ export default function HomeScreen() {
 
           {/* Why GlobalBiz */}
           <View className="px-5 mb-3">
-            <Text className="text-white font-heebo-bold text-lg">{t('why.sectionTitle')}</Text>
+            <Text className="text-ink font-heebo-bold text-lg">{t('why.sectionTitle')}</Text>
           </View>
           <View className="px-5">
             <WhyGlobalBiz />

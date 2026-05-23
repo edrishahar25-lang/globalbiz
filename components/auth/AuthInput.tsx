@@ -32,28 +32,28 @@ export function AuthInput({
   return (
     <View>
       <View className="flex-row items-baseline gap-1.5 mb-1.5">
-        <Text className="text-white/65 font-heebo-medium text-xs uppercase tracking-wide">
+        <Text className="text-ink-soft font-heebo-medium text-xs uppercase tracking-wide">
           {label}
         </Text>
-        {hint ? <Text className="text-white/35 font-heebo text-xs">{hint}</Text> : null}
+        {hint ? <Text className="text-ink-faint font-heebo text-xs">{hint}</Text> : null}
       </View>
       <TextInput
         value={value}
         onChangeText={onChangeText}
         placeholder={placeholder}
-        placeholderTextColor="rgba(255,255,255,0.32)"
+        placeholderTextColor="#94A3B8"
         secureTextEntry={secureTextEntry}
         keyboardType={keyboardType}
         autoCapitalize={autoCapitalize}
         autoComplete={autoComplete}
         textContentType={textContentType}
         editable={editable}
-        className={`bg-glass-strong border rounded-2xl px-4 py-3.5 text-white font-heebo text-base ${
+        className={`bg-glass-strong border rounded-2xl px-4 py-3.5 text-ink font-heebo text-base ${
           error ? 'border-accent' : 'border-glass-border'
         }`}
         style={{
           fontFamily: 'Heebo_400Regular',
-          color: '#ffffff',
+          color: '#0F172A',
           textAlign: I18nManager.isRTL && !secureTextEntry && keyboardType !== 'email-address'
             ? 'right'
             : 'left',

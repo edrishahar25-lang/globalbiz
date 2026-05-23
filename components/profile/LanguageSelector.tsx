@@ -19,11 +19,11 @@ export function LanguageSelector() {
               <Pressable
                 onPress={() => change(lang)}
                 className="flex-row items-center justify-between px-5 py-4"
-                style={({ pressed }) => pressed && { backgroundColor: 'rgba(255,255,255,0.04)' }}
+                style={({ pressed }) => pressed && { backgroundColor: 'rgba(15,23,42,0.04)' }}
               >
                 <Text
                   className={`font-heebo-medium text-base ${
-                    isActive ? 'text-violet-glow' : 'text-white'
+                    isActive ? 'text-violet-glow' : 'text-ink'
                   }`}
                 >
                   {t(`profile.languageNames.${lang}`)}

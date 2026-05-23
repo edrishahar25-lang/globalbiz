@@ -17,9 +17,9 @@ export function EmptyState({ icon, title, subtitle, cta, compact }: Props) {
   return (
     <View className={`items-center px-6 ${compact ? 'py-6' : 'py-10'}`}>
       {icon ? <View className="mb-3 opacity-70">{icon}</View> : null}
-      <Text className="text-white/65 font-heebo-medium text-sm text-center">{title}</Text>
+      <Text className="text-ink-soft font-heebo-medium text-sm text-center">{title}</Text>
       {subtitle ? (
-        <Text className="text-white/40 font-heebo text-xs mt-1 text-center leading-5">
+        <Text className="text-ink-faint font-heebo text-xs mt-1 text-center leading-5">
           {subtitle}
         </Text>
       ) : null}

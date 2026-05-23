@@ -14,11 +14,11 @@ type Props = {
 
 export function GradientBackground({ children, variant = 'bg', decorative = true }: Props) {
   return (
-    <View style={{ flex: 1, backgroundColor: colors.ink }}>
+    <View style={{ flex: 1, backgroundColor: colors.sky, overflow: 'hidden' }}>
       <LinearGradient
         colors={gradients[variant]}
         start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
+        end={{ x: 0, y: 1 }}
         style={StyleSheet.absoluteFillObject}
       />
       {decorative && (
@@ -32,8 +32,8 @@ export function GradientBackground({ children, variant = 'bg', decorative = true
               width: 320,
               height: 320,
               borderRadius: 160,
-              backgroundColor: colors.violetBase,
-              opacity: 0.22,
+              backgroundColor: colors.white,
+              opacity: 0.35,
             }}
           />
           <View
@@ -45,8 +45,8 @@ export function GradientBackground({ children, variant = 'bg', decorative = true
               width: 280,
               height: 280,
               borderRadius: 140,
-              backgroundColor: colors.cyanBase,
-              opacity: 0.1,
+              backgroundColor: colors.white,
+              opacity: 0.22,
             }}
           />
         </>

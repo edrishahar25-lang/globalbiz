@@ -23,7 +23,7 @@ const FONT_INJECT = `<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
-  html, body, #root { background-color: #0a0612; }
+  html, body, #root { background-color: #EAFBFF; overflow-x: hidden; max-width: 100%; }
   body { font-family: 'Heebo', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
   [style*="Heebo_400Regular"] { font-family: 'Heebo' !important; font-weight: 400 !important; }
   [style*="Heebo_500Medium"]  { font-family: 'Heebo' !important; font-weight: 500 !important; }

@@ -29,11 +29,11 @@ function FullScreenLoader({ label }: { label?: string }) {
   return (
     <View
       className="flex-1 items-center justify-center"
-      style={{ backgroundColor: '#0a0612' }}
+      style={{ backgroundColor: '#EAFBFF' }}
     >
       <ActivityIndicator size="large" color={colors.violetGlow} />
       {label ? (
-        <Text className="text-white/55 font-heebo text-sm mt-4" style={{ fontFamily: 'Heebo_400Regular' }}>
+        <Text className="text-ink-soft font-heebo text-sm mt-4" style={{ fontFamily: 'Heebo_400Regular' }}>
           {label}
         </Text>
       ) : null}
@@ -45,16 +45,16 @@ function ConfigErrorScreen() {
   return (
     <View
       className="flex-1 items-center justify-center px-8"
-      style={{ backgroundColor: '#0a0612' }}
+      style={{ backgroundColor: '#EAFBFF' }}
     >
       <Text
-        className="text-white text-xl text-center"
+        className="text-ink text-xl text-center"
         style={{ fontFamily: 'Heebo_700Bold' }}
       >
         Supabase not configured
       </Text>
       <Text
-        className="text-white/55 text-sm text-center mt-3"
+        className="text-ink-soft text-sm text-center mt-3"
         style={{ fontFamily: 'Heebo_400Regular' }}
       >
         {supabaseConfigError ??
@@ -88,7 +88,7 @@ function ProtectedNavigator() {
     <Stack
       screenOptions={{
         headerShown: false,
-        contentStyle: { backgroundColor: '#0a0612' },
+        contentStyle: { backgroundColor: '#EAFBFF' },
         animation: 'fade',
       }}
     >
@@ -153,13 +153,13 @@ export default function RootLayout() {
   }, [fontsLoaded, i18nReady]);
 
   if (!fontsLoaded || !i18nReady) {
-    return <View className="flex-1" style={{ backgroundColor: '#0a0612' }} />;
+    return <View className="flex-1" style={{ backgroundColor: '#EAFBFF' }} />;
   }
 
   return (
-    <GestureHandlerRootView style={{ flex: 1, backgroundColor: '#0a0612' }}>
+    <GestureHandlerRootView style={{ flex: 1, backgroundColor: '#EAFBFF' }}>
       <SafeAreaProvider>
-        <StatusBar style="light" />
+        <StatusBar style="dark" />
         {isSupabaseConfigured ? (
           <AuthProvider>
             <ProtectedNavigator />

@@ -15,7 +15,7 @@ export function CurrencyFlag({
   currency,
   variant = 'flag',
   className = '',
-  textClassName = 'text-white font-heebo-medium',
+  textClassName = 'text-ink font-heebo-medium',
 }: Props) {
   const c = currencies[currency];
   return (

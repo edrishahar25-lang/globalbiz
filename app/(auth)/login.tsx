@@ -72,10 +72,10 @@ export default function LoginScreen() {
             keyboardShouldPersistTaps="handled"
           >
             <View className="mb-8">
-              <Text className="text-white font-heebo-black text-4xl mb-2">
+              <Text className="text-ink font-heebo-black text-4xl mb-2">
                 {t('auth.welcomeBack')}
               </Text>
-              <Text className="text-white/55 font-heebo text-base">
+              <Text className="text-ink-soft font-heebo text-base">
                 {t('auth.subtitleLogin')}
               </Text>
             </View>
@@ -124,7 +124,7 @@ export default function LoginScreen() {
             </View>
 
             <View className="flex-row items-center justify-center gap-1.5 mt-6">
-              <Text className="text-white/55 font-heebo text-sm">{t('auth.noAccount')}</Text>
+              <Text className="text-ink-soft font-heebo text-sm">{t('auth.noAccount')}</Text>
               <Link href="/(auth)/signup" asChild>
                 <Pressable hitSlop={8} disabled={loading}>
                   <Text className="text-violet-glow font-heebo-bold text-sm">

@@ -97,10 +97,10 @@ export default function AdminScreen() {
           <View className="w-16 h-16 rounded-full bg-accent/15 border border-accent/40 items-center justify-center mb-4">
             <ShieldAlert color={colors.accent} size={28} strokeWidth={2} />
           </View>
-          <Text className="text-white font-heebo-bold text-xl text-center">
+          <Text className="text-ink font-heebo-bold text-xl text-center">
             {t('admin.accessDenied')}
           </Text>
-          <Text className="text-white/55 font-heebo text-sm text-center mt-2">
+          <Text className="text-ink-soft font-heebo text-sm text-center mt-2">
             {t('admin.accessDeniedRedirect')}
           </Text>
         </View>
@@ -118,18 +118,18 @@ export default function AdminScreen() {
             className="w-10 h-10 rounded-full bg-glass-strong border border-glass-border items-center justify-center"
             style={({ pressed }) => pressed && { opacity: 0.7 }}
           >
-            <ArrowLeft color={colors.white} size={18} strokeWidth={2.5} />
+            <ArrowLeft color={colors.violetGlow} size={18} strokeWidth={2.5} />
           </Pressable>
           <View className="items-center">
-            <Text className="text-white font-heebo-black text-base">{t('admin.brandTitle')}</Text>
-            <Text className="text-white/45 font-heebo text-[11px]">{t('admin.subtitle')}</Text>
+            <Text className="text-ink font-heebo-black text-base">{t('admin.brandTitle')}</Text>
+            <Text className="text-ink-faint font-heebo text-[11px]">{t('admin.subtitle')}</Text>
           </View>
           <Pressable
             onPress={() => refresh()}
             className="w-10 h-10 rounded-full bg-glass-strong border border-glass-border items-center justify-center"
             style={({ pressed }) => pressed && { opacity: 0.7 }}
           >
-            <RefreshCw color={colors.white} size={16} strokeWidth={2.4} />
+            <RefreshCw color={colors.violetGlow} size={16} strokeWidth={2.4} />
           </Pressable>
         </View>
 
@@ -142,11 +142,11 @@ export default function AdminScreen() {
           <GlassCard variant="primary">
             <View className="p-4 flex-row items-baseline justify-between flex-wrap gap-3">
               <View>
-                <Text className="text-white/55 font-heebo text-xs">{t('admin.total')}</Text>
-                <Text className="text-white font-heebo-black text-3xl mt-0.5">{counts.total}</Text>
+                <Text className="text-ink-soft font-heebo text-xs">{t('admin.total')}</Text>
+                <Text className="text-ink font-heebo-black text-3xl mt-0.5">{counts.total}</Text>
               </View>
               <View className="flex-row gap-4 flex-wrap">
-                <SummaryCount label={t('admin.status.pending')} value={counts.pending} color="text-white/80" />
+                <SummaryCount label={t('admin.status.pending')} value={counts.pending} color="text-ink-soft" />
                 <SummaryCount label={t('admin.status.approved')} value={counts.approved} color="text-mint" />
                 <SummaryCount label={t('admin.status.rejected')} value={counts.rejected} color="text-accent" />
               </View>
@@ -156,7 +156,7 @@ export default function AdminScreen() {
           {/* Latest signups */}
           {latest.length > 0 ? (
             <View className="mt-4">
-              <Text className="text-white font-heebo-bold text-sm mb-2">
+              <Text className="text-ink font-heebo-bold text-sm mb-2">
                 {t('admin.latestSignups')}
               </Text>
               <GlassCard variant="subtle">
@@ -166,14 +166,14 @@ export default function AdminScreen() {
                       <View className="flex-row items-center px-4 py-3 gap-3">
                         <Avatar initials={computeInitials(e.full_name)} seed={e.full_name} size="sm" />
                         <View className="flex-1">
-                          <Text className="text-white font-heebo-medium text-sm" numberOfLines={1}>
+                          <Text className="text-ink font-heebo-medium text-sm" numberOfLines={1}>
                             {e.full_name}
                           </Text>
-                          <Text className="text-white/45 font-heebo text-xs" numberOfLines={1}>
+                          <Text className="text-ink-faint font-heebo text-xs" numberOfLines={1}>
                             {e.country} · {t(`businessType.${e.business_type}`)}
                           </Text>
                         </View>
-                        <Text className="text-white/35 font-heebo text-[10px]">
+                        <Text className="text-ink-faint font-heebo text-[10px]">
                           {formatRelativeDate(e.created_at)}
                         </Text>
                       </View>
@@ -214,13 +214,14 @@ export default function AdminScreen() {
               variant="secondary"
               size="sm"
               disabled={entries.length === 0}
-              icon={<Download color={colors.white} size={16} strokeWidth={2.2} />}
+              icon={<Download color={colors.violetGlow} size={16} strokeWidth={2.2} />}
             />
           </View>
 
-          {/* Full table */}
-          <View className="mt-5 mb-2 flex-row items-center justify-between">
+          {/* Table header band — turquoise w/ white text */}
+          <View className="mt-5 mb-2.5 rounded-2xl bg-turquoise px-4 py-2.5 flex-row items-center justify-between">
             <Text className="text-white font-heebo-bold text-sm">{t('admin.allUsers')}</Text>
+            <Text className="text-white font-heebo-medium text-xs">{entries.length}</Text>
           </View>
 
           <View className="gap-2.5">
@@ -266,7 +267,7 @@ function SummaryCount({
 }) {
   return (
     <View>
-      <Text className="text-white/45 font-heebo text-[10px] uppercase tracking-wide">{label}</Text>
+      <Text className="text-ink-faint font-heebo text-[10px] uppercase tracking-wide">{label}</Text>
       <Text className={`font-heebo-bold text-lg mt-0.5 ${color}`}>{value}</Text>
     </View>
   );

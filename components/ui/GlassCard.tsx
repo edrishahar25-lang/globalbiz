@@ -28,8 +28,19 @@ const variantOverlay: Record<Variant, keyof typeof gradients | null> = {
   accent: 'accentSoft',
 };
 
+// Soft turquoise-tinted shadow per design spec:
+// box-shadow: 0 8px 30px rgba(20,216,230,0.10). react-native-web maps these
+// shadow* props to box-shadow; native uses elevation.
+const cardShadow = {
+  shadowColor: '#14D8E6',
+  shadowOffset: { width: 0, height: 8 },
+  shadowOpacity: 0.1,
+  shadowRadius: 30,
+  elevation: 3,
+} as const;
+
 export function GlassCard({ children, variant = 'subtle', onPress, className = '' }: Props) {
-  const baseClass = `rounded-3xl border border-glass-border overflow-hidden ${variantBgClass[variant]} ${className}`;
+  const baseClass = `rounded-3xl border border-glass-border overflow-hidden bg-white ${variantBgClass[variant]} ${className}`;
   const overlay = variantOverlay[variant];
 
   const inner = (
@@ -48,10 +59,14 @@ export function GlassCard({ children, variant = 'subtle', onPress, className = '
 
   if (onPress) {
     return (
-      <Pressable onPress={onPress} className={baseClass} style={({ pressed }) => pressed && { opacity: 0.85 }}>
+      <Pressable
+        onPress={onPress}
+        className={baseClass}
+        style={({ pressed }) => [cardShadow, pressed && { opacity: 0.9 }]}
+      >
         {inner}
       </Pressable>
     );
   }
-  return <View className={baseClass}>{inner}</View>;
+  return <View className={baseClass} style={cardShadow}>{inner}</View>;
 }

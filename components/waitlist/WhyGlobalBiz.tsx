@@ -13,8 +13,8 @@ function Card({ icon, title, body }: { icon: ReactNode; title: string; body: str
           {icon}
         </View>
         <View className="flex-1">
-          <Text className="text-white font-heebo-bold text-base">{title}</Text>
-          <Text className="text-white/60 font-heebo text-sm mt-1 leading-5">{body}</Text>
+          <Text className="text-ink font-heebo-bold text-base">{title}</Text>
+          <Text className="text-ink-soft font-heebo text-sm mt-1 leading-5">{body}</Text>
         </View>
       </View>
     </GlassCard>

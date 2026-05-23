@@ -38,14 +38,14 @@ function Chip({
       onPress={onPress}
       className={`rounded-full border px-3 py-1.5 ${
         active
-          ? 'bg-violet-base/30 border-violet-glow'
-          : 'bg-glass-strong border-glass-border'
+          ? 'bg-turquoise/15 border-turquoise'
+          : 'bg-white border-glass-border'
       }`}
       style={({ pressed }) => pressed && { opacity: 0.7 }}
     >
       <Text
         className={`font-heebo-medium text-xs ${
-          active ? 'text-white' : 'text-white/65'
+          active ? 'text-violet-deep' : 'text-ink-soft'
         }`}
       >
         {label}
@@ -66,17 +66,17 @@ export function FilterBar(props: Props) {
   return (
     <View className="gap-3">
       {/* Search */}
-      <View className="flex-row items-center gap-2 bg-glass-strong border border-glass-border rounded-2xl px-4 py-3">
-        <Search color="rgba(255,255,255,0.45)" size={18} strokeWidth={2.2} />
+      <View className="flex-row items-center gap-2 bg-sky border border-glass-border rounded-2xl px-4 py-3">
+        <Search color={colors.muted} size={18} strokeWidth={2.2} />
         <TextInput
           value={props.search}
           onChangeText={props.onSearchChange}
           placeholder={t('admin.searchPlaceholder')}
-          placeholderTextColor="rgba(255,255,255,0.35)"
-          className="flex-1 text-white font-heebo text-base"
+          placeholderTextColor="#94A3B8"
+          className="flex-1 text-ink font-heebo text-base"
           style={{
             fontFamily: 'Heebo_400Regular',
-            color: '#ffffff',
+            color: '#0F172A',
             textAlign: numericAlign,
           }}
         />
@@ -92,7 +92,7 @@ export function FilterBar(props: Props) {
 
       {/* Status chips */}
       <View>
-        <Text className="text-white/45 font-heebo-medium text-[10px] uppercase tracking-wide mb-1.5">
+        <Text className="text-ink-faint font-heebo-medium text-[10px] uppercase tracking-wide mb-1.5">
           {t('admin.filterStatus')}
         </Text>
         <View className="flex-row flex-wrap gap-2">
@@ -114,7 +114,7 @@ export function FilterBar(props: Props) {
 
       {/* Business type chips */}
       <View>
-        <Text className="text-white/45 font-heebo-medium text-[10px] uppercase tracking-wide mb-1.5">
+        <Text className="text-ink-faint font-heebo-medium text-[10px] uppercase tracking-wide mb-1.5">
           {t('admin.filterBusinessType')}
         </Text>
         <View className="flex-row flex-wrap gap-2">
@@ -137,7 +137,7 @@ export function FilterBar(props: Props) {
       {/* Country chips — built dynamically from the dataset */}
       {props.countries.length > 0 ? (
         <View>
-          <Text className="text-white/45 font-heebo-medium text-[10px] uppercase tracking-wide mb-1.5">
+          <Text className="text-ink-faint font-heebo-medium text-[10px] uppercase tracking-wide mb-1.5">
             {t('admin.filterCountry')}
           </Text>
           <ScrollView

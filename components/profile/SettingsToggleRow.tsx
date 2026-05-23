@@ -23,13 +23,13 @@ export function SettingsToggleRow({ icon, label, value, onValueChange }: Props) 
       <View className="w-9 h-9 rounded-xl bg-glass-strong border border-glass-border items-center justify-center">
         {icon}
       </View>
-      <Text className="flex-1 text-white font-heebo-medium text-base">{label}</Text>
+      <Text className="flex-1 text-ink font-heebo-medium text-base">{label}</Text>
       <Switch
         value={value}
         onValueChange={handle}
-        trackColor={{ false: 'rgba(255,255,255,0.15)', true: colors.violetBase }}
-        thumbColor={value ? colors.violetGlow : '#f4f3f4'}
-        ios_backgroundColor="rgba(255,255,255,0.15)"
+        trackColor={{ false: '#CBD5E1', true: colors.violetBase }}
+        thumbColor={value ? colors.violetGlow : '#ffffff'}
+        ios_backgroundColor="#CBD5E1"
       />
     </View>
   );

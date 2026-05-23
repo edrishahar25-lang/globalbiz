@@ -31,7 +31,7 @@ function Row({
   hint?: string;
 }) {
   const textClass =
-    state === 'done' ? 'text-white' : state === 'pending' ? 'text-white' : 'text-white/45';
+    state === 'done' ? 'text-ink' : state === 'pending' ? 'text-ink' : 'text-ink-faint';
   return (
     <View className="flex-row items-start gap-3 py-3">
       <View className="w-6 items-center pt-0.5">
@@ -40,7 +40,7 @@ function Row({
       <View className="flex-1">
         <Text className={`font-heebo-medium text-base ${textClass}`}>{label}</Text>
         {hint ? (
-          <Text className="text-white/45 font-heebo text-xs mt-0.5">{hint}</Text>
+          <Text className="text-ink-faint font-heebo text-xs mt-0.5">{hint}</Text>
         ) : null}
       </View>
     </View>
@@ -64,7 +64,7 @@ export function OnboardingChecklist({ hasAccount, hasProfile, hasWaitlist, statu
   return (
     <GlassCard variant="subtle">
       <View className="p-5">
-        <Text className="text-white/55 font-heebo-medium text-xs uppercase tracking-wide mb-3">
+        <Text className="text-ink-soft font-heebo-medium text-xs uppercase tracking-wide mb-3">
           {t('onboarding.title')}
         </Text>
         <Row

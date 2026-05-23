@@ -13,7 +13,7 @@ export function TaxReportCard() {
       <View className="p-5">
         <View className="flex-row items-center gap-2 mb-2">
           <Sparkles color={colors.violetGlow} size={16} strokeWidth={2.5} />
-          <Text className="text-white font-heebo-bold text-base">{t('profile.taxReport')}</Text>
+          <Text className="text-ink font-heebo-bold text-base">{t('profile.taxReport')}</Text>
         </View>
         <EmptyState
           compact

@@ -20,10 +20,10 @@ export function LockedFeatureCard({ titleKey, subtitleKey }: Props) {
         <View className="w-14 h-14 rounded-full bg-glass-strong border border-glass-border items-center justify-center mb-4">
           <Lock color={colors.muted} size={24} strokeWidth={2} />
         </View>
-        <Text className="text-white font-heebo-bold text-lg text-center">
+        <Text className="text-ink font-heebo-bold text-lg text-center">
           {t(titleKey)}
         </Text>
-        <Text className="text-white/55 font-heebo text-sm text-center mt-2 leading-5">
+        <Text className="text-ink-soft font-heebo text-sm text-center mt-2 leading-5">
           {t(subtitleKey)}
         </Text>
       </View>

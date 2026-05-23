@@ -127,10 +127,10 @@ export default function SignupScreen() {
             showsVerticalScrollIndicator={false}
           >
             <View className="mb-6 mt-2">
-              <Text className="text-white font-heebo-black text-4xl mb-2">
+              <Text className="text-ink font-heebo-black text-4xl mb-2">
                 {t('auth.createAccount')}
               </Text>
-              <Text className="text-white/55 font-heebo text-base">
+              <Text className="text-ink-soft font-heebo text-base">
                 {t('auth.subtitleSignup')}
               </Text>
             </View>
@@ -194,7 +194,7 @@ export default function SignupScreen() {
             </View>
 
             <View className="flex-row items-center justify-center gap-1.5 mt-6">
-              <Text className="text-white/55 font-heebo text-sm">{t('auth.haveAccount')}</Text>
+              <Text className="text-ink-soft font-heebo text-sm">{t('auth.haveAccount')}</Text>
               <Link href="/(auth)/login" asChild>
                 <Pressable hitSlop={8} disabled={loading}>
                   <Text className="text-violet-glow font-heebo-bold text-sm">

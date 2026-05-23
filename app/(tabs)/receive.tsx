@@ -14,7 +14,7 @@ export default function ReceiveScreen() {
           showsVerticalScrollIndicator={false}
         >
           <View className="px-5 pt-3 pb-5">
-            <Text className="text-white font-heebo-black text-3xl">{t('tabs.receive')}</Text>
+            <Text className="text-ink font-heebo-black text-3xl">{t('tabs.receive')}</Text>
           </View>
 
           <View className="px-5">

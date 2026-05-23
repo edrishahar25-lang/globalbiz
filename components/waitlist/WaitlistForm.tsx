@@ -49,7 +49,7 @@ function ChipRow({
             ) : null}
             <Text
               className={`font-heebo-medium text-sm ${
-                isActive ? 'text-white' : 'text-white/70'
+                isActive ? 'text-ink' : 'text-ink-soft'
               }`}
             >
               {o.label}
@@ -155,33 +155,33 @@ export function WaitlistForm() {
     <GlassCard variant="primary">
       <View className="p-5 gap-5">
         <View>
-          <Text className="text-white font-heebo-bold text-lg">
+          <Text className="text-ink font-heebo-bold text-lg">
             {entry ? t('waitlist.updateTitle') : t('waitlist.title')}
           </Text>
-          <Text className="text-white/60 font-heebo text-sm mt-1">{t('waitlist.subtitle')}</Text>
+          <Text className="text-ink-soft font-heebo text-sm mt-1">{t('waitlist.subtitle')}</Text>
         </View>
 
         <StatusBanner status={status} />
 
         {/* Country */}
         <View>
-          <Text className="text-white/65 font-heebo-medium text-xs uppercase tracking-wide mb-2">
+          <Text className="text-ink-soft font-heebo-medium text-xs uppercase tracking-wide mb-2">
             {t('waitlist.country')} *
           </Text>
           <TextInput
             value={country}
             onChangeText={setCountry}
             placeholder={t('waitlist.countryPlaceholder')}
-            placeholderTextColor="rgba(255,255,255,0.32)"
+            placeholderTextColor="#94A3B8"
             editable={!submitting}
-            className="bg-glass-strong border border-glass-border rounded-2xl px-4 py-3 text-white font-heebo text-base"
-            style={{ fontFamily: 'Heebo_400Regular', color: '#ffffff' }}
+            className="bg-glass-strong border border-glass-border rounded-2xl px-4 py-3 text-ink font-heebo text-base"
+            style={{ fontFamily: 'Heebo_400Regular', color: '#0F172A' }}
           />
         </View>
 
         {/* Business type */}
         <View>
-          <Text className="text-white/65 font-heebo-medium text-xs uppercase tracking-wide mb-2">
+          <Text className="text-ink-soft font-heebo-medium text-xs uppercase tracking-wide mb-2">
             {t('waitlist.businessType')} *
           </Text>
           <ChipRow
@@ -193,7 +193,7 @@ export function WaitlistForm() {
 
         {/* International? */}
         <View>
-          <Text className="text-white/65 font-heebo-medium text-xs uppercase tracking-wide mb-2">
+          <Text className="text-ink-soft font-heebo-medium text-xs uppercase tracking-wide mb-2">
             {t('waitlist.worksInternationally')} *
           </Text>
           <ChipRow
@@ -205,7 +205,7 @@ export function WaitlistForm() {
 
         {/* Income */}
         <View>
-          <Text className="text-white/65 font-heebo-medium text-xs uppercase tracking-wide mb-2">
+          <Text className="text-ink-soft font-heebo-medium text-xs uppercase tracking-wide mb-2">
             {t('waitlist.monthlyIncome')} *
           </Text>
           <ChipRow
@@ -217,7 +217,7 @@ export function WaitlistForm() {
 
         {/* Tools (multi) */}
         <View>
-          <Text className="text-white/65 font-heebo-medium text-xs uppercase tracking-wide mb-2">
+          <Text className="text-ink-soft font-heebo-medium text-xs uppercase tracking-wide mb-2">
             {t('waitlist.currentTools')}
           </Text>
           <ChipRow options={toolOpts} selected={tools} onSelect={toggleTool} multi />
@@ -225,17 +225,17 @@ export function WaitlistForm() {
 
         {/* Referral */}
         <View>
-          <Text className="text-white/65 font-heebo-medium text-xs uppercase tracking-wide mb-2">
+          <Text className="text-ink-soft font-heebo-medium text-xs uppercase tracking-wide mb-2">
             {t('waitlist.referralSource')}
           </Text>
           <TextInput
             value={referral}
             onChangeText={setReferral}
             placeholder={t('waitlist.referralPlaceholder')}
-            placeholderTextColor="rgba(255,255,255,0.32)"
+            placeholderTextColor="#94A3B8"
             editable={!submitting}
-            className="bg-glass-strong border border-glass-border rounded-2xl px-4 py-3 text-white font-heebo text-base"
-            style={{ fontFamily: 'Heebo_400Regular', color: '#ffffff' }}
+            className="bg-glass-strong border border-glass-border rounded-2xl px-4 py-3 text-ink font-heebo text-base"
+            style={{ fontFamily: 'Heebo_400Regular', color: '#0F172A' }}
             maxLength={120}
           />
         </View>

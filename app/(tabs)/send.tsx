@@ -14,7 +14,7 @@ export default function SendScreen() {
           showsVerticalScrollIndicator={false}
         >
           <View className="px-5 pt-3 pb-5">
-            <Text className="text-white font-heebo-black text-3xl">{t('tabs.send')}</Text>
+            <Text className="text-ink font-heebo-black text-3xl">{t('tabs.send')}</Text>
           </View>
 
           <View className="px-5">
