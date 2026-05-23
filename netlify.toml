@@ -1,29 +1,22 @@
 [build]
-  # Map short env var names → EXPO_PUBLIC_* before building, so users can
-  # configure Netlify with either naming convention:
-  #   SUPABASE_URL / SUPABASE_ANON_KEY            (short, common)
-  #   EXPO_PUBLIC_SUPABASE_URL / *_ANON_KEY       (Expo-native, also works)
-  # Metro only inlines env vars prefixed with EXPO_PUBLIC_ into the web bundle,
-  # so the export step below requires the prefixed form.
-  command = """
-export EXPO_PUBLIC_SUPABASE_URL="${EXPO_PUBLIC_SUPABASE_URL:-$SUPABASE_URL}"
-export EXPO_PUBLIC_SUPABASE_ANON_KEY="${EXPO_PUBLIC_SUPABASE_ANON_KEY:-$SUPABASE_ANON_KEY}"
-echo "[netlify] EXPO_PUBLIC_SUPABASE_URL is $( [ -n "$EXPO_PUBLIC_SUPABASE_URL" ] && echo set || echo MISSING )"
-echo "[netlify] EXPO_PUBLIC_SUPABASE_ANON_KEY is $( [ -n "$EXPO_PUBLIC_SUPABASE_ANON_KEY" ] && echo set || echo MISSING )"
-npm install --legacy-peer-deps
-npm run build:web
-"""
+  # See scripts/netlify-build.sh for the full pipeline:
+  #   1. map SUPABASE_URL → EXPO_PUBLIC_SUPABASE_URL if needed
+  #   2. echo presence + length to the deploy log
+  #   3. npm install + expo export
+  command = "bash ./scripts/netlify-build.sh"
   publish = "dist"
 
 # Required env vars (set in Netlify Site config → Environment variables).
-# Either naming convention works thanks to the mapping above:
-#   SUPABASE_URL      = https://<project>.supabase.co
-#   SUPABASE_ANON_KEY = <anon public JWT>
-# OR equivalently:
+# Either naming convention works — the script above maps short → prefixed:
+#   SUPABASE_URL                   = https://<project>.supabase.co
+#   SUPABASE_ANON_KEY              = <anon public JWT>
+#   ─ OR equivalently ─
 #   EXPO_PUBLIC_SUPABASE_URL
 #   EXPO_PUBLIC_SUPABASE_ANON_KEY
-# Without these, the app loads but Auth shows a clear "not configured"
-# message — never a silent failure. See SUPABASE_SETUP.md.
+#
+# IMPORTANT: this section does NOT strip or filter any env vars. Netlify
+# passes everything from "Environment variables" in Site config straight
+# through to the build process. We only ADD the mappings above.
 
 [build.environment]
   NODE_VERSION = "20"
@@ -36,10 +29,6 @@ npm run build:web
   to = "/index.html"
   status = 200
 
-# Make sure JS / CSS / asset paths are served as files
-# even though we have an SPA fallback above. Netlify checks
-# for static files before applying rewrites, but we add
-# explicit force=false rules to make intent clear.
 [[headers]]
   for = "/_expo/static/js/*"
   [headers.values]
