@@ -95,6 +95,7 @@ function ProtectedNavigator() {
       <Stack.Screen name="(auth)" />
       <Stack.Screen name="(tabs)" />
       <Stack.Screen name="admin/index" options={{ animation: 'slide_from_right' }} />
+      <Stack.Screen name="admin/[id]" options={{ animation: 'slide_from_right' }} />
     </Stack>
   );
 }

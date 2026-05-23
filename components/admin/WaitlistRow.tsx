@@ -1,7 +1,9 @@
 import { useMemo } from 'react';
-import { Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { ChevronLeft } from 'lucide-react-native';
 import { Avatar, GlassCard } from '@/components/ui';
+import { colors } from '@/constants/colors';
 import { StatusBadge } from './StatusBadge';
 import { SegmentedControl } from './SegmentedControl';
 import { computeInitials } from '@/lib/identity';
@@ -19,10 +21,11 @@ type Props = {
   entry: WaitlistEntry;
   onUpdateStatus: (id: string, status: OnboardingStatus) => void;
   onUpdatePriority: (id: string, priority: EarlyAccessPriority) => void;
+  onOpen?: (id: string) => void;
   busy?: boolean;
 };
 
-export function WaitlistRow({ entry, onUpdateStatus, onUpdatePriority, busy }: Props) {
+export function WaitlistRow({ entry, onUpdateStatus, onUpdatePriority, onOpen, busy }: Props) {
   const { t } = useTranslation();
   const initials = computeInitials(entry.full_name);
 
@@ -42,7 +45,11 @@ export function WaitlistRow({ entry, onUpdateStatus, onUpdatePriority, busy }: P
   return (
     <GlassCard variant="subtle">
       <View className="p-4 gap-3.5">
-        <View className="flex-row items-start gap-3">
+        <Pressable
+          onPress={onOpen ? () => onOpen(entry.id) : undefined}
+          className="flex-row items-start gap-3"
+          style={({ pressed }) => pressed && onOpen && { opacity: 0.6 }}
+        >
           <Avatar initials={initials} seed={entry.full_name} size="md" />
           <View className="flex-1">
             <View className="flex-row items-center justify-between gap-2">
@@ -53,6 +60,7 @@ export function WaitlistRow({ entry, onUpdateStatus, onUpdatePriority, busy }: P
                 {entry.full_name}
               </Text>
               <StatusBadge status={entry.onboarding_status} />
+              {onOpen ? <ChevronLeft color={colors.muted} size={18} strokeWidth={2.4} /> : null}
             </View>
             <Text className="text-ink-soft font-heebo text-xs mt-0.5" numberOfLines={1}>
               {entry.email}
@@ -79,7 +87,7 @@ export function WaitlistRow({ entry, onUpdateStatus, onUpdatePriority, busy }: P
               {formatRelativeDate(entry.created_at)}
             </Text>
           </View>
-        </View>
+        </Pressable>
 
         <SegmentedControl<OnboardingStatus>
           label={t('admin.colStatus')}

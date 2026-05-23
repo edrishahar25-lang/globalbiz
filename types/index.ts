@@ -165,7 +165,10 @@ export type WaitlistEntry = {
   id: string;
   full_name: string;
   email: string;
+  phone: string | null;
+  business_name: string | null;
   country: string;
+  city: string | null;
   business_type: BusinessType;
   works_internationally: boolean;
   monthly_income_range: MonthlyIncomeRange;
@@ -173,6 +176,7 @@ export type WaitlistEntry = {
   referral_source: string | null;
   onboarding_status: OnboardingStatus;
   early_access_priority: EarlyAccessPriority;
+  archived: boolean;
   created_at: string;
   updated_at: string;
 };
@@ -182,6 +186,7 @@ export type WaitlistSubmitInput = Omit<
   | 'id'
   | 'onboarding_status'
   | 'early_access_priority'
+  | 'archived'
   | 'created_at'
   | 'updated_at'
 >;

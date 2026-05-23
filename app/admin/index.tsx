@@ -54,15 +54,39 @@ export default function AdminScreen() {
     return Array.from(set).sort();
   }, [entries]);
 
-  const counts = useMemo(() => {
-    const c = { total: entries.length, pending: 0, reviewing: 0, approved: 0, rejected: 0 };
+  const stats = useMemo(() => {
+    const now = new Date();
+    const startToday = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+    const startWeek = startToday - 6 * 86400000; // last 7 days incl. today
+    const s = {
+      total: entries.length,
+      pending: 0,
+      reviewing: 0,
+      approved: 0,
+      rejected: 0,
+      today: 0,
+      week: 0,
+    };
     entries.forEach((e) => {
-      c[e.onboarding_status]++;
+      s[e.onboarding_status]++;
+      const ts = new Date(e.created_at).getTime();
+      if (ts >= startToday) s.today++;
+      if (ts >= startWeek) s.week++;
     });
-    return c;
+    return s;
   }, [entries]);
 
+  // Live refresh — pull new signups every 10s (silent: no spinner flicker).
+  useEffect(() => {
+    const iv = setInterval(() => {
+      void refresh();
+    }, 10000);
+    return () => clearInterval(iv);
+  }, [refresh]);
+
   const latest = useMemo(() => entries.slice(0, 5), [entries]);
+
+  const openApplicant = (id: string) => router.push(`/admin/${id}` as never);
 
   const handleExport = () => {
     const res = downloadWaitlistCsv(entries);
@@ -138,20 +162,16 @@ export default function AdminScreen() {
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
         >
-          {/* Summary */}
-          <GlassCard variant="primary">
-            <View className="p-4 flex-row items-baseline justify-between flex-wrap gap-3">
-              <View>
-                <Text className="text-ink-soft font-heebo text-xs">{t('admin.total')}</Text>
-                <Text className="text-ink font-heebo-black text-3xl mt-0.5">{counts.total}</Text>
-              </View>
-              <View className="flex-row gap-4 flex-wrap">
-                <SummaryCount label={t('admin.status.pending')} value={counts.pending} color="text-ink-soft" />
-                <SummaryCount label={t('admin.status.approved')} value={counts.approved} color="text-mint" />
-                <SummaryCount label={t('admin.status.rejected')} value={counts.rejected} color="text-accent" />
-              </View>
-            </View>
-          </GlassCard>
+          {/* Stats grid */}
+          <View className="flex-row flex-wrap gap-2.5">
+            <StatCard label={t('admin.stats.total')} value={stats.total} valueClass="text-ink" />
+            <StatCard label={t('admin.stats.today')} value={stats.today} valueClass="text-violet-deep" />
+            <StatCard label={t('admin.stats.week')} value={stats.week} valueClass="text-violet-deep" />
+            <StatCard label={t('admin.status.approved')} value={stats.approved} valueClass="text-mint" />
+            <StatCard label={t('admin.status.pending')} value={stats.pending} valueClass="text-ink-soft" />
+            <StatCard label={t('admin.status.reviewing')} value={stats.reviewing} valueClass="text-violet-deep" />
+            <StatCard label={t('admin.status.rejected')} value={stats.rejected} valueClass="text-accent" />
+          </View>
 
           {/* Latest signups */}
           {latest.length > 0 ? (
@@ -246,6 +266,7 @@ export default function AdminScreen() {
                   entry={e}
                   onUpdateStatus={handleStatus}
                   onUpdatePriority={handlePriority}
+                  onOpen={openApplicant}
                 />
               ))
             )}
@@ -256,19 +277,22 @@ export default function AdminScreen() {
   );
 }
 
-function SummaryCount({
+function StatCard({
   label,
   value,
-  color,
+  valueClass,
 }: {
   label: string;
   value: number;
-  color: string;
+  valueClass: string;
 }) {
   return (
-    <View>
-      <Text className="text-ink-faint font-heebo text-[10px] uppercase tracking-wide">{label}</Text>
-      <Text className={`font-heebo-bold text-lg mt-0.5 ${color}`}>{value}</Text>
+    <View
+      className="bg-white border border-glass-border rounded-2xl px-3.5 py-3"
+      style={{ flexBasis: '30%', flexGrow: 1, shadowColor: '#14D8E6', shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.08, shadowRadius: 18, elevation: 2 }}
+    >
+      <Text className={`font-heebo-black text-2xl ${valueClass}`}>{value}</Text>
+      <Text className="text-ink-faint font-heebo text-[11px] mt-0.5" numberOfLines={1}>{label}</Text>
     </View>
   );
 }

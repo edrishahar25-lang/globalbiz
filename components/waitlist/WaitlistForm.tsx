@@ -66,7 +66,10 @@ export function WaitlistForm() {
   const { user, profile } = useAuth();
   const { entry, submit, submitting } = useWaitlist();
 
+  const [phone, setPhone] = useState('');
+  const [businessName, setBusinessName] = useState('');
   const [country, setCountry] = useState('');
+  const [city, setCity] = useState('');
   const [businessType, setBusinessType] = useState<BusinessType | ''>('');
   const [worksIntl, setWorksIntl] = useState<'' | 'yes' | 'no'>('');
   const [incomeRange, setIncomeRange] = useState<MonthlyIncomeRange | ''>('');
@@ -76,14 +79,21 @@ export function WaitlistForm() {
 
   // Hydrate from existing entry — so "Update application" pre-fills.
   useEffect(() => {
-    if (!entry) return;
+    if (!entry) {
+      // Pre-fill business name from the profile on first application.
+      if (profile?.business_name) setBusinessName(profile.business_name);
+      return;
+    }
+    setPhone(entry.phone ?? '');
+    setBusinessName(entry.business_name ?? '');
     setCountry(entry.country);
+    setCity(entry.city ?? '');
     setBusinessType(entry.business_type);
     setWorksIntl(entry.works_internationally ? 'yes' : 'no');
     setIncomeRange(entry.monthly_income_range);
     setTools(entry.current_tools);
     setReferral(entry.referral_source ?? '');
-  }, [entry]);
+  }, [entry, profile]);
 
   const businessOpts: Chip[] = useMemo(
     () => BUSINESS_TYPES.map((v) => ({ value: v, label: t(`businessType.${v}`) })),
@@ -107,6 +117,7 @@ export function WaitlistForm() {
   ];
 
   const isValid =
+    phone.trim().length >= 6 &&
     country.trim().length > 0 &&
     businessType !== '' &&
     worksIntl !== '' &&
@@ -129,7 +140,10 @@ export function WaitlistForm() {
     const { error } = await submit({
       full_name: profile?.full_name ?? user.email?.split('@')[0] ?? '',
       email: user.email ?? '',
+      phone: phone.trim() || null,
+      business_name: businessName.trim() || null,
       country: country.trim(),
+      city: city.trim() || null,
       business_type: businessType as BusinessType,
       works_internationally: worksIntl === 'yes',
       monthly_income_range: incomeRange as MonthlyIncomeRange,
@@ -163,6 +177,42 @@ export function WaitlistForm() {
 
         <StatusBanner status={status} />
 
+        {/* Phone */}
+        <View>
+          <Text className="text-ink-soft font-heebo-medium text-xs uppercase tracking-wide mb-2">
+            {t('waitlist.phone')} *
+          </Text>
+          <TextInput
+            value={phone}
+            onChangeText={setPhone}
+            placeholder={t('waitlist.phonePlaceholder')}
+            placeholderTextColor="#94A3B8"
+            editable={!submitting}
+            keyboardType="phone-pad"
+            autoComplete="tel"
+            className="bg-glass-strong border border-glass-border rounded-2xl px-4 py-3 text-ink font-heebo text-base"
+            style={{ fontFamily: 'Heebo_400Regular', color: '#0F172A' }}
+            maxLength={20}
+          />
+        </View>
+
+        {/* Business name */}
+        <View>
+          <Text className="text-ink-soft font-heebo-medium text-xs uppercase tracking-wide mb-2">
+            {t('waitlist.businessName')}
+          </Text>
+          <TextInput
+            value={businessName}
+            onChangeText={setBusinessName}
+            placeholder={t('waitlist.businessNamePlaceholder')}
+            placeholderTextColor="#94A3B8"
+            editable={!submitting}
+            className="bg-glass-strong border border-glass-border rounded-2xl px-4 py-3 text-ink font-heebo text-base"
+            style={{ fontFamily: 'Heebo_400Regular', color: '#0F172A' }}
+            maxLength={80}
+          />
+        </View>
+
         {/* Country */}
         <View>
           <Text className="text-ink-soft font-heebo-medium text-xs uppercase tracking-wide mb-2">
@@ -176,6 +226,23 @@ export function WaitlistForm() {
             editable={!submitting}
             className="bg-glass-strong border border-glass-border rounded-2xl px-4 py-3 text-ink font-heebo text-base"
             style={{ fontFamily: 'Heebo_400Regular', color: '#0F172A' }}
+          />
+        </View>
+
+        {/* City */}
+        <View>
+          <Text className="text-ink-soft font-heebo-medium text-xs uppercase tracking-wide mb-2">
+            {t('waitlist.city')}
+          </Text>
+          <TextInput
+            value={city}
+            onChangeText={setCity}
+            placeholder={t('waitlist.cityPlaceholder')}
+            placeholderTextColor="#94A3B8"
+            editable={!submitting}
+            className="bg-glass-strong border border-glass-border rounded-2xl px-4 py-3 text-ink font-heebo text-base"
+            style={{ fontFamily: 'Heebo_400Regular', color: '#0F172A' }}
+            maxLength={60}
           />
         </View>
 

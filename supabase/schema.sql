@@ -111,7 +111,10 @@ create table if not exists public.waitlist_users (
   id                     uuid references auth.users(id) on delete cascade primary key,
   full_name              text not null,
   email                  text not null,
+  phone                  text,
+  business_name          text,
   country                text not null,
+  city                   text,
   business_type          business_type not null,
   works_internationally  boolean not null,
   monthly_income_range   monthly_income_range not null,
@@ -119,9 +122,16 @@ create table if not exists public.waitlist_users (
   referral_source        text,
   onboarding_status      onboarding_status not null default 'pending',
   early_access_priority  early_access_priority not null default 'normal',
+  archived               boolean not null default false,
   created_at             timestamp with time zone not null default now(),
   updated_at             timestamp with time zone not null default now()
 );
+
+-- Additive columns for existing databases (no-op if already present).
+alter table public.waitlist_users add column if not exists phone text;
+alter table public.waitlist_users add column if not exists business_name text;
+alter table public.waitlist_users add column if not exists city text;
+alter table public.waitlist_users add column if not exists archived boolean not null default false;
 
 drop trigger if exists waitlist_users_touch_updated_at on public.waitlist_users;
 create trigger waitlist_users_touch_updated_at
@@ -155,6 +165,31 @@ create index if not exists waitlist_users_status_idx
   on public.waitlist_users (onboarding_status, early_access_priority, created_at desc);
 create index if not exists waitlist_users_country_idx
   on public.waitlist_users (country);
+create index if not exists waitlist_users_archived_idx
+  on public.waitlist_users (archived, created_at desc);
+
+-- Admin-only internal notes. Kept in a SEPARATE table so it is invisible
+-- to applicants: users have a SELECT policy on their own waitlist_users row,
+-- which would expose an admin_notes column — this table has no user policy
+-- at all, so only is_admin() can read/write it.
+create table if not exists public.waitlist_admin_meta (
+  applicant_id uuid references public.waitlist_users(id) on delete cascade primary key,
+  admin_notes  text,
+  updated_at   timestamp with time zone not null default now()
+);
+
+drop trigger if exists waitlist_admin_meta_touch on public.waitlist_admin_meta;
+create trigger waitlist_admin_meta_touch
+  before update on public.waitlist_admin_meta
+  for each row execute function public.touch_updated_at();
+
+alter table public.waitlist_admin_meta enable row level security;
+
+drop policy if exists "Admins manage applicant meta" on public.waitlist_admin_meta;
+create policy "Admins manage applicant meta"
+  on public.waitlist_admin_meta for all
+  using (public.is_admin())
+  with check (public.is_admin());
 
 -- ============================================================
 -- 3) admin_users — explicit whitelist for the /admin/waitlist UI.

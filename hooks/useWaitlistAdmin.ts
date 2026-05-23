@@ -30,6 +30,7 @@ type Hook = State & {
     id: string,
     priority: EarlyAccessPriority,
   ) => Promise<{ error: string | null }>;
+  archive: (id: string) => Promise<{ error: string | null }>;
 };
 
 /** Admin-only — fetches every waitlist row. RLS will return 0 rows
@@ -47,10 +48,13 @@ export function useWaitlistAdmin(filters: AdminFilters): Hook {
       setState({ entries: [], loading: false, error: 'auth/not-configured' });
       return;
     }
-    setState((s) => ({ ...s, loading: true, error: null }));
+    // Only show the spinner on the initial (empty) load — keeps the 10s
+    // live-refresh from flickering the list.
+    setState((s) => ({ ...s, loading: s.entries.length === 0, error: null }));
     let q = supabase
       .from('waitlist_users')
       .select('*')
+      .eq('archived', false)
       .order('created_at', { ascending: false });
     if (filters.country) q = q.eq('country', filters.country);
     if (filters.businessType) q = q.eq('business_type', filters.businessType);
@@ -123,5 +127,20 @@ export function useWaitlistAdmin(filters: AdminFilters): Hook {
     [],
   );
 
-  return { ...state, refresh: fetchAll, updateStatus, updatePriority };
+  // Soft-delete: hide from the list but keep the row in Supabase.
+  const archive = useCallback(async (id: string) => {
+    if (!isSupabaseConfigured) return { error: 'auth/not-configured' };
+    const { error } = await supabase
+      .from('waitlist_users')
+      .update({ archived: true })
+      .eq('id', id);
+    if (error) {
+      console.warn('[admin] archive error', error);
+      return { error: error.message };
+    }
+    setState((s) => ({ ...s, entries: s.entries.filter((e) => e.id !== id) }));
+    return { error: null };
+  }, []);
+
+  return { ...state, refresh: fetchAll, updateStatus, updatePriority, archive };
 }
