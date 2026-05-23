@@ -87,6 +87,32 @@
     "sendTitle": "Sending payments is locked",
     "sendSubtitle": "Paying subcontractors and currency conversion unlock after Early Access approval. You're on the waitlist."
   },
+  "admin": {
+    "title": "Waitlist Admin",
+    "openDashboard": "Open waitlist admin",
+    "forbidden": "You don't have admin permission",
+    "total": "Total applications",
+    "searchPlaceholder": "Search by name or email...",
+    "filterStatus": "Status",
+    "filterBusinessType": "Business type",
+    "filterCountry": "Country",
+    "all": "All",
+    "resetFilters": "Reset filters",
+    "approve": "Approve",
+    "reject": "Reject",
+    "exportCsv": "Export {{count}} rows to CSV",
+    "exportFailed": "Export failed",
+    "exportNativeUnsupported": "CSV export is available only on the web. Open the dashboard at globalbiz-app.netlify.app",
+    "updateFailed": "Update failed",
+    "emptyTitle": "No results",
+    "emptySubtitle": "Try resetting filters or searching with a different term",
+    "status": {
+      "pending": "Pending",
+      "reviewing": "Reviewing",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    }
+  },
   "actions": {
     "send": "Send",
     "receive": "Receive",

@@ -70,6 +70,7 @@ function ProtectedNavigator() {
     >
       <Stack.Screen name="(auth)" />
       <Stack.Screen name="(tabs)" />
+      <Stack.Screen name="admin/waitlist" options={{ animation: 'slide_from_right' }} />
     </Stack>
   );
 }

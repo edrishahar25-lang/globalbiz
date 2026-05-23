@@ -156,6 +156,61 @@ create index if not exists waitlist_users_status_idx
 create index if not exists waitlist_users_country_idx
   on public.waitlist_users (country);
 
+-- ============================================================
+-- 3) admin_users — explicit whitelist for the /admin/waitlist UI.
+--    Grant access by inserting a row manually in SQL Editor:
+--      insert into public.admin_users (user_id)
+--      values ('<UUID from auth.users>');
+--    Revoke by deleting the row.
+-- ============================================================
+create table if not exists public.admin_users (
+  user_id    uuid references auth.users(id) on delete cascade primary key,
+  granted_at timestamp with time zone not null default now()
+);
+
+alter table public.admin_users enable row level security;
+
+-- is_admin() is SECURITY DEFINER so it bypasses RLS during the lookup
+-- itself — that breaks the policy-recursion cycle. Callable by any
+-- authenticated user; just returns boolean, no data leak.
+create or replace function public.is_admin()
+returns boolean
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select exists (
+    select 1 from public.admin_users where user_id = auth.uid()
+  );
+$$;
+
+grant execute on function public.is_admin() to authenticated;
+
+-- Only admins can see who else is an admin.
+drop policy if exists "Admins can read admin_users" on public.admin_users;
+create policy "Admins can read admin_users"
+  on public.admin_users for select
+  using (public.is_admin());
+
+-- Admin escalation policies — admins see/update all waitlist + all profiles.
+-- Regular per-user policies above still apply for non-admins.
+drop policy if exists "Admins read all waitlist" on public.waitlist_users;
+create policy "Admins read all waitlist"
+  on public.waitlist_users for select
+  using (public.is_admin());
+
+drop policy if exists "Admins update any waitlist" on public.waitlist_users;
+create policy "Admins update any waitlist"
+  on public.waitlist_users for update
+  using (public.is_admin())
+  with check (public.is_admin());
+
+drop policy if exists "Admins read all profiles" on public.profiles;
+create policy "Admins read all profiles"
+  on public.profiles for select
+  using (public.is_admin());
+
 -- Force PostgREST to refresh its schema cache so the new table is
 -- visible immediately (avoids PGRST205 right after migration).
 notify pgrst, 'reload schema';

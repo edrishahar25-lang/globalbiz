@@ -96,6 +96,32 @@
     "sendTitle": "שליחת תשלומים נעולה",
     "sendSubtitle": "העברות לקבלני משנה והמרות מטבע יזמינו אחרי שאישור Early Access יתקבל. אתה ברשימת ההמתנה."
   },
+  "admin": {
+    "title": "ניהול רשימת המתנה",
+    "openDashboard": "לוח ניהול רשימת המתנה",
+    "forbidden": "אין לך הרשאת ניהול",
+    "total": "סה״כ בקשות",
+    "searchPlaceholder": "חיפוש לפי שם או אימייל...",
+    "filterStatus": "סטטוס",
+    "filterBusinessType": "תחום עיסוק",
+    "filterCountry": "מדינה",
+    "all": "הכל",
+    "resetFilters": "אפס פילטרים",
+    "approve": "אשר",
+    "reject": "דחה",
+    "exportCsv": "ייצא {{count}} שורות ל-CSV",
+    "exportFailed": "ייצוא נכשל",
+    "exportNativeUnsupported": "ייצוא CSV זמין רק בדפדפן. פתח את הdashboard ב-globalbiz-app.netlify.app",
+    "updateFailed": "העדכון נכשל",
+    "emptyTitle": "אין תוצאות",
+    "emptySubtitle": "נסה לאפס את הפילטרים או לחפש בערך אחר",
+    "status": {
+      "pending": "ממתין",
+      "reviewing": "בבדיקה",
+      "approved": "אושר",
+      "rejected": "נדחה"
+    }
+  },
   "actions": {
     "send": "שליחה",
     "receive": "קבלה",

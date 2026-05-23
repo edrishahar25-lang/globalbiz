@@ -11,9 +11,12 @@ import {
   LogOut,
   Shield,
   ShieldCheck,
+  ShieldAlert,
   Sparkles,
 } from 'lucide-react-native';
 import { EmptyState, GlassCard, GradientBackground, PrimaryButton } from '@/components/ui';
+import { useIsAdmin } from '@/hooks/useIsAdmin';
+import { useRouter } from 'expo-router';
 import {
   LanguageSelector,
   SettingsRow,
@@ -27,6 +30,8 @@ import { colors } from '@/constants/colors';
 export default function ProfileScreen() {
   const { t } = useTranslation();
   const { signOut } = useAuth();
+  const router = useRouter();
+  const isAdmin = useIsAdmin();
   const [notificationsOn, setNotificationsOn] = useState(true);
   const [biometricOn, setBiometricOn] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
@@ -143,6 +148,18 @@ export default function ProfileScreen() {
           <Text className="text-white/45 font-heebo text-xs px-6 mb-6">
             {t('profile.needsReload')}
           </Text>
+
+          {isAdmin ? (
+            <View className="px-5 mb-3">
+              <PrimaryButton
+                label={t('admin.openDashboard')}
+                onPress={() => router.push('/admin/waitlist' as never)}
+                variant="secondary"
+                size="md"
+                icon={<ShieldAlert color={colors.violetGlow} size={18} strokeWidth={2.2} />}
+              />
+            </View>
+          ) : null}
 
           <View className="px-5">
             <PrimaryButton
