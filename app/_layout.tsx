@@ -18,6 +18,7 @@ import { useTranslation } from 'react-i18next';
 
 import { initI18n, isRtlLanguage, loadStoredLanguage } from '@/lib/i18n';
 import { AuthProvider, useAuth } from '@/providers/AuthProvider';
+import { isSupabaseConfigured, supabaseConfigError } from '@/lib/supabase';
 import { colors } from '@/constants/colors';
 
 I18nManager.allowRTL(true);
@@ -36,6 +37,29 @@ function FullScreenLoader({ label }: { label?: string }) {
           {label}
         </Text>
       ) : null}
+    </View>
+  );
+}
+
+function ConfigErrorScreen() {
+  return (
+    <View
+      className="flex-1 items-center justify-center px-8"
+      style={{ backgroundColor: '#0a0612' }}
+    >
+      <Text
+        className="text-white text-xl text-center"
+        style={{ fontFamily: 'Heebo_700Bold' }}
+      >
+        Supabase not configured
+      </Text>
+      <Text
+        className="text-white/55 text-sm text-center mt-3"
+        style={{ fontFamily: 'Heebo_400Regular' }}
+      >
+        {supabaseConfigError ??
+          'Set EXPO_PUBLIC_SUPABASE_URL and EXPO_PUBLIC_SUPABASE_ANON_KEY in Netlify → Site config → Environment variables, then redeploy with "Clear cache and deploy site".'}
+      </Text>
     </View>
   );
 }
@@ -136,9 +160,13 @@ export default function RootLayout() {
     <GestureHandlerRootView style={{ flex: 1, backgroundColor: '#0a0612' }}>
       <SafeAreaProvider>
         <StatusBar style="light" />
-        <AuthProvider>
-          <ProtectedNavigator />
-        </AuthProvider>
+        {isSupabaseConfigured ? (
+          <AuthProvider>
+            <ProtectedNavigator />
+          </AuthProvider>
+        ) : (
+          <ConfigErrorScreen />
+        )}
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );

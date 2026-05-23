@@ -20,25 +20,31 @@ const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL?.trim();
 const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY?.trim();
 
 // =========================================================================
-// FAIL LOUDLY if env vars are missing. NO placeholder fallback — a bogus
-// URL would silently pass into createClient and signup would fail with a
-// confusing "Failed to fetch" instead of pointing at the actual root cause.
+// Fail loudly but DO NOT crash the bundle. A missing env var is a deploy
+// config problem, not a code bug — throwing here at module top-level would
+// blow up the very first import (AuthProvider) and blank the entire app
+// with no on-screen explanation. Instead we flip isSupabaseConfigured off;
+// every call site already guards on it, and _layout renders a visible
+// "not configured" screen so the operator sees exactly what to fix.
 // =========================================================================
-if (!supabaseUrl || !supabaseAnonKey) {
-  const missing: string[] = [];
-  if (!supabaseUrl) missing.push('EXPO_PUBLIC_SUPABASE_URL');
-  if (!supabaseAnonKey) missing.push('EXPO_PUBLIC_SUPABASE_ANON_KEY');
-  const msg =
-    '[supabase] FATAL: missing required env var(s): ' +
-    missing.join(', ') +
+export const isSupabaseConfigured = Boolean(supabaseUrl && supabaseAnonKey);
+
+export const supabaseConfigError: string | null = isSupabaseConfigured
+  ? null
+  : '[supabase] missing required env var(s): ' +
+    [
+      !supabaseUrl && 'EXPO_PUBLIC_SUPABASE_URL',
+      !supabaseAnonKey && 'EXPO_PUBLIC_SUPABASE_ANON_KEY',
+    ]
+      .filter(Boolean)
+      .join(', ') +
     '. Set them in Netlify → Site config → Environment variables ' +
     '(or .env.local for local dev) and redeploy with "Clear cache and deploy site".';
-  // eslint-disable-next-line no-console
-  console.error(msg);
-  throw new Error(msg);
-}
 
-export const isSupabaseConfigured = true;
+if (supabaseConfigError) {
+  // eslint-disable-next-line no-console
+  console.error(supabaseConfigError);
+}
 
 // =========================================================================
 // JWT inspection (decode only — no signature verification). The decoded
@@ -81,91 +87,101 @@ function extractRefFromUrl(url: string): string | null {
   return m ? (m[1] ?? null) : null;
 }
 
-const keyPayload = decodeJwtPayload(supabaseAnonKey);
-const urlRef = extractRefFromUrl(supabaseUrl);
-const keyRef = keyPayload?.ref ?? null;
-const keyRole = keyPayload?.role ?? null;
-const refMatch: boolean | null = urlRef && keyRef ? urlRef === keyRef : null;
-
-// eslint-disable-next-line no-console
-console.log('[supabase] init', {
-  urlLength: supabaseUrl.length,
-  urlPrefix: supabaseUrl.slice(0, 40),
-  urlRef,
-  keyLength: supabaseAnonKey.length,
-  keyPrefix: supabaseAnonKey.slice(0, 15),
-  keyRole, // must be "anon"
-  keyRef, // must equal urlRef
-  refMatch,
-  keyIssuedAt: keyPayload?.iat ? new Date(keyPayload.iat * 1000).toISOString() : null,
-  keyExpiresAt: keyPayload?.exp ? new Date(keyPayload.exp * 1000).toISOString() : null,
-  runtime: typeof window === 'undefined' ? 'server/native' : 'browser',
-  bundler: 'expo/metro',
-});
-
-if (!keyPayload) {
-  console.error(
-    '[supabase] Anon key could not be decoded as JWT — almost certainly TRUNCATED in the env var. Length:',
-    supabaseAnonKey.length,
-    '(a real Supabase anon key is 220-280 chars).',
-  );
-}
-if (keyRole && keyRole !== 'anon') {
-  console.error(
-    '[supabase] WRONG KEY TYPE — role is "' + keyRole + '" but must be "anon". ' +
-      (keyRole === 'service_role'
-        ? 'You pasted the service_role key. NEVER ship that to the client.'
-        : 'Use the "anon public" key from Supabase Settings → API.'),
-  );
-}
-if (refMatch === false) {
-  console.error(
-    '[supabase] PROJECT REF MISMATCH — URL is for project "' +
-      urlRef +
-      '" but the anon key was issued for project "' +
-      keyRef +
-      '". Re-copy the anon key from the project whose URL you are using.',
-  );
-}
-
-export const supabase: SupabaseClient = createClient(supabaseUrl, supabaseAnonKey, {
-  auth: {
-    storage: AsyncStorage,
-    autoRefreshToken: true,
-    persistSession: true,
-    detectSessionInUrl: false,
-  },
-});
-
-// =========================================================================
-// Connectivity probe — runs once on browser load to verify the URL is
-// reachable. Independent of signup/signin so we can isolate "the URL is
-// down" from "the auth call failed".
-// =========================================================================
-if (typeof window !== 'undefined') {
-  const healthUrl = `${supabaseUrl.replace(/\/$/, '')}/auth/v1/health`;
-  // eslint-disable-next-line no-console
-  console.log('[supabase] connectivity check →', healthUrl);
-  fetch(healthUrl, { method: 'GET', headers: { apikey: supabaseAnonKey } })
-    .then(async (res) => {
-      const body = await res.text().catch(() => '<no body>');
-      // eslint-disable-next-line no-console
-      console.log('[supabase] connectivity check ←', {
-        status: res.status,
-        ok: res.ok,
-        statusText: res.statusText,
-        body: body.slice(0, 200),
-      });
-    })
-    .catch((err) => {
-      console.error('[supabase] connectivity check FAILED:', {
-        name: err?.name,
-        message: err?.message,
-        cause: err?.cause,
-        stack: err?.stack?.slice(0, 400),
-      });
+function buildClient(): SupabaseClient {
+  if (!supabaseUrl || !supabaseAnonKey) {
+    // Not configured. Return a harmless stub so the bundle still loads —
+    // every call site guards on isSupabaseConfigured, so this client is
+    // never actually used for a network request.
+    return createClient('https://unconfigured.supabase.co', 'unconfigured', {
+      auth: { autoRefreshToken: false, persistSession: false, detectSessionInUrl: false },
     });
+  }
+
+  const keyPayload = decodeJwtPayload(supabaseAnonKey);
+  const urlRef = extractRefFromUrl(supabaseUrl);
+  const keyRef = keyPayload?.ref ?? null;
+  const keyRole = keyPayload?.role ?? null;
+  const refMatch: boolean | null = urlRef && keyRef ? urlRef === keyRef : null;
+
+  // eslint-disable-next-line no-console
+  console.log('[supabase] init', {
+    urlLength: supabaseUrl.length,
+    urlPrefix: supabaseUrl.slice(0, 40),
+    urlRef,
+    keyLength: supabaseAnonKey.length,
+    keyPrefix: supabaseAnonKey.slice(0, 15),
+    keyRole, // must be "anon"
+    keyRef, // must equal urlRef
+    refMatch,
+    keyIssuedAt: keyPayload?.iat ? new Date(keyPayload.iat * 1000).toISOString() : null,
+    keyExpiresAt: keyPayload?.exp ? new Date(keyPayload.exp * 1000).toISOString() : null,
+    runtime: typeof window === 'undefined' ? 'server/native' : 'browser',
+    bundler: 'expo/metro',
+  });
+
+  if (!keyPayload) {
+    console.error(
+      '[supabase] Anon key could not be decoded as JWT — almost certainly TRUNCATED in the env var. Length:',
+      supabaseAnonKey.length,
+      '(a real Supabase anon key is 220-280 chars).',
+    );
+  }
+  if (keyRole && keyRole !== 'anon') {
+    console.error(
+      '[supabase] WRONG KEY TYPE — role is "' + keyRole + '" but must be "anon". ' +
+        (keyRole === 'service_role'
+          ? 'You pasted the service_role key. NEVER ship that to the client.'
+          : 'Use the "anon public" key from Supabase Settings → API.'),
+    );
+  }
+  if (refMatch === false) {
+    console.error(
+      '[supabase] PROJECT REF MISMATCH — URL is for project "' +
+        urlRef +
+        '" but the anon key was issued for project "' +
+        keyRef +
+        '". Re-copy the anon key from the project whose URL you are using.',
+    );
+  }
+
+  // Connectivity probe — runs once on browser load to verify the URL is
+  // reachable, isolating "URL is down" from "auth call failed".
+  if (typeof window !== 'undefined') {
+    const healthUrl = `${supabaseUrl.replace(/\/$/, '')}/auth/v1/health`;
+    // eslint-disable-next-line no-console
+    console.log('[supabase] connectivity check →', healthUrl);
+    fetch(healthUrl, { method: 'GET', headers: { apikey: supabaseAnonKey } })
+      .then(async (res) => {
+        const body = await res.text().catch(() => '<no body>');
+        // eslint-disable-next-line no-console
+        console.log('[supabase] connectivity check ←', {
+          status: res.status,
+          ok: res.ok,
+          statusText: res.statusText,
+          body: body.slice(0, 200),
+        });
+      })
+      .catch((err) => {
+        console.error('[supabase] connectivity check FAILED:', {
+          name: err?.name,
+          message: err?.message,
+          cause: err?.cause,
+          stack: err?.stack?.slice(0, 400),
+        });
+      });
+  }
+
+  return createClient(supabaseUrl, supabaseAnonKey, {
+    auth: {
+      storage: AsyncStorage,
+      autoRefreshToken: true,
+      persistSession: true,
+      detectSessionInUrl: false,
+    },
+  });
 }
+
+export const supabase: SupabaseClient = buildClient();
 
 export type Profile = {
   id: string;
