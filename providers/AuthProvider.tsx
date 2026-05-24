@@ -58,32 +58,56 @@ export function AuthProvider({ children }: PropsWithChildren) {
       return;
     }
     let cancelled = false;
+
+    // Watchdog: never let the splash spin forever. If getSession() stalls
+    // (e.g. a hung token refresh), force the app past initialization so the
+    // user at least reaches the login screen.
+    const watchdog = setTimeout(() => {
+      if (!cancelled) {
+        console.warn('[auth] init watchdog fired after 6s — proceeding without a resolved session');
+        setInitializing(false);
+      }
+    }, 6000);
+
     supabase.auth
       .getSession()
-      .then(async ({ data }) => {
+      .then(({ data }) => {
         if (cancelled) return;
         setSession(data.session);
+        // Stop blocking the splash the moment we know the session. The
+        // profile is non-critical for routing, so fetch it in the
+        // background — a slow/hanging profiles query must never gate init.
+        setInitializing(false);
+        clearTimeout(watchdog);
         if (data.session?.user) {
-          const p = await fetchProfile(data.session.user.id);
-          if (!cancelled) setProfile(p);
+          fetchProfile(data.session.user.id)
+            .then((p) => {
+              if (!cancelled) setProfile(p);
+            })
+            .catch((e) => console.warn('[auth] background profile fetch failed', e));
         }
       })
-      .catch((err) => console.warn('[auth] getSession failed', err))
-      .finally(() => {
-        if (!cancelled) setInitializing(false);
+      .catch((err) => {
+        console.warn('[auth] getSession failed', err);
+        if (!cancelled) {
+          setInitializing(false);
+          clearTimeout(watchdog);
+        }
       });
 
-    const { data: sub } = supabase.auth.onAuthStateChange(async (_event, newSession) => {
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, newSession) => {
       setSession(newSession);
       if (newSession?.user) {
-        const p = await fetchProfile(newSession.user.id);
-        setProfile(p);
+        fetchProfile(newSession.user.id)
+          .then((p) => setProfile(p))
+          .catch((e) => console.warn('[auth] profile fetch failed', e));
       } else {
         setProfile(null);
       }
     });
     return () => {
       cancelled = true;
+      clearTimeout(watchdog);
       sub.subscription.unsubscribe();
     };
   }, []);
