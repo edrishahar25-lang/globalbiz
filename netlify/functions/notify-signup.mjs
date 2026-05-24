@@ -29,10 +29,18 @@ export const handler = async (event) => {
     if (got !== secret) return { statusCode: 401, body: 'Unauthorized' };
   }
 
-  const apiKey = process.env.RESEND_API_KEY;
+  // Key resolution order: request header (set on the Supabase webhook) wins,
+  // then Netlify env. The header path makes us independent of Netlify's
+  // function-env injection, which has been unreliable for this site.
+  const headerKey =
+    event.headers['x-resend-key'] || event.headers['X-Resend-Key'] || '';
+  const apiKey = (headerKey || process.env.RESEND_API_KEY || '').trim();
   if (!apiKey) {
-    console.error('[notify-signup] RESEND_API_KEY is not set');
-    return { statusCode: 500, body: 'RESEND_API_KEY not configured' };
+    console.error('[notify-signup] no Resend key in x-resend-key header or RESEND_API_KEY env');
+    return {
+      statusCode: 500,
+      body: 'No Resend key: set x-resend-key header on the Supabase webhook, or RESEND_API_KEY in Netlify env',
+    };
   }
   const to = process.env.NOTIFY_EMAIL || 'edrishahar25@gmail.com';
   const from = process.env.NOTIFY_FROM || 'GlobalBiz <onboarding@resend.dev>';
