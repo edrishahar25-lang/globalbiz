@@ -107,8 +107,11 @@ begin
   end if;
 end$$;
 
+-- Each row is one APPLICANT (a lead), not one auth user. A signed-in user
+-- (submitted_by) can register many applicants from the same device.
 create table if not exists public.waitlist_users (
-  id                     uuid references auth.users(id) on delete cascade primary key,
+  id                     uuid primary key default gen_random_uuid(),
+  submitted_by           uuid references auth.users(id) on delete set null,
   full_name              text not null,
   email                  text not null,
   phone                  text,
@@ -133,6 +136,13 @@ alter table public.waitlist_users add column if not exists business_name text;
 alter table public.waitlist_users add column if not exists city text;
 alter table public.waitlist_users add column if not exists archived boolean not null default false;
 
+-- Multi-applicant migration for existing databases: detach the row id from
+-- auth.users so one user can own many applicant rows, tracked via submitted_by.
+alter table public.waitlist_users drop constraint if exists waitlist_users_id_fkey;
+alter table public.waitlist_users alter column id set default gen_random_uuid();
+alter table public.waitlist_users add column if not exists submitted_by uuid references auth.users(id) on delete set null;
+update public.waitlist_users set submitted_by = id where submitted_by is null;
+
 drop trigger if exists waitlist_users_touch_updated_at on public.waitlist_users;
 create trigger waitlist_users_touch_updated_at
   before update on public.waitlist_users
@@ -140,25 +150,27 @@ create trigger waitlist_users_touch_updated_at
 
 alter table public.waitlist_users enable row level security;
 
--- Users can only see + edit their own row.
--- onboarding_status + early_access_priority are admin-controlled —
--- a user CAN set them on first insert, but in the client we never do.
--- Admins update via service_role (bypasses RLS).
+-- A user can see + edit every applicant THEY submitted (submitted_by).
+-- onboarding_status + early_access_priority are admin-controlled; the client
+-- never sets them. Admins (is_admin) see/manage all via the policies below.
 drop policy if exists "Users can read own waitlist" on public.waitlist_users;
-create policy "Users can read own waitlist"
+drop policy if exists "Users read own submissions" on public.waitlist_users;
+create policy "Users read own submissions"
   on public.waitlist_users for select
-  using (auth.uid() = id);
+  using (auth.uid() = submitted_by);
 
 drop policy if exists "Users can insert own waitlist" on public.waitlist_users;
-create policy "Users can insert own waitlist"
+drop policy if exists "Users insert own submissions" on public.waitlist_users;
+create policy "Users insert own submissions"
   on public.waitlist_users for insert
-  with check (auth.uid() = id);
+  with check (auth.uid() = submitted_by);
 
 drop policy if exists "Users can update own waitlist" on public.waitlist_users;
-create policy "Users can update own waitlist"
+drop policy if exists "Users update own submissions" on public.waitlist_users;
+create policy "Users update own submissions"
   on public.waitlist_users for update
-  using (auth.uid() = id)
-  with check (auth.uid() = id);
+  using (auth.uid() = submitted_by)
+  with check (auth.uid() = submitted_by);
 
 -- Useful indexes for admin filtering / CSV export
 create index if not exists waitlist_users_status_idx
@@ -167,6 +179,8 @@ create index if not exists waitlist_users_country_idx
   on public.waitlist_users (country);
 create index if not exists waitlist_users_archived_idx
   on public.waitlist_users (archived, created_at desc);
+create index if not exists waitlist_users_submitted_by_idx
+  on public.waitlist_users (submitted_by, archived);
 
 -- Admin-only internal notes. Kept in a SEPARATE table so it is invisible
 -- to applicants: users have a SELECT policy on their own waitlist_users row,

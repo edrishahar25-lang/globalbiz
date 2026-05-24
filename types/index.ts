@@ -163,6 +163,7 @@ export type EarlyAccessPriority = (typeof EARLY_ACCESS_PRIORITIES)[number];
 
 export type WaitlistEntry = {
   id: string;
+  submitted_by: string | null;
   full_name: string;
   email: string;
   phone: string | null;
@@ -184,6 +185,7 @@ export type WaitlistEntry = {
 export type WaitlistSubmitInput = Omit<
   WaitlistEntry,
   | 'id'
+  | 'submitted_by'
   | 'onboarding_status'
   | 'early_access_priority'
   | 'archived'

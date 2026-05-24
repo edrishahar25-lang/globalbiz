@@ -14,12 +14,12 @@ import { computeInitials, displayName } from '@/lib/identity';
 export default function HomeScreen() {
   const { t } = useTranslation();
   const { user, profile } = useAuth();
-  const { entry } = useWaitlist();
+  const { applicants } = useWaitlist();
 
   const userName = displayName({ fullName: profile?.full_name, email: user?.email });
   const userInitials = computeInitials(userName);
-  const hasWaitlist = !!entry;
-  const onboardingStatus = entry?.onboarding_status ?? null;
+  const hasWaitlist = applicants.length > 0;
+  const onboardingStatus = applicants[0]?.onboarding_status ?? null;
 
   return (
     <GradientBackground variant="bgRich">

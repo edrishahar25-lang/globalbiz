@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Pressable, Text, TextInput, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { Check } from 'lucide-react-native';
@@ -61,11 +61,15 @@ function ChipRow({
   );
 }
 
+const EMAIL_RE = /^\S+@\S+\.\S+$/;
+
 export function WaitlistForm() {
   const { t } = useTranslation();
-  const { user, profile } = useAuth();
-  const { entry, submit, submitting } = useWaitlist();
+  const { user } = useAuth();
+  const { submit, submitting, count } = useWaitlist();
 
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [businessName, setBusinessName] = useState('');
   const [country, setCountry] = useState('');
@@ -77,23 +81,19 @@ export function WaitlistForm() {
   const [referral, setReferral] = useState('');
   const [status, setStatus] = useState<Status>(null);
 
-  // Hydrate from existing entry — so "Update application" pre-fills.
-  useEffect(() => {
-    if (!entry) {
-      // Pre-fill business name from the profile on first application.
-      if (profile?.business_name) setBusinessName(profile.business_name);
-      return;
-    }
-    setPhone(entry.phone ?? '');
-    setBusinessName(entry.business_name ?? '');
-    setCountry(entry.country);
-    setCity(entry.city ?? '');
-    setBusinessType(entry.business_type);
-    setWorksIntl(entry.works_internationally ? 'yes' : 'no');
-    setIncomeRange(entry.monthly_income_range);
-    setTools(entry.current_tools);
-    setReferral(entry.referral_source ?? '');
-  }, [entry, profile]);
+  const resetForm = () => {
+    setFullName('');
+    setEmail('');
+    setPhone('');
+    setBusinessName('');
+    setCountry('');
+    setCity('');
+    setBusinessType('');
+    setWorksIntl('');
+    setIncomeRange('');
+    setTools([]);
+    setReferral('');
+  };
 
   const businessOpts: Chip[] = useMemo(
     () => BUSINESS_TYPES.map((v) => ({ value: v, label: t(`businessType.${v}`) })),
@@ -116,9 +116,13 @@ export function WaitlistForm() {
     { value: 'no', label: t('common.no') },
   ];
 
+  const emailValid = EMAIL_RE.test(email.trim());
+
   // International income is only relevant — and only required — when the
-  // user works with international clients.
+  // applicant works with international clients.
   const isValid =
+    fullName.trim().length > 0 &&
+    emailValid &&
     phone.trim().length >= 6 &&
     country.trim().length > 0 &&
     businessType !== '' &&
@@ -131,17 +135,18 @@ export function WaitlistForm() {
       setStatus({ kind: 'error', message: t('waitlist.notAuthenticated') });
       return;
     }
+    if (!emailValid) {
+      setStatus({ kind: 'error', message: t('waitlist.emailInvalid') });
+      return;
+    }
     if (!isValid) {
       setStatus({ kind: 'error', message: t('waitlist.fillAllRequired') });
       return;
     }
-    setStatus({
-      kind: 'loading',
-      message: entry ? t('waitlist.updating') : t('waitlist.submitting'),
-    });
-    const { error } = await submit({
-      full_name: profile?.full_name ?? user.email?.split('@')[0] ?? '',
-      email: user.email ?? '',
+    setStatus({ kind: 'loading', message: t('waitlist.submitting') });
+    const { error, limit } = await submit({
+      full_name: fullName.trim(),
+      email: email.trim(),
       phone: phone.trim() || null,
       business_name: businessName.trim() || null,
       country: country.trim(),
@@ -154,14 +159,17 @@ export function WaitlistForm() {
       current_tools: tools,
       referral_source: referral.trim() || null,
     });
+    if (limit) {
+      setStatus({ kind: 'error', message: t('waitlist.limitReached') });
+      return;
+    }
     if (error) {
       setStatus({ kind: 'error', message: error });
       return;
     }
-    setStatus({
-      kind: 'success',
-      message: entry ? t('waitlist.updated') : t('waitlist.submitted'),
-    });
+    // Registered — clear the form so the next applicant can be added.
+    resetForm();
+    setStatus({ kind: 'success', message: t('waitlist.submitted') });
   };
 
   const toggleTool = (v: string) => {
@@ -173,13 +181,51 @@ export function WaitlistForm() {
     <GlassCard variant="primary">
       <View className="p-5 gap-5">
         <View>
-          <Text className="text-ink font-heebo-bold text-lg">
-            {entry ? t('waitlist.updateTitle') : t('waitlist.title')}
-          </Text>
+          <Text className="text-ink font-heebo-bold text-lg">{t('waitlist.title')}</Text>
           <Text className="text-ink-soft font-heebo text-sm mt-1">{t('waitlist.subtitle')}</Text>
+          <Text className="text-violet-deep font-heebo-medium text-xs mt-1.5">
+            {t('waitlist.registeredCount', { count })}
+          </Text>
         </View>
 
         <StatusBanner status={status} />
+
+        {/* Full name */}
+        <View>
+          <Text className="text-ink-soft font-heebo-medium text-xs uppercase tracking-wide mb-2">
+            {t('waitlist.fullName')} *
+          </Text>
+          <TextInput
+            value={fullName}
+            onChangeText={setFullName}
+            placeholder={t('waitlist.fullNamePlaceholder')}
+            placeholderTextColor="#94A3B8"
+            editable={!submitting}
+            className="bg-glass-strong border border-glass-border rounded-2xl px-4 py-3 text-ink font-heebo text-base"
+            style={{ fontFamily: 'Heebo_400Regular', color: '#0F172A' }}
+            maxLength={80}
+          />
+        </View>
+
+        {/* Email */}
+        <View>
+          <Text className="text-ink-soft font-heebo-medium text-xs uppercase tracking-wide mb-2">
+            {t('waitlist.email')} *
+          </Text>
+          <TextInput
+            value={email}
+            onChangeText={setEmail}
+            placeholder={t('waitlist.emailPlaceholder')}
+            placeholderTextColor="#94A3B8"
+            editable={!submitting}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            autoComplete="email"
+            className="bg-glass-strong border border-glass-border rounded-2xl px-4 py-3 text-ink font-heebo text-base"
+            style={{ fontFamily: 'Heebo_400Regular', color: '#0F172A' }}
+            maxLength={120}
+          />
+        </View>
 
         {/* Phone */}
         <View>
@@ -314,15 +360,7 @@ export function WaitlistForm() {
         </View>
 
         <PrimaryButton
-          label={
-            submitting
-              ? entry
-                ? t('waitlist.updating')
-                : t('waitlist.submitting')
-              : entry
-                ? t('waitlist.updateCta')
-                : t('waitlist.submitCta')
-          }
+          label={submitting ? t('waitlist.submitting') : t('waitlist.submitCta')}
           onPress={handleSubmit}
           variant="primary"
           size="lg"

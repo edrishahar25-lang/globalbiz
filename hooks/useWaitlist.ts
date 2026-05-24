@@ -3,66 +3,76 @@ import { isSupabaseConfigured, supabase } from '@/lib/supabase';
 import { useAuth } from '@/providers/AuthProvider';
 import type { WaitlistEntry, WaitlistSubmitInput } from '@/types';
 
+export const MAX_APPLICANTS_PER_USER = 5;
+
 type State = {
-  entry: WaitlistEntry | null;
+  applicants: WaitlistEntry[];
   loading: boolean;
   submitting: boolean;
   error: string | null;
 };
 
+type SubmitResult = { error: string | null; limit?: boolean };
+
 type Hook = State & {
-  submit: (input: WaitlistSubmitInput) => Promise<{ error: string | null }>;
+  count: number;
+  atLimit: boolean;
+  submit: (input: WaitlistSubmitInput) => Promise<SubmitResult>;
   refresh: () => Promise<void>;
 };
 
+/** Lead intake for the signed-in device. One user (submitted_by) can register
+ *  many applicants. Matching is by email: same email updates that applicant,
+ *  a new email creates a new row (up to MAX_APPLICANTS_PER_USER). */
 export function useWaitlist(): Hook {
   const { user } = useAuth();
   const [state, setState] = useState<State>({
-    entry: null,
+    applicants: [],
     loading: true,
     submitting: false,
     error: null,
   });
 
-  const fetchEntry = useCallback(async () => {
+  const fetchAll = useCallback(async () => {
     if (!isSupabaseConfigured || !user) {
-      setState((s) => ({ ...s, entry: null, loading: false }));
+      setState((s) => ({ ...s, applicants: [], loading: false }));
       return;
     }
     setState((s) => ({ ...s, loading: true, error: null }));
     const { data, error } = await supabase
       .from('waitlist_users')
       .select('*')
-      .eq('id', user.id)
-      .maybeSingle();
+      .eq('submitted_by', user.id)
+      .eq('archived', false)
+      .order('created_at', { ascending: false });
     if (error) {
       console.warn('[waitlist] fetch error', error);
-      setState((s) => ({
-        ...s,
-        loading: false,
-        error: error.message,
-      }));
+      setState((s) => ({ ...s, loading: false, error: error.message }));
       return;
     }
     setState((s) => ({
       ...s,
-      entry: (data as WaitlistEntry | null) ?? null,
+      applicants: (data as WaitlistEntry[]) ?? [],
       loading: false,
     }));
   }, [user]);
 
   useEffect(() => {
-    void fetchEntry();
-  }, [fetchEntry]);
+    void fetchAll();
+  }, [fetchAll]);
 
   const submit = useCallback(
-    async (input: WaitlistSubmitInput): Promise<{ error: string | null }> => {
+    async (input: WaitlistSubmitInput): Promise<SubmitResult> => {
       if (!user) return { error: 'not-authenticated' };
       if (!isSupabaseConfigured) return { error: 'auth/not-configured' };
       setState((s) => ({ ...s, submitting: true, error: null }));
       try {
+        const emailLc = input.email.trim().toLowerCase();
+        const existing = state.applicants.find(
+          (a) => a.email.trim().toLowerCase() === emailLc,
+        );
         const row = {
-          id: user.id,
+          submitted_by: user.id,
           full_name: input.full_name,
           email: input.email,
           phone: input.phone,
@@ -75,21 +85,31 @@ export function useWaitlist(): Hook {
           current_tools: input.current_tools,
           referral_source: input.referral_source,
         };
-        const { data, error } = await supabase
-          .from('waitlist_users')
-          .upsert(row, { onConflict: 'id' })
-          .select()
-          .single();
-        if (error) {
-          console.warn('[waitlist] submit error', error);
-          setState((s) => ({ ...s, submitting: false, error: error.message }));
-          return { error: error.message };
+
+        if (existing) {
+          // Same email — update that applicant (never the wrong one).
+          const { error } = await supabase
+            .from('waitlist_users')
+            .update(row)
+            .eq('id', existing.id);
+          if (error) {
+            setState((s) => ({ ...s, submitting: false, error: error.message }));
+            return { error: error.message };
+          }
+        } else {
+          // New email — new applicant, enforce the per-user cap.
+          if (state.applicants.length >= MAX_APPLICANTS_PER_USER) {
+            setState((s) => ({ ...s, submitting: false }));
+            return { error: 'limit', limit: true };
+          }
+          const { error } = await supabase.from('waitlist_users').insert(row);
+          if (error) {
+            setState((s) => ({ ...s, submitting: false, error: error.message }));
+            return { error: error.message };
+          }
         }
-        setState((s) => ({
-          ...s,
-          entry: data as WaitlistEntry,
-          submitting: false,
-        }));
+        await fetchAll();
+        setState((s) => ({ ...s, submitting: false }));
         return { error: null };
       } catch (err) {
         console.error('[waitlist] submit threw', err);
@@ -98,8 +118,14 @@ export function useWaitlist(): Hook {
         return { error: msg };
       }
     },
-    [user],
+    [user, state.applicants, fetchAll],
   );
 
-  return { ...state, submit, refresh: fetchEntry };
+  return {
+    ...state,
+    count: state.applicants.length,
+    atLimit: state.applicants.length >= MAX_APPLICANTS_PER_USER,
+    submit,
+    refresh: fetchAll,
+  };
 }
