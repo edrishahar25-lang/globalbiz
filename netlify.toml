@@ -22,6 +22,12 @@
   NODE_VERSION = "20"
   NPM_FLAGS = "--legacy-peer-deps"
 
+# Serverless function: emails the founder on new waitlist signups
+# (triggered by a Supabase Database Webhook -> Resend).
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
 # SPA fallback — any unknown path renders the app shell so
 # expo-router can take over and resolve client-side.
 [[redirects]]
