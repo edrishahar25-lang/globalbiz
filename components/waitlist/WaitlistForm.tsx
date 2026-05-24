@@ -116,12 +116,14 @@ export function WaitlistForm() {
     { value: 'no', label: t('common.no') },
   ];
 
+  // International income is only relevant — and only required — when the
+  // user works with international clients.
   const isValid =
     phone.trim().length >= 6 &&
     country.trim().length > 0 &&
     businessType !== '' &&
     worksIntl !== '' &&
-    incomeRange !== '';
+    (worksIntl === 'no' || incomeRange !== '');
 
   const handleSubmit = async () => {
     setStatus(null);
@@ -146,7 +148,9 @@ export function WaitlistForm() {
       city: city.trim() || null,
       business_type: businessType as BusinessType,
       works_internationally: worksIntl === 'yes',
-      monthly_income_range: incomeRange as MonthlyIncomeRange,
+      // Column is NOT NULL; for "no international income" store the lowest
+      // bucket since the international-income question doesn't apply.
+      monthly_income_range: worksIntl === 'yes' ? (incomeRange as MonthlyIncomeRange) : 'lt_1k',
       current_tools: tools,
       referral_source: referral.trim() || null,
     });
@@ -270,17 +274,19 @@ export function WaitlistForm() {
           />
         </View>
 
-        {/* Income */}
-        <View>
-          <Text className="text-ink-soft font-heebo-medium text-xs uppercase tracking-wide mb-2">
-            {t('waitlist.monthlyIncome')} *
-          </Text>
-          <ChipRow
-            options={incomeOpts}
-            selected={incomeRange ? [incomeRange] : []}
-            onSelect={(v) => setIncomeRange(v as MonthlyIncomeRange)}
-          />
-        </View>
+        {/* Income — only shown when the user works internationally */}
+        {worksIntl === 'yes' ? (
+          <View>
+            <Text className="text-ink-soft font-heebo-medium text-xs uppercase tracking-wide mb-2">
+              {t('waitlist.monthlyIncome')} *
+            </Text>
+            <ChipRow
+              options={incomeOpts}
+              selected={incomeRange ? [incomeRange] : []}
+              onSelect={(v) => setIncomeRange(v as MonthlyIncomeRange)}
+            />
+          </View>
+        ) : null}
 
         {/* Tools (multi) */}
         <View>
