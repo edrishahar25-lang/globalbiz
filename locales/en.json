@@ -352,7 +352,9 @@
     "notConfiguredBody": "Supabase env vars missing. See SUPABASE_SETUP.md.",
     "signOutFailed": "Sign out failed",
     "loadingApp": "Loading GlobalBiz...",
-    "signupSuccessHasSession": "Account created! Taking you to the app..."
+    "signupSuccessHasSession": "Account created! Taking you to the app...",
+    "signupFailedConnection": "Signup failed. Check your internet connection and try again.",
+    "retry": "Try again"
   },
   "authErrors": {
     "alreadyRegistered": "This email is already registered — try signing in instead",

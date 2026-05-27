@@ -20,6 +20,22 @@ import { supabase } from '@/lib/supabase';
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const REDIRECT_AFTER_EMAIL_CONFIRM_MS = 3000;
 
+/** Network / timeout / silent-failure errors — show the "check your
+ *  connection and retry" message rather than a cryptic raw string. */
+function isConnectionError(raw: string): boolean {
+  const m = (raw || '').toLowerCase();
+  return (
+    raw === 'auth/timeout' ||
+    raw === 'auth/no-user' ||
+    m.includes('failed to fetch') ||
+    m.includes('network') ||
+    m.includes('timeout') ||
+    m.includes('econnrefused') ||
+    m.includes('err_internet_disconnected') ||
+    m.includes('typeerror')
+  );
+}
+
 export default function SignupScreen() {
   const { t, i18n } = useTranslation();
   const router = useRouter();
@@ -81,13 +97,21 @@ export default function SignupScreen() {
       });
 
       if (error) {
-        console.warn('[signup] supabase returned error:', error);
+        // Full detail to DevTools so we can diagnose future silent failures.
+        console.error('[signup] signUp FAILED — no account created. Full error:', {
+          error,
+          email: email.trim(),
+        });
         setLoading(false);
-        setStatus({ kind: 'error', message: translateAuthError(error, t) });
+        const message = isConnectionError(error)
+          ? t('auth.signupFailedConnection')
+          : translateAuthError(error, t);
+        // Fields are intentionally NOT cleared — the user can fix/retry.
+        setStatus({ kind: 'error', message });
         return;
       }
 
-      console.log('[signup] signUp returned no error — checking session');
+      console.log('[signup] signUp confirmed a user — checking session');
       const { data: sessionData } = await supabase.auth.getSession();
       const hasSession = Boolean(sessionData.session);
       console.log('[signup] session check:', { hasSession });
@@ -107,10 +131,14 @@ export default function SignupScreen() {
         router.replace('/(auth)/login');
       }, REDIRECT_AFTER_EMAIL_CONFIRM_MS);
     } catch (err) {
-      console.error('[signup] handleSubmit threw', err);
+      console.error('[signup] handleSubmit threw — full error detail:', err);
       setLoading(false);
       const msg = err instanceof Error ? err.message : String(err);
-      setStatus({ kind: 'error', message: translateAuthError(msg, t) });
+      const message = isConnectionError(msg)
+        ? t('auth.signupFailedConnection')
+        : translateAuthError(msg, t);
+      // Fields are intentionally NOT cleared — the user can fix/retry.
+      setStatus({ kind: 'error', message });
     }
   };
 
@@ -136,6 +164,18 @@ export default function SignupScreen() {
             </View>
 
             <StatusBanner status={status} />
+
+            {status?.kind === 'error' ? (
+              <View className="mb-4 -mt-1">
+                <PrimaryButton
+                  label={t('auth.retry')}
+                  onPress={handleSubmit}
+                  variant="secondary"
+                  size="md"
+                  disabled={loading}
+                />
+              </View>
+            ) : null}
 
             <View className="gap-4">
               <AuthInput

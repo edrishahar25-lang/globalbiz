@@ -352,7 +352,9 @@
     "notConfiguredBody": "Supabase env vars חסרים. עיין ב-SUPABASE_SETUP.md.",
     "signOutFailed": "ההתנתקות נכשלה",
     "loadingApp": "טוען את GlobalBiz...",
-    "signupSuccessHasSession": "החשבון נוצר! מעביר אותך לאפליקציה..."
+    "signupSuccessHasSession": "החשבון נוצר! מעביר אותך לאפליקציה...",
+    "signupFailedConnection": "הרישום נכשל. בדקו את החיבור לאינטרנט ונסו שוב.",
+    "retry": "נסה שוב"
   },
   "authErrors": {
     "alreadyRegistered": "כתובת אימייל זו כבר רשומה — נסה להתחבר במקום",

@@ -47,6 +47,17 @@ async function fetchProfile(userId: string): Promise<Profile | null> {
   return data as Profile | null;
 }
 
+const SIGNUP_TIMEOUT_MS = 15000;
+
+/** Reject after `ms` so a hung request (flaky network) becomes a catchable
+ *  error instead of spinning forever and never resolving. */
+function withTimeout<T>(promise: Promise<T>, ms: number, label: string): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<T>((_, reject) => setTimeout(() => reject(new Error(label)), ms)),
+  ]);
+}
+
 export function AuthProvider({ children }: PropsWithChildren) {
   const [initializing, setInitializing] = useState(true);
   const [session, setSession] = useState<Session | null>(null);
@@ -127,17 +138,21 @@ export function AuthProvider({ children }: PropsWithChildren) {
     if (!isSupabaseConfigured) return { error: 'auth/not-configured' };
     console.log('[auth.signUp] →', { email: p.email, fullName: p.fullName });
     try {
-      const result = await supabase.auth.signUp({
-        email: p.email,
-        password: p.password,
-        options: {
-          data: {
-            full_name: p.fullName,
-            business_name: p.businessName ?? null,
-            preferred_language: p.preferredLanguage,
+      const result = await withTimeout(
+        supabase.auth.signUp({
+          email: p.email,
+          password: p.password,
+          options: {
+            data: {
+              full_name: p.fullName,
+              business_name: p.businessName ?? null,
+              preferred_language: p.preferredLanguage,
+            },
           },
-        },
-      });
+        }),
+        SIGNUP_TIMEOUT_MS,
+        'auth/timeout',
+      );
       const { data, error } = result;
       console.log('[auth.signUp] ←', {
         userId: data?.user?.id ?? null,
@@ -152,19 +167,29 @@ export function AuthProvider({ children }: PropsWithChildren) {
         console.error('[auth.signUp] supabase returned error object:', error);
         return { error: error.message };
       }
-      if (data.user) {
-        const { error: pErr } = await supabase.from('profiles').upsert(
-          {
-            id: data.user.id,
-            full_name: p.fullName,
-            business_name: p.businessName ?? null,
-            preferred_language: p.preferredLanguage,
-          },
-          { onConflict: 'id' },
-        );
-        if (pErr) {
-          console.warn('[auth.signUp] profile upsert failed (non-fatal):', pErr);
-        }
+      // A real signup ALWAYS returns a user. "No error + no user" is a silent
+      // failure (e.g. a dropped network response) — treat it as failed so the
+      // UI can never show success for an account that wasn't actually created.
+      if (!data?.user) {
+        console.error('[auth.signUp] no error but data.user is missing — treating as FAILED', {
+          data,
+        });
+        return { error: 'auth/no-user' };
+      }
+
+      console.log('Signup confirmed for:', data.user.email);
+
+      const { error: pErr } = await supabase.from('profiles').upsert(
+        {
+          id: data.user.id,
+          full_name: p.fullName,
+          business_name: p.businessName ?? null,
+          preferred_language: p.preferredLanguage,
+        },
+        { onConflict: 'id' },
+      );
+      if (pErr) {
+        console.warn('[auth.signUp] profile upsert failed (non-fatal):', pErr);
       }
       return { error: null };
     } catch (err) {
